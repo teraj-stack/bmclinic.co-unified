@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- X-Frame-Options must be set via HTTP header, not meta tag; removed -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com;
+      style-src 'self' 'unsafe-inline';
+      font-src 'self';
+      img-src 'self' data: blob: https: http:;
+      connect-src 'self' https://jowtjcyevactqmhqrytz.supabase.co https://*.supabase.co https://challenges.cloudflare.com;
+      frame-src 'self' https://accounts.google.com https://challenges.cloudflare.com;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      upgrade-insecure-requests;
+    " />
+    <link rel="icon" type="image/png" href="/mcml/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/mcml/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/mcml/apple-touch-icon.png" />
+    <meta name="theme-color" content="#c9a84c" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="CML" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-site-verification" content="0a3FWgnKDacrA6vPsNAGEnOZcNnlxGRGyq9QOdQJEzw" />
+
+    <!-- Self-hosted WOFF2 fonts — preload the four subsets used above the fold.
+         `crossorigin` is required for font preloads even when same-origin. Weights/subsets
+         that are only used below the fold (Inter 700, Cormorant 600, latin-ext 500) load
+         lazily from @font-face rules in index.css with `font-display: swap`. -->
+    <link rel="preload" as="font" type="font/woff2" href="/mcml/fonts/inter-latin-400-normal.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/mcml/fonts/inter-latin-ext-400-normal.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/mcml/fonts/cormorant-garamond-latin-400-normal.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/mcml/fonts/cormorant-garamond-latin-ext-400-normal.woff2" crossorigin />
+
+    <link rel="dns-prefetch" href="https://www.znanylekarz.pl" />
+    <link rel="preconnect" href="https://jowtjcyevactqmhqrytz.supabase.co" crossorigin />
+    <title>CML – Centrum Medycyny Laserowej | Warszawa Wilanów</title>
+    <meta name="description" content="Innowacyjne leczenie laserowe hemoroidów, żylaków i przetok w Warszawie Wilanów (ul. Branickiego 10/U6). Skuteczność, empatia, zaufanie. Umów konsultację.">
+    <meta property="og:title" content="CML – Centrum Medycyny Laserowej | Warszawa Wilanów">
+    <meta property="og:description" content="Innowacyjne leczenie laserowe hemoroidów, żylaków i przetok w Warszawie Wilanów (ul. Branickiego 10/U6). Skuteczność, empatia, zaufanie. Umów konsultację.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mcml.pro/">
+    <meta property="og:image" content="https://mcml.pro/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CML – Centrum Medycyny Laserowej | Warszawa Wilanów">
+    <meta name="twitter:description" content="Innowacyjne leczenie laserowe hemoroidów, żylaków i przetok w Warszawie Wilanów (ul. Branickiego 10/U6). Skuteczność, empatia, zaufanie. Umów konsultację.">
+    <meta name="twitter:image" content="https://mcml.pro/og-image.png">
+
+
+    <!-- Global WebSite schema — sitewide, statyczne, jedno źródło prawdy.
+         Rich Results: Sitelinks Searchbox (SearchAction) + tożsamość witryny (WebSite).
+         `target` musi wskazywać na realną stronę wyszukiwania — /szukaj?q={search_term_string}. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://mcml.pro/#website",
+      "url": "https://mcml.pro/",
+      "name": "CML – Centrum Medycyny Laserowej",
+      "alternateName": "CML Warszawa Wilanów",
+      "inLanguage": "pl-PL",
+      "publisher": { "@id": "https://mcml.pro/#clinic" },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://mcml.pro/szukaj?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+  <script type="module" crossorigin src="/mcml/assets/index-BzfmDvVi.js"></script>
+  <link rel="modulepreload" crossorigin href="/mcml/assets/vendor-react-Cbk7Ekcs.js">
+  <link rel="modulepreload" crossorigin href="/mcml/assets/vendor-query-B8FDlGr0.js">
+  <link rel="modulepreload" crossorigin href="/mcml/assets/vendor-router-DHHZb2a_.js">
+  <link rel="modulepreload" crossorigin href="/mcml/assets/vendor-supabase-CZe92KHQ.js">
+  <link rel="modulepreload" crossorigin href="/mcml/assets/vendor-radix-DktCFuo6.js">
+  <link rel="modulepreload" crossorigin href="/mcml/assets/vendor-motion-VgHN8kwl.js">
+  <link rel="stylesheet" crossorigin href="/mcml/assets/index-reXySDo7.css">
+<link rel="manifest" href="/mcml/manifest.webmanifest"></head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

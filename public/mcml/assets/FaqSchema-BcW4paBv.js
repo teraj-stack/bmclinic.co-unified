@@ -1,0 +1,1 @@
+import{j as p}from"./vendor-react-Cbk7Ekcs.js";const o=({faqs:e,name:n,url:s})=>{const a={"@context":"https://schema.org","@type":"FAQPage",name:n,url:s,mainEntity:e.map(t=>({"@type":"Question",name:t.q,acceptedAnswer:{"@type":"Answer",text:t.a}}))};return p.jsx("script",{type:"application/ld+json",dangerouslySetInnerHTML:{__html:JSON.stringify(a)}})};export{o as F};

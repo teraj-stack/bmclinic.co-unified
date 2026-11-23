@@ -1,0 +1,1 @@
+function m(i){const{rectTop:e,rowHeight:o,scrollY:a,viewportHeight:r,headerHeight:f,force:l=!1,buffer:n=16,bottomBuffer:c=24}=i,t=f+n,s=Math.max(0,r-t-c),u=e+o;if(!l&&e>=t&&u<=r-c)return null;const h=o>=s?t:t+(s-o)/2,p=a+e-h;return Math.max(0,p)}export{m as c};
