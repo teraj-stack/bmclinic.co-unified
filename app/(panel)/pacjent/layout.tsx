@@ -13,6 +13,7 @@ export default async function PacjentLayout({ children }: { children: React.Reac
         <nav className="flex flex-row gap-4 sm:flex-col sm:gap-2">
           <Link href="/pacjent">Moje wizyty</Link>
           <Link href="/pacjent/profil">Profil</Link>
+          <Link href="/akceleracja-gojenia">Akceleracja gojenia</Link>
         </nav>
       </aside>
       <main className="flex-1 p-6">{children}</main>

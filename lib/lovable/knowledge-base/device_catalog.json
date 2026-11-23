@@ -1,0 +1,354 @@
+{
+  "$schema_version": "1.0.0",
+  "kb_version": "kb-devices-2026.05.13-001",
+  "devices": [
+    {
+      "id": "DEV-THUL-1927-1550-001",
+      "name": "Laser tulowo-erbowy frakcyjny 1927/1550 nm",
+      "name_en": "Thulium/Erbium Fiber Laser 1927nm & 1550nm",
+      "vendor_reference": "Cocoon Medical (1550nm+1927nm Fiber Laser System)",
+      "source_documents": [
+        "1927_1550_PDF_2.pdf",
+        "1927_1550_Operation_Detail.xlsx"
+      ],
+      "class": {
+        "samd_class": "IIb",
+        "laser_safety_class": "4",
+        "regulation_note": "Laser klasy 4 — wymagana certyfikacja operatora, gogle ochronne dla pacjenta i personelu, oznakowane pomieszczenie."
+      },
+      "physics": {
+        "type": "fractional_fiber_laser",
+        "wavelengths_nm": [1927, 1550],
+        "max_power_w": 30,
+        "laser_source_origin": "Niemcy (importowane)",
+        "fiber_constraint": "Promień zgięcia światłowodu nie mniejszy niż 90°."
+      },
+      "wavelength_targets": {
+        "1927": {
+          "penetration_depth_mm": 0.3,
+          "depth_layer": "naskórek / granica naskórek-skóra właściwa",
+          "absorption_water_relative": 0.9,
+          "absorption_melanin_relative": 0.2,
+          "primary_indications": [
+            "przebarwienia",
+            "ostuda (chloasma)",
+            "zmarszczki mimiczne powierzchowne",
+            "rozszerzone pory",
+            "rozjaśnianie kolorytu",
+            "skóra ciemna (Fitzpatrick V–VI)",
+            "skóra wrażliwa"
+          ]
+        },
+        "1550": {
+          "penetration_depth_mm": 1.6,
+          "depth_layer": "głęboka skóra właściwa",
+          "absorption_water_relative": 0.6,
+          "absorption_melanin_relative": 0.4,
+          "primary_indications": [
+            "blizny zanikowe i przerostowe",
+            "rozstępy",
+            "zmarszczki głębokie",
+            "trądzik aktywny i pozapalny",
+            "drobne naczynia",
+            "rumień rozsiany"
+          ]
+        }
+      },
+      "operating_modes": [
+        {
+          "id": "fractional",
+          "label_pl": "Tryb frakcyjny",
+          "thermal_effects": ["thermal_effect", "thermal_coagulation", "micro_ablation_or_non_ablation"],
+          "applicators_mm": [10, 20, 30],
+          "notes": "1550nm → mikro-ablacja; 1927nm → bez ablacji (non-ablative). Mikrouszkodzenia + obszary zachowane → samonaprawa."
+        },
+        {
+          "id": "sliding",
+          "label_pl": "Tryb ślizgowy",
+          "thermal_effects": ["thermal_effect", "thermal_coagulation"],
+          "applicators_count": 1,
+          "notes": "Lifting, redukcja zmarszczek dynamicznych, rozjaśnianie."
+        },
+        {
+          "id": "non_invasive",
+          "label_pl": "Tryb nieinwazyjny",
+          "thermal_effects": ["thermal_effect"],
+          "applicators_count": 1,
+          "notes": "Otwarcie bariery skórnej, wprowadzanie substancji aktywnych, leczenie grzybicy paznokci."
+        },
+        {
+          "id": "private",
+          "label_pl": "Tryb intymny",
+          "thermal_effects": ["thermal_effect", "thermal_coagulation"],
+          "applicators": {
+            "vagina": 1,
+            "vulva": 2
+          }
+        }
+      ],
+      "thermal_effect_thresholds": {
+        "thermal_effect_c": 45,
+        "thermal_coagulation_c": "65–70",
+        "thermal_ablation_c": 100,
+        "key_parameters": {
+          "thermal_effect": ["pulse_width", "energy"],
+          "thermal_coagulation": ["pulse_width", "distance", "energy"],
+          "thermal_ablation": ["energy", "distance"]
+        }
+      },
+      "energy_formula": "energy_mj = power_w * pulse_width_ms",
+      "contraindications": [
+        "ciąża i karmienie piersią",
+        "aktywna infekcja skóry w polu zabiegu",
+        "fotouczulenia (leki, choroby)",
+        "świeża opalenizna (do 4 tygodni)",
+        "skłonność do bliznowców (względne)",
+        "izotretynoina <6 miesięcy",
+        "rozrusznik serca (dla strefy zabiegu w pobliżu)",
+        "nowotwór skóry w polu zabiegu",
+        "padaczka światłoczuła"
+      ],
+      "after_care_default": [
+        "Natychmiast medyczna maska na twarz; można schłodzić w lodówce 10 min.",
+        "Esencja/sprej regeneracyjny medical-grade w ciągu 24 h, ponawiać przy uczuciu suchości.",
+        "Po pojawieniu się strupów: bez maski, tylko esencja/sprej.",
+        "Nie drapać; ochrona przeciwsłoneczna SPF50+ przez min. 4 tygodnie."
+      ],
+      "expert_confirmation_required": true,
+      "operator_role_required": "physician_or_certified_cosmetologist"
+    },
+    {
+      "id": "DEV-CL300-755-1064-001",
+      "name": "Laser długoimpulsowy Alex/Nd:YAG 755/1064 nm (CL300)",
+      "name_en": "CL300 Long Pulsed Alexandrite & Nd:YAG Laser",
+      "vendor_reference": "CL300 (Alexandrite + Nd:YAG dual-head)",
+      "source_documents": ["English_CL300.pdf", "English_CL300_2.pdf", "English_CL300_3.pdf"],
+      "class": {
+        "samd_class": "IIb",
+        "laser_safety_class": "4",
+        "regulation_note": "Laser klasy 4 — przeszkolony i wykwalifikowany personel; gogle ochronne dla pacjenta i personelu; oznakowane pomieszczenie."
+      },
+      "physics": {
+        "type": "long_pulsed_dual_wavelength",
+        "wavelengths_nm": [755, 1064],
+        "max_energy_j": { "1064": 110, "755": 60 },
+        "screen": "15.6-inch color touchscreen",
+        "cooling_options": ["contact", "chilled_air", "cryogen_R134a"]
+      },
+      "wavelength_targets": {
+        "755": {
+          "primary_chromophore": "melanin",
+          "best_for_phototype": "I–III",
+          "primary_indications": [
+            "depilacja laserowa (jasne fototypy, włosy pigmentowane)"
+          ],
+          "notes": "Wyższa absorpcja melaniny; ryzyko PIH u ciemniejszych fototypów."
+        },
+        "1064": {
+          "primary_chromophore": "hemoglobin / głęboka melanina",
+          "best_for_phototype": "IV–VI / opalona / PIH-prone",
+          "primary_indications": [
+            "depilacja ciemnej skóry / opalonej",
+            "teleangiektazje twarzy",
+            "naczynia siatkowate kończyn",
+            "naczyniaki (głębsze/mieszane)",
+            "grzybica paznokci (klirens kosmetyczny)"
+          ],
+          "notes": "Mniejsza absorpcja w naskórku → bezpieczniej dla ciemnej skóry. Wymaga wyższej fluencji."
+        }
+      },
+      "operating_modes": [
+        {
+          "id": "hair_removal",
+          "label_pl": "Depilacja",
+          "thermal_effects": ["selective_photothermolysis"],
+          "notes": "Pulse width dobierany wg kalibru włosa i fototypu, nie wg lokalizacji."
+        },
+        {
+          "id": "vascular",
+          "label_pl": "Zmiany naczyniowe",
+          "thermal_effects": ["coagulation_hemoglobin"],
+          "notes": "Pojedyncze lub podwójne/potrójne impulsy w zależności od refillu naczynia. Dłuższe impulsy zmniejszają purpurę."
+        },
+        {
+          "id": "skin_rejuvenation",
+          "label_pl": "Odmładzanie / pory / trądzik",
+          "thermal_effects": ["controlled_dermal_heating"],
+          "notes": "Indukowane ciepło górnej skóry właściwej; redukcja bakterii i zaczerwienienia."
+        },
+        {
+          "id": "onychomycosis",
+          "label_pl": "Grzybica paznokci",
+          "thermal_effects": ["thermal"],
+          "notes": "1–2 wolne przejścia; klirens kosmetyczny; ograniczone dowody."
+        }
+      ],
+      "contraindications": [
+        "ciąża i karmienie piersią",
+        "świeża opalenizna",
+        "fotouczulenia (leki, choroby) — w tym pelagra (niedobór wit. B3)",
+        "aktywna infekcja skóry w polu zabiegu",
+        "izotretynoina <6 miesięcy",
+        "skłonność do bliznowców (względne)",
+        "rozrusznik serca / wszczepialne defibrylatory bez konsultacji",
+        "zabieg chirurgiczny w polu w ostatnich 3 miesiącach lub przed pełnym wygojeniem",
+        "nowotwór skóry w polu zabiegu"
+      ],
+      "after_care_default": [
+        "Zimne kompresy i łagodny emolient.",
+        "Unikać ciepła/wysiłku w dniu zabiegu.",
+        "Fotoprotekcja SPF 50+ przez kilka tygodni; kapelusz."
+      ],
+      "expert_confirmation_required": true,
+      "operator_role_required": "trained_qualified_operator"
+    },
+    {
+      "id": "DEV-EL950-PICO-001",
+      "name": "Picolaser EL950 (PicoKing) — 532/755/1064 nm",
+      "name_en": "Winkonlaser Picolaser EL950 (PicoKing)",
+      "vendor_reference": "Winkonlaser EL950 (PicoKing™)",
+      "source_documents": ["English_EL950_user_manual.pdf"],
+      "class": {
+        "samd_class": "IIb",
+        "laser_safety_class": "4",
+        "regulation_note": "Laser klasy 4 — przeszkolony i wykwalifikowany personel; gogle ochronne dla pacjenta i personelu; oznakowane pomieszczenie."
+      },
+      "physics": {
+        "type": "picosecond_q_switched_dual_chamber",
+        "wavelengths_nm": [532, 755, 1064],
+        "power_supply_w": 5000,
+        "spot_size_mm": [2, 10],
+        "frequency_hz": [1, 10],
+        "energy_mj_by_wavelength": {
+          "532": [50, 600],
+          "755": [100, 1200],
+          "1064": [100, 1200]
+        },
+        "articulated_arm": "Korean Imported Laser Arm",
+        "cooling": "Built-in closed water circulation (distilled/deionized water 1.5–2 L)",
+        "weight_kg": 130
+      },
+      "wavelength_targets": {
+        "1064": {
+          "primary_chromophore": "deep_melanin / dark_ink",
+          "primary_indications": [
+            "tatuaże ciemne (czarne, niebieskie, fioletowe)",
+            "głęboka pigmentacja, znamię Ota/Ito",
+            "grzybica paznokci",
+            "pory/meszek (Long Pulse, 10 mm)"
+          ]
+        },
+        "755": {
+          "primary_chromophore": "melanin",
+          "primary_indications": [
+            "ostuda (melasma)",
+            "rozjaśnianie kolorytu",
+            "powierzchowne przebarwienia"
+          ],
+          "notes": "Wyłącznie z głowicą Honeycomb (filtr konwertujący 1064→755 + macierz mikrowiązek)."
+        },
+        "532": {
+          "primary_chromophore": "epidermal_melanin / warm_ink",
+          "primary_indications": [
+            "powierzchowne przebarwienia (piegi, soczewicowate)",
+            "tatuaże ciepłe (czerwony, pomarańczowy, żółty, zielony)"
+          ]
+        }
+      },
+      "operating_modes": [
+        { "id": "standard", "label_pl": "Standard", "notes": "Pojedynczy impuls — domyślny dla większości protokołów." },
+        { "id": "dual_pulse_ptp", "label_pl": "Dual Pulse / PTP", "notes": "Energia w dwóch szybkich impulsach — niższe ryzyko PIH (skóra IV–VI), oporne tatuaże." },
+        { "id": "multipulse", "label_pl": "Multipulse", "notes": "Seria impulsów — okolice wrażliwe, powierzchowne przebarwienia, skóra ciemna." },
+        { "id": "long_pulse", "label_pl": "Long Pulse", "notes": "Mechanizm fototermiczny — pory, meszek, odmładzanie. Tylko spot 10 mm." }
+      ],
+      "handpieces": [
+        "default_silver (1064/532, 2–10 mm single round)",
+        "honeycomb_755 (filtr + macierz mikrowiązek 755 nm)",
+        "carbon_peel (skanowanie 1064 do Hollywood Peel)",
+        "red (frakcyjna 1064/532, siatka kołowa)",
+        "golden (frakcyjna 1064, siatka kwadratowa)",
+        "blue (rozproszona 1064, duże powierzchnie)"
+      ],
+      "contraindications": [
+        "ciąża i karmienie piersią",
+        "świeża opalenizna (do 4 tyg.)",
+        "fotouczulenia (leki, choroby)",
+        "aktywna infekcja skóry w polu zabiegu",
+        "izotretynoina <6 miesięcy",
+        "skłonność do bliznowców (względne)",
+        "rozrusznik serca / wszczepialne defibrylatory bez konsultacji",
+        "nowotwór skóry w polu zabiegu",
+        "padaczka światłoczuła"
+      ],
+      "after_care_default": [
+        "Chłodne kompresy 10–15 min bezpośrednio po zabiegu.",
+        "Po tatuażach: opatrunek, brak moczenia 24 h, antybiotyk miejscowy wg wskazań.",
+        "Fotoprotekcja SPF 50+ przez min. 4 tygodnie.",
+        "Unikać sauny, basenu, intensywnego treningu 24–72 h."
+      ],
+      "expert_confirmation_required": true,
+      "operator_role_required": "trained_qualified_operator"
+    },
+    {
+      "id": "DEV-PS30-PLASMA-001",
+      "name": "PlasmaPro PS30 — generator zimnej plazmy (argon/hel)",
+      "name_en": "Winkonlaser PlasmaPro PS30",
+      "vendor_reference": "Winkonlaser PlasmaPro PS20 / PS30",
+      "source_documents": ["English_PS30_user_manual.pdf", "English_PS30_user_manual_2.pdf"],
+      "class": {
+        "samd_class": "IIb",
+        "laser_safety_class": "4",
+        "regulation_note": "Urządzenie do plazmoterapii klasy 4 — wymagane przeszkolenie operatora; ochrona oczu pacjenta i personelu; oznakowane pomieszczenie."
+      },
+      "physics": {
+        "type": "cold_atmospheric_plasma",
+        "gases": ["argon", "helium"],
+        "plasma_temperature_c": [30, 70],
+        "argon_purity_min_pct": 99.9,
+        "argon_inlet_pressure_mpa": [0.1, 0.2],
+        "argon_flow_dial_pct": [90, 100],
+        "voltage_v": "110–220",
+        "screen": "12-inch interactive",
+        "weight_kg": 15,
+        "dimensions_cm": [40, 36, 30]
+      },
+      "operating_modes": [
+        { "id": "continuous", "label_pl": "Tryb ciągły", "notes": "Pojedyncze naciśnięcie aktywuje pracę ciągłą; do większych obszarów." },
+        { "id": "pulse", "label_pl": "Tryb impulsowy", "notes": "Pojedynczy wyładowanie na każde naciśnięcie; precyzyjna praca punktowa." }
+      ],
+      "energy_levels": {
+        "scale": "1–5 (skala urządzenia)",
+        "recommended_start": 3,
+        "low_energy_for": "okolice wrażliwe, zabiegi lżejsze"
+      },
+      "handpieces": [
+        "Hyper Plasma (uniwersalny — odmładzanie, antybakteryjne, ujędrnianie)",
+        "Plasma Roller Tip (microneedling + cold plasma — resurfacing)",
+        "Diamond Plasma (lifting powiek/szyi/brzucha)",
+        "Plasma Jet Tip (cienkie igły — spot/mole removal, blizny)",
+        "Ozone Plasma (dezynfekcja, grzybice, trądzik, bielactwo)"
+      ],
+      "contraindications": [
+        "ciąża",
+        "choroba nowotworowa",
+        "cukrzyca",
+        "niekontrolowane nadciśnienie",
+        "zaburzenia krzepnięcia / choroby krwi",
+        "choroby autoimmunologiczne",
+        "Fitzpatrick V–VI",
+        "skłonność do bliznowców",
+        "izotretynoina (Accutane) aktywnie",
+        "preparaty z retinoidami w polu zabiegu",
+        "uczulenie na lidokainę"
+      ],
+      "after_care_default": [
+        "Lód 10 min on / 10 min off przez pierwsze 2 dni (do 1 h/dzień, przez tkaninę).",
+        "Nie drapać i nie zdrapywać strupków — odpadają w 4–5 dni.",
+        "Unikać treningu, basenu, sauny i pary do złuszczenia strupków.",
+        "Fotoprotekcja SPF 50+ przez min. 4 tygodnie."
+      ],
+      "expert_confirmation_required": true,
+      "operator_role_required": "trained_qualified_operator"
+    }
+  ]
+}
