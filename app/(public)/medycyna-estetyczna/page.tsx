@@ -41,6 +41,46 @@ export default function MedycynaEstetycznaPage() {
         </header>
 
         <AestheticTechnologiesClient technologies={technologies} />
+
+        <section className="space-y-4 border-t border-white/10 pt-8">
+          <h2 className="text-xl font-bold text-white">
+            Dedykowane Aplikacje Interaktywne (Offline HTML)
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <a
+              href="/estetyka/aplikacja-bioelektryczna.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-2xl border border-sky-500/30 bg-slate-900/80 p-5 transition hover:border-sky-400"
+            >
+              <div className="text-xs font-semibold uppercase tracking-wider text-sky-400">
+                Interaktywny Moduł · HTML
+              </div>
+              <div className="mt-1 text-lg font-bold text-white">
+                Aplikacja Bioelektryczna
+              </div>
+              <p className="mt-1 text-xs text-slate-300">
+                Pełna samodzielna aplikacja bioelektryczna wpięta bezpośrednio w bmclinic.co →
+              </p>
+            </a>
+            <a
+              href="/estetyka/zimna-plazma-he-tech.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-2xl border border-amber-500/30 bg-slate-900/80 p-5 transition hover:border-amber-400"
+            >
+              <div className="text-xs font-semibold uppercase tracking-wider text-amber-400">
+                Interaktywny Moduł · He-Tech
+              </div>
+              <div className="mt-1 text-lg font-bold text-white">
+                Zimna Plazma (He-Tech) — FINAL
+              </div>
+              <p className="mt-1 text-xs text-slate-300">
+                Dedykowana prezentacja i protokół Zimnej Plazmy He-Tech wpięty w bmclinic.co →
+              </p>
+            </a>
+          </div>
+        </section>
       </div>
     </div>
   );
