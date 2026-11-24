@@ -66,7 +66,7 @@ const nextConfig: NextConfig = {
             : {
                 key: 'Content-Security-Policy',
                 value:
-                  "frame-ancestors 'self' http://localhost:8768 http://127.0.0.1:8768 http://localhost:8766 http://127.0.0.1:8766",
+                  "frame-ancestors 'self' http://localhost:3500 http://127.0.0.1:3500 http://localhost:8765 http://127.0.0.1:8765 http://localhost:8768 http://127.0.0.1:8768 http://localhost:8766 http://127.0.0.1:8766",
               },
         ],
       },
