@@ -161,7 +161,7 @@ function createDefaultOrders(): CmsOrder[] {
       id: 'ord-1',
       createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
       customerEmail: 'anna.kowalska@example.com',
-      amountGrosze: 25000,
+      amountGrosze: 35000,
       status: 'PAID',
       items: [{ quantity: 1, serviceName: 'Konsultacja proktologiczna' }],
     },

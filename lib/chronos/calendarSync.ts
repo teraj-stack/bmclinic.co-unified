@@ -119,9 +119,20 @@ export async function fetchGoogleCalendarEvents(
   const data = await res.json();
   const items = Array.isArray(data.items) ? data.items : [];
 
-  return items
-    .filter((item: Record<string, unknown>) => item.status !== 'cancelled')
-    .map((item: Record<string, any>) => {
+  interface GoogleCalendarRawItem {
+    id?: string;
+    summary?: string;
+    description?: string;
+    updated?: string;
+    htmlLink?: string;
+    status?: string;
+    start?: { dateTime?: string; date?: string };
+    end?: { dateTime?: string; date?: string };
+  }
+
+  return (items as GoogleCalendarRawItem[])
+    .filter((item) => item.status !== 'cancelled')
+    .map((item) => {
       const rawStart: string = item.start?.dateTime || item.start?.date || new Date().toISOString();
       const rawEnd: string = item.end?.dateTime || item.end?.date || rawStart;
 

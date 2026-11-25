@@ -19,73 +19,261 @@ interface Props {
   params: Promise<{ kategoria: string }>;
 }
 
-const PROCTOLOGY_PROBLEMS = [
-  {
-    title: 'Hemoroidy (choroba hemoroidalna)',
-    symptoms: 'Krwawienie, świąd, pieczenie lub wypadanie guzków',
-    solution:
-      'Precyzyjna diagnostyka i małoinwazyjne leczenie ambulatoryjne (m.in. metody laserowe LHP, ligacja, skleroterapia) z szybkim powrotem do codzienności.',
-    href: '/uslugi/proktologia/leczenie-hemoroidow-ambulatoryjne',
-  },
-  {
-    title: 'Szczelina odbytu',
-    symptoms: 'Ostry ból podczas lub po wypróżnieniu, świeża krew',
-    solution:
-      'Indywidualnie dobrana terapia zachowawcza lub zabieg ambulatoryjny nastawiony na szybkie złagodzenie bólu i trwałe wygojenie.',
-    href: '/uslugi/proktologia/leczenie-szczeliny-odbytu',
-  },
-  {
-    title: 'Przetoki i torbiel włosowa',
-    symptoms: 'Nawracające sączenie, obrzęk lub bolesne zgrubienie',
-    solution:
-      'Dokładna kwalifikacja proktologiczna oraz nowoczesne, oszczędzające zwieracze procedury małoinwazyjne (w tym techniki laserowe FiLaC / SiLaC).',
-    href: '/uslugi/proktologia/konsultacja-proktologiczna',
-  },
-  {
-    title: 'Brodawki i zmiany okolicy odbytu',
-    symptoms: 'Wyczuwalne zmiany skórne, podrażnienie, dyskomfort',
-    solution:
-      'Bezpieczne, precyzyjne usunięcie zmian w znieczuleniu miejscowym wraz z jasnym planem pielęgnacji i wizytą kontrolną.',
-    href: '/uslugi/proktologia/usuwanie-brodawek-okolicy-odbytu',
-  },
-];
+interface CategoryFlowConfig {
+  heroTitle: string;
+  heroSubtitle: string;
+  bookingServiceId: string;
+  trustPills: [string, string, string];
+  problemsSubtitle: string;
+  problems: Array<{ title: string; symptoms: string; solution: string; href: string }>;
+  servicesHeading: string;
+  firstVisitSteps: Array<{ step: string; title: string; desc: string }>;
+  faq: Array<{ q: string; a: string }>;
+  bottomCtaTitle: string;
+}
 
-const FIRST_VISIT_STEPS = [
-  {
-    step: '01',
-    title: 'Spokojna rozmowa bez pośpiechu',
-    desc: 'Omawiasz objawy w pełnej dyskrecji. Bez skrępowania, bez oceniania — lekarz odpowiada na każde pytanie przed badaniem.',
+const CATEGORY_FLOWS: Record<string, CategoryFlowConfig> = {
+  proktologia: {
+    heroTitle: 'Proktologia bez stresu — od objawu do pewnego planu leczenia',
+    heroSubtitle:
+      'Konsultacje, anoskopia, rektoskopia i małoinwazyjne zabiegi 1-dnia prowadzone przez chirurga Jana Bujoka. Pełna dyskrecja, delikatne badanie w pozycji bocznej i szybkie terminy bez skierowania.',
+    bookingServiceId: 'srv-konsultacja-proktologiczna',
+    trustPills: [
+      'Badanie w komfortowej pozycji bocznej',
+      'Zabiegi 1-dnia bez hospitalizacji',
+      'Konsultacja już od 350 zł · bez skierowania',
+    ],
+    problemsSubtitle:
+      'Nie czekaj, aż objawy się nasilą — większość problemów proktologicznych można rozwiązać szybko i ambulatoryjnie.',
+    problems: [
+      {
+        title: 'Hemoroidy (choroba hemoroidalna)',
+        symptoms: 'Krwawienie, świąd, pieczenie lub wypadanie guzków',
+        solution:
+          'Precyzyjna diagnostyka i małoinwazyjne leczenie ambulatoryjne (m.in. metody laserowe LHP, ligacja, skleroterapia) z szybkim powrotem do codzienności.',
+        href: '/uslugi/proktologia/leczenie-hemoroidow-ambulatoryjne',
+      },
+      {
+        title: 'Szczelina odbytu',
+        symptoms: 'Ostry ból podczas lub po wypróżnieniu, świeża krew',
+        solution:
+          'Indywidualnie dobrana terapia zachowawcza lub zabieg ambulatoryjny nastawiony na szybkie złagodzenie bólu i trwałe wygojenie.',
+        href: '/uslugi/proktologia/leczenie-szczeliny-odbytu',
+      },
+      {
+        title: 'Przetoki i torbiel włosowa',
+        symptoms: 'Nawracające sączenie, obrzęk lub bolesne zgrubienie',
+        solution:
+          'Dokładna kwalifikacja proktologiczna oraz nowoczesne, oszczędzające zwieracze procedury małoinwazyjne (w tym techniki laserowe FiLaC / SiLaC).',
+        href: '/uslugi/proktologia/konsultacja-proktologiczna',
+      },
+      {
+        title: 'Brodawki i zmiany okolicy odbytu',
+        symptoms: 'Wyczuwalne zmiany skórne, podrażnienie, dyskomfort',
+        solution:
+          'Bezpieczne, precyzyjne usunięcie zmian w znieczuleniu miejscowym wraz z jasnym planem pielęgnacji i wizytą kontrolną.',
+        href: '/uslugi/proktologia/usuwanie-brodawek-okolicy-odbytu',
+      },
+    ],
+    servicesHeading: 'Zabiegi i konsultacje proktologiczne',
+    firstVisitSteps: [
+      {
+        step: '01',
+        title: 'Spokojna rozmowa bez pośpiechu',
+        desc: 'Omawiasz objawy w pełnej dyskrecji. Bez skrępowania, bez oceniania — lekarz odpowiada na każde pytanie przed badaniem.',
+      },
+      {
+        step: '02',
+        title: 'Krótkie, delikatne badanie',
+        desc: 'Wykonywane w komfortowej pozycji bocznej z poszanowaniem intymności. W razie potrzeby na miejscu wykonujemy anoskopię.',
+      },
+      {
+        step: '03',
+        title: 'Konkretny plan i przejrzysty koszt',
+        desc: 'Wychodzisz z jasną diagnozą, receptą lub planem leczenia 1-dnia oraz dokładną informacją o dalszych krokach.',
+      },
+    ],
+    faq: [
+      {
+        q: 'Czy pierwsza wizyta i badanie proktologiczne bolą?',
+        a: 'Badanie jest krótkie, delikatne i wykonywane w komfortowej pozycji bocznej. W przypadku ostrego bólu (np. szczeliny) lekarz stosuje żel znieczulający i dobiera zakres badania tak, aby uniknąć dyskomfortu.',
+      },
+      {
+        q: 'Jak przygotować się do konsultacji proktologicznej?',
+        a: 'Do standardowej konsultacji i anoskopii wystarczy zwykła higiena miejscowa oraz naturalne wypróżnienie przed wizytą. Specjalne przygotowanie dotyczy jedynie rektoskopii — pełną instrukcję otrzymasz przy zapisie.',
+      },
+      {
+        q: 'Czy potrzebuję skierowania od lekarza rodzinnego?',
+        a: 'Nie. Wizyty i zabiegi w BM Clinics odbywają się bez skierowania — możesz umówić termin bezpośrednio online lub telefonicznie.',
+      },
+      {
+        q: 'Kiedy wrócę do pracy po zabiegu ambulatoryjnym?',
+        a: 'Większość małoinwazyjnych procedur ambulatoryjnych pozwala wrócić do domu tego samego dnia, a do lekkich codziennych aktywności w ciągu 1–2 dni.',
+      },
+    ],
+    bottomCtaTitle: 'Gotowy na spokojną konsultację?',
   },
-  {
-    step: '02',
-    title: 'Krótkie, delikatne badanie',
-    desc: 'Wykonywane w komfortowej pozycji bocznej z poszanowaniem intymności. W razie potrzeby na miejscu wykonujemy anoskopię.',
+  'zylaki-naczynka': {
+    heroTitle: 'Flebologia i leczenie żylaków — precyzyjna diagnostyka i lekkie nogi',
+    heroSubtitle:
+      'Konsultacje flebologiczne, USG Doppler żył kończyn dolnych, skleroterapia i laseroterapia naczyniowa prowadzone przez chirurga Jana Bujoka. Małoinwazyjne zabiegi ambulatoryjne bez hospitalizacji.',
+    bookingServiceId: 'srv-konsultacja-flebologiczna',
+    trustPills: [
+      'Badanie USG Doppler żył na miejscu',
+      'Skleroterapia i laseroterapia 1-dnia',
+      'Konsultacja już od 280 zł · bez skierowania',
+    ],
+    problemsSubtitle:
+      'Wczesna diagnostyka USG Doppler pozwala zatrzymać rozwój niewydolności żylnej i dobrać małoinwazyjne leczenie ambulatoryjne.',
+    problems: [
+      {
+        title: 'Żylaki kończyn dolnych',
+        symptoms: 'Poszerzone, kręte żyły, uczucie ciężkich nóg, obrzęki wieczorem',
+        solution:
+          'Pełna ocena wydolności zastawek w USG Doppler i indywidualnie dobrany plan leczenia małoinwazyjnego (m.in. skleroterapia, terapia uciskowa).',
+        href: '/uslugi/zylaki-naczynka/skleroterapia-zylakow',
+      },
+      {
+        title: 'Pajączki i pękające naczynka na nogach',
+        symptoms: 'Widoczne siateczki drobnych naczynek, dyskomfort estetyczny',
+        solution:
+          'Precyzyjne zamykanie naczynek laserem naczyniowym lub mikroskleroterapią w warunkach ambulatoryjnych z szybkim powrotem do aktywności.',
+        href: '/uslugi/zylaki-naczynka/zamykanie-naczynek-nog',
+      },
+      {
+        title: 'Naczynka i rumień na twarzy',
+        symptoms: 'Rozszerzone naczynka na policzkach i nosie, nawracający rumień',
+        solution:
+          'Laseroterapia naczyniowa z indywidualnym doborem parametrów do fototypu skóry i krótkim czasem rekonwalescencji.',
+        href: '/uslugi/zylaki-naczynka/zamykanie-naczynek-twarz',
+      },
+      {
+        title: 'Bóle, skurcze i obrzęki nóg (diagnostyka)',
+        symptoms: 'Nocne skurcze łydek, mrowienie, opuchlizna kostek po pracy',
+        solution:
+          'Szczegółowe badanie USG Doppler żył kończyn dolnych oceniające drożność żył głębokich i powierzchownych oraz kwalifikujące do leczenia.',
+        href: '/uslugi/zylaki-naczynka/usg-doppler-zyl-konczyn',
+      },
+    ],
+    servicesHeading: 'Zabiegi i konsultacje flebologiczne',
+    firstVisitSteps: [
+      {
+        step: '01',
+        title: 'Wywiad i ocena kliniczna kończyn',
+        desc: 'Lekarz analizuje objawy, historię zakrzepicy i styl pracy oraz ocenia widoczne zmiany żylne i naczyniowe.',
+      },
+      {
+        step: '02',
+        title: 'Badanie USG Doppler na miejscu',
+        desc: 'Bezbolesne badanie ultrasonograficzne z oceną przepływu i wydolności zastawek żylnych — podstawa trafnej kwalifikacji.',
+      },
+      {
+        step: '03',
+        title: 'Plan leczenia i przejrzysty koszt',
+        desc: 'Otrzymujesz konkretny harmonogram terapii (skleroterapia, laseroterapia lub profilaktyka uciskowa) oraz jasną wycenę.',
+      },
+    ],
+    faq: [
+      {
+        q: 'Czy do konsultacji flebologicznej potrzebuję wcześniej zrobionego USG Doppler?',
+        a: 'Nie. Badanie USG Doppler żył kończyn dolnych możesz wykonać bezpośrednio u nas w klinice podczas wizyty diagnostycznej.',
+      },
+      {
+        q: 'Jak przygotować się do wizyty flebologicznej i USG żył?',
+        a: 'Wystarczy wygodne ubranie umożliwiające swobodne odsłonięcie nóg. W dniu wizyty unikaj nakładania tłustych kremów lub balsamów na skórę kończyn.',
+      },
+      {
+        q: 'Czy po skleroterapii lub laserowym zamykaniu naczynek wrócę od razu do domu?',
+        a: 'Tak. Wszystkie procedury odbywają się ambulatoryjnie — bezpośrednio po zabiegu wracasz do domu, a spacer jest wręcz zalecany.',
+      },
+      {
+        q: 'Czy potrzebuję skierowania na konsultację lub zabieg?',
+        a: 'Nie. Wszystkie konsultacje, badania USG Doppler oraz zabiegi w BM Clinics realizujemy prywatnie bez skierowania.',
+      },
+    ],
+    bottomCtaTitle: 'Gotowy na diagnostykę żył i lekkie nogi?',
   },
-  {
-    step: '03',
-    title: 'Konkretny plan i przejrzysty koszt',
-    desc: 'Wychodzisz z jasną diagnozą, receptą lub planem leczenia 1-dnia oraz dokładną informacją o dalszych krokach.',
+  'chirurgia-ogolna': {
+    heroTitle: 'Chirurgia jednego dnia — szybkie i bezpieczne zabiegi ambulatoryjne',
+    heroSubtitle:
+      'Konsultacje chirurgiczne, usuwanie znamion z histopatologią, tłuszczaków, torbieli oraz leczenie wrastających paznokci przez chirurga Jana Bujoka. Znieczulenie miejscowe i powrót do domu tego samego dnia.',
+    bookingServiceId: 'srv-konsultacja-chirurgiczna',
+    trustPills: [
+      'Zabiegi 1-dnia w znieczuleniu miejscowym',
+      'Badanie histopatologiczne zmian skórnych',
+      'Konsultacja już od 270 zł · bez skierowania',
+    ],
+    problemsSubtitle:
+      'Większość drobnych zabiegów chirurgicznych wykonujemy ambulatoryjnie podczas krótkiej wizyty — bez pobytu w szpitalu.',
+    problems: [
+      {
+        title: 'Znamiona barwnikowe i zmiany skórne',
+        symptoms: 'Powiększające się, nieregularne lub drażnione przez odzież znamiona',
+        solution:
+          'Bezpieczne wycięcie chirurgiczne w znieczuleniu miejscowym z zachowaniem marginesów oraz możliwością badania histopatologicznego.',
+        href: '/uslugi/chirurgia-ogolna/usuwanie-znamion-chirurgiczne',
+      },
+      {
+        title: 'Tłuszczaki i guzki podskórne',
+        symptoms: 'Miękkie, przesuwalne zgrubienia pod skórą powodujące dyskomfort',
+        solution:
+          'Precyzyjne usunięcie tłuszczaka przez niewielkie nacięcie w znieczuleniu miejscowym z estetycznym szyciem i krótką rekonwalescencją.',
+        href: '/uslugi/chirurgia-ogolna/usuwanie-tluszczaka',
+      },
+      {
+        title: 'Torbiele skórne i kaszaki',
+        symptoms: 'Wyczuwalny guzek pod skórą, nawracające zaczerwienienie lub stan zapalny',
+        solution:
+          'Usunięcie torbieli wraz z torebką w warunkach ambulatoryjnych, ograniczające ryzyko nawrotu, z kompletną opieką pozabiegową.',
+        href: '/uslugi/chirurgia-ogolna/usuwanie-torbieli',
+      },
+      {
+        title: 'Wrastający paznokieć i drobne zabiegi',
+        symptoms: 'Ból wału paznokciowego, obrzęk, stan zapalny utrudniający chodzenie',
+        solution:
+          'Skuteczny zabieg ambulatoryjny w znieczuleniu miejscowym przynoszący szybką ulgę w bólu oraz pełna instrukcja pielęgnacji.',
+        href: '/uslugi/chirurgia-ogolna/leczenie-wrastajacego-paznokcia',
+      },
+    ],
+    servicesHeading: 'Zabiegi i konsultacje chirurgii ogólnej',
+    firstVisitSteps: [
+      {
+        step: '01',
+        title: 'Kwalifikacja i dokładne badanie',
+        desc: 'Chirurg ocenia zmianę, omawia wskazania, zakres wycięcia oraz odpowiada na pytania o bliznę i czas gojenia.',
+      },
+      {
+        step: '02',
+        title: 'Zabieg 1-dnia w znieczuleniu miejscowym',
+        desc: 'Procedura przebiega komfortowo i bezboleśnie w sali zabiegowej. Tego samego dnia wracasz do domu.',
+      },
+      {
+        step: '03',
+        title: 'Histopatologia, opatrunek i kontrola',
+        desc: 'Otrzymujesz jasne zalecenia pielęgnacyjne, termin zdjęcia szwów oraz wynik badania histopatologicznego, jeśli było zlecane.',
+      },
+    ],
+    faq: [
+      {
+        q: 'Czy drobne zabiegi chirurgiczne są bolesne?',
+        a: 'Zabiegi wykonujemy w skutecznym znieczuleniu miejscowym, dzięki czemu sama procedura jest bezbolesna i nie wymaga narkozy ani hospitalizacji.',
+      },
+      {
+        q: 'Czy usunięte znamię lub guzek można wysłać na badanie histopatologiczne?',
+        a: 'Tak. Materiał po chirurgicznym usunięciu znamienia lub zmiany skórnej kierujemy do badania histopatologicznego, a wynik omawiamy na wizycie kontrolnej.',
+      },
+      {
+        q: 'Kiedy wrócę do domu i codziennych obowiązków po zabiegu?',
+        a: 'Do domu wracasz bezpośrednio po zabiegu tego samego dnia. Do większości codziennych zajęć można wrócić już następnego dnia, zgodnie z zaleceniami lekarza.',
+      },
+      {
+        q: 'Czy potrzebuję skierowania na konsultację chirurgiczną?',
+        a: 'Nie. Wizyty i zabiegi chirurgii jednego dnia odbywają się bez skierowania — termin zarezerwujesz online lub telefonicznie.',
+      },
+    ],
+    bottomCtaTitle: 'Gotowy na konsultację chirurgiczną?',
   },
-];
-
-const PROCTOLOGY_FAQ = [
-  {
-    q: 'Czy pierwsza wizyta i badanie proktologiczne bolą?',
-    a: 'Badanie jest krótkie, delikatne i wykonywane w komfortowej pozycji bocznej. W przypadku ostrego bólu (np. szczeliny) lekarz stosuje żel znieczulający i dobiera zakres badania tak, aby uniknąć dyskomfortu.',
-  },
-  {
-    q: 'Jak przygotować się do konsultacji proktologicznej?',
-    a: 'Do standardowej konsultacji i anoskopii wystarczy zwykła higiena miejscowa oraz naturalne wypróżnienie przed wizytą. Specjalne przygotowanie dotyczy jedynie rektoskopii — pełną instrukcję otrzymasz przy zapisie.',
-  },
-  {
-    q: 'Czy potrzebuję skierowania od lekarza rodzinnego?',
-    a: 'Nie. Wizyty i zabiegi w BM Clinics odbywają się bez skierowania — możesz umówić termin bezpośrednio online lub telefonicznie.',
-  },
-  {
-    q: 'Kiedy wrócę do pracy po zabiegu ambulatoryjnym?',
-    a: 'Większość małoinwazyjnych procedur ambulatoryjnych pozwala wrócić do domu tego samego dnia, a do lekkich codziennych aktywności w ciągu 1–2 dni.',
-  },
-];
+};
 
 export default async function KategoriaPage({ params }: Props) {
   const { kategoria } = await params;
@@ -93,7 +281,7 @@ export default async function KategoriaPage({ params }: Props) {
   if (!theme) notFound();
 
   const services = await getServicesByCategory(kategoria);
-  const isProctology = kategoria === 'proktologia';
+  const flow = CATEGORY_FLOWS[kategoria] ?? null;
 
   return (
     <div className="mx-auto max-w-5xl space-y-10 px-4 py-8">
@@ -110,7 +298,7 @@ export default async function KategoriaPage({ params }: Props) {
             <Sparkles className="h-3.5 w-3.5" />
             Specjalizacja Kliniczna BM Clinics
           </span>
-          {isProctology && (
+          {flow && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] font-medium text-white/80">
               <MapPin className="h-3 w-3 text-amber-400" />
               Warszawa Wilanów · bezpłatny parking
@@ -123,21 +311,17 @@ export default async function KategoriaPage({ params }: Props) {
             className="font-[family-name:var(--font-fraunces)] text-3xl sm:text-5xl font-semibold leading-tight"
             style={{ color: 'var(--cat-text)' }}
           >
-            {isProctology
-              ? 'Proktologia bez stresu — od objawu do pewnego planu leczenia'
-              : theme.label}
+            {flow ? flow.heroTitle : theme.label}
           </h1>
           <p className="text-sm sm:text-base leading-relaxed opacity-85" style={{ color: 'var(--cat-text)' }}>
-            {isProctology
-              ? 'Konsultacje, anoskopia, rektoskopia i małoinwazyjne zabiegi 1-dnia prowadzone przez chirurga Jana Bujoka. Pełna dyskrecja, delikatne badanie w pozycji bocznej i szybkie terminy bez skierowania.'
-              : theme.seoSummary}
+            {flow ? flow.heroSubtitle : theme.seoSummary}
           </p>
         </div>
 
-        {isProctology && (
+        {flow && (
           <div className="flex flex-wrap items-center gap-3 pt-2">
             <Link
-              href="/rezerwacja?serviceId=srv-konsultacja-proktologiczna"
+              href={`/rezerwacja?serviceId=${flow.bookingServiceId}`}
               className="btn-gold inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold shadow-lg transition hover:opacity-95"
             >
               <Calendar className="h-4 w-4" />
@@ -160,26 +344,26 @@ export default async function KategoriaPage({ params }: Props) {
           </div>
         )}
 
-        {isProctology && (
+        {flow && (
           <div className="grid gap-3 pt-4 border-t border-white/10 sm:grid-cols-3 text-xs opacity-85" style={{ color: 'var(--cat-text)' }}>
             <div className="flex items-center gap-2">
               <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0" />
-              <span>Badanie w komfortowej pozycji bocznej</span>
+              <span>{flow.trustPills[0]}</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-amber-400 shrink-0" />
-              <span>Zabiegi 1-dnia bez hospitalizacji</span>
+              <span>{flow.trustPills[1]}</span>
             </div>
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-amber-400 shrink-0" />
-              <span>Konsultacja już od 250 zł · bez skierowania</span>
+              <span>{flow.trustPills[2]}</span>
             </div>
           </div>
         )}
       </section>
 
-      {/* Proctology: Objawy -> Rozwiązanie */}
-      {isProctology && (
+      {/* Objawy -> Rozwiązanie */}
+      {flow && (
         <section className="space-y-4">
           <div className="space-y-1">
             <h2
@@ -189,11 +373,11 @@ export default async function KategoriaPage({ params }: Props) {
               Z jakimi dolegliwościami pomagamy?
             </h2>
             <p className="text-sm opacity-80" style={{ color: 'var(--cat-text)' }}>
-              Nie czekaj, aż objawy się nasilą — większość problemów proktologicznych można rozwiązać szybko i ambulatoryjnie.
+              {flow.problemsSubtitle}
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            {PROCTOLOGY_PROBLEMS.map((item) => (
+            {flow.problems.map((item) => (
               <div
                 key={item.title}
                 className="glass-card p-5 space-y-2.5 flex flex-col justify-between"
@@ -225,7 +409,7 @@ export default async function KategoriaPage({ params }: Props) {
               className="font-[family-name:var(--font-fraunces)] text-2xl sm:text-3xl font-semibold"
               style={{ color: 'var(--cat-text)' }}
             >
-              {isProctology ? 'Zabiegi i konsultacje proktologiczne' : 'Dostępne zabiegi i konsultacje'}
+              {flow ? flow.servicesHeading : 'Dostępne zabiegi i konsultacje'}
             </h2>
             <p className="text-sm opacity-80" style={{ color: 'var(--cat-text)' }}>
               Wybierz usługę, sprawdź cenę i zarezerwuj termin bezpośrednio online.
@@ -303,8 +487,8 @@ export default async function KategoriaPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Proctology: Jak wygląda pierwsza wizyta */}
-      {isProctology && (
+      {/* Jak wygląda pierwsza wizyta */}
+      {flow && (
         <section className="space-y-4">
           <h2
             className="font-[family-name:var(--font-fraunces)] text-2xl sm:text-3xl font-semibold"
@@ -313,7 +497,7 @@ export default async function KategoriaPage({ params }: Props) {
             Jak wygląda pierwsza wizyta?
           </h2>
           <div className="grid gap-4 sm:grid-cols-3">
-            {FIRST_VISIT_STEPS.map((item) => (
+            {flow.firstVisitSteps.map((item) => (
               <div
                 key={item.step}
                 className="glass-card p-5 space-y-2"
@@ -330,8 +514,8 @@ export default async function KategoriaPage({ params }: Props) {
         </section>
       )}
 
-      {/* Proctology: FAQ */}
-      {isProctology && (
+      {/* FAQ */}
+      {flow && (
         <section className="space-y-4">
           <h2
             className="font-[family-name:var(--font-fraunces)] text-2xl sm:text-3xl font-semibold flex items-center gap-2"
@@ -341,7 +525,7 @@ export default async function KategoriaPage({ params }: Props) {
             Najczęstsze pytania pacjentów
           </h2>
           <div className="grid gap-3 sm:grid-cols-2">
-            {PROCTOLOGY_FAQ.map((item) => (
+            {flow.faq.map((item) => (
               <div
                 key={item.q}
                 className="glass-card p-5 space-y-2"
@@ -355,15 +539,15 @@ export default async function KategoriaPage({ params }: Props) {
         </section>
       )}
 
-      {/* Proctology: Bottom Conversion CTA */}
-      {isProctology && (
+      {/* Bottom Conversion CTA */}
+      {flow && (
         <section
           className="glass-card p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6"
           style={{ background: 'var(--cat-card-bg)', color: 'var(--cat-text)' }}
         >
           <div className="space-y-1.5 max-w-xl">
             <h2 className="font-[family-name:var(--font-fraunces)] text-2xl font-semibold">
-              Gotowy na spokojną konsultację?
+              {flow.bottomCtaTitle}
             </h2>
             <p className="text-xs sm:text-sm opacity-85">
               ul. Branickiego 10/U6, Warszawa Wilanów · Pon–Pt 8:00–20:00 · Bezpłatny parking pod kliniką.
@@ -371,7 +555,7 @@ export default async function KategoriaPage({ params }: Props) {
           </div>
           <div className="flex flex-wrap gap-3 shrink-0">
             <Link
-              href="/rezerwacja?serviceId=srv-konsultacja-proktologiczna"
+              href={`/rezerwacja?serviceId=${flow.bookingServiceId}`}
               className="btn-gold inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold"
             >
               <Calendar className="h-4 w-4" />

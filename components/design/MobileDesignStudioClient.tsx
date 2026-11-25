@@ -264,7 +264,7 @@ export default function MobileDesignStudioClient() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Clock className="h-3.5 w-3.5 shrink-0" style={{ color: lib.palette.accent }} />
-                          <span>Konsultacja 30 min · od 250 zł</span>
+                          <span>Konsultacja 30 min · od 350 zł</span>
                         </div>
                       </div>
 
@@ -325,8 +325,8 @@ export default function MobileDesignStudioClient() {
 
                       <div className="space-y-2">
                         {[
-                          { name: 'Konsultacja proktologiczna', time: '30 min', price: '250 zł' },
-                          { name: 'Anoskopia diagnostyczna', time: '20 min', price: '350 zł' },
+                          { name: 'Konsultacja proktologiczna', time: '30 min', price: '350 zł' },
+                          { name: 'Anoskopia diagnostyczna', time: '20 min', price: '400 zł' },
                           { name: 'Leczenie hemoroidów', time: '45 min', price: '800 zł' },
                         ].map((srv) => (
                           <div

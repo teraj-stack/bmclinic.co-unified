@@ -35,7 +35,7 @@ export default function BookingForm({
   const searchParams = useSearchParams();
   const preselectedServiceId = searchParams.get('serviceId') || '';
 
-  const [serviceId, setServiceId] = useState(preselectedServiceId);
+  const [serviceId, setServiceId] = useState(preselectedServiceId || services[0]?.id || '');
   const [doctorId, setDoctorId] = useState(doctors[0]?.id || '');
   const [date, setDate] = useState(() => {
     const tomorrow = new Date();

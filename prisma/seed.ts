@@ -18,7 +18,7 @@ const services: SeedService[] = [
     slug: 'konsultacja-proktologiczna',
     categorySlug: 'proktologia',
     name: 'Konsultacja proktologiczna',
-    priceGrosze: 25000,
+    priceGrosze: 35000,
     durationMin: 30,
     seoSummary:
       'Konsultacja proktologiczna z badaniem i omówieniem planu leczenia – szybka diagnostyka dolegliwości odbytu i odbytnicy w komfortowych warunkach kliniki.',
@@ -29,7 +29,7 @@ const services: SeedService[] = [
     slug: 'anoskopia',
     categorySlug: 'proktologia',
     name: 'Anoskopia',
-    priceGrosze: 35000,
+    priceGrosze: 40000,
     durationMin: 20,
     seoSummary:
       'Anoskopia to badanie końcowego odcinka kanału odbytu umożliwiające ocenę hemoroidów, szczelin i zmian zapalnych – wykonywane ambulatoryjnie, zwykle bez znieczulenia.',
