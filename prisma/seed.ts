@@ -130,7 +130,7 @@ const services: SeedService[] = [
     slug: 'zamykanie-naczynek-twarz',
     categorySlug: 'zylaki-naczynka',
     name: 'Zamykanie naczynek na twarzy',
-    priceGrosze: 30000,
+    priceGrosze: 45000,
     durationMin: 30,
     seoSummary:
       'Laserowe zamykanie naczynek na twarzy – redukcja rumienia i teleangiektazji z krótkim czasem rekonwalescencji i indywidualnym doborem parametrów zabiegu.',
