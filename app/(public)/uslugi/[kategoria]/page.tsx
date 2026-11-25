@@ -121,7 +121,7 @@ const CATEGORY_FLOWS: Record<string, CategoryFlowConfig> = {
     trustPills: [
       'Badanie USG Doppler żył na miejscu',
       'Skleroterapia i laseroterapia 1-dnia',
-      'Konsultacja już od 280 zł · bez skierowania',
+      'Konsultacja już od 350 zł · bez skierowania',
     ],
     problemsSubtitle:
       'Wczesna diagnostyka USG Doppler pozwala zatrzymać rozwój niewydolności żylnej i dobrać małoinwazyjne leczenie ambulatoryjne.',

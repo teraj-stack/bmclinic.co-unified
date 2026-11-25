@@ -169,7 +169,7 @@ function createDefaultOrders(): CmsOrder[] {
       id: 'ord-2',
       createdAt: new Date(Date.now() - 86400000).toISOString(),
       customerEmail: 'piotr.nowak@example.com',
-      amountGrosze: 35000,
+      amountGrosze: 40000,
       status: 'PAID',
       items: [{ quantity: 1, serviceName: 'USG Doppler żył kończyn dolnych' }],
     },

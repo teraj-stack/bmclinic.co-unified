@@ -97,7 +97,7 @@ const services: SeedService[] = [
     slug: 'konsultacja-fleboologiczna',
     categorySlug: 'zylaki-naczynka',
     name: 'Konsultacja flebologiczna',
-    priceGrosze: 28000,
+    priceGrosze: 35000,
     durationMin: 30,
     seoSummary:
       'Konsultacja flebologiczna z oceną żylaków i teleangiektazji – omówienie diagnostyki USG oraz planu leczenia małoinwazyjnego dopasowanego do pacjenta.',
@@ -108,7 +108,7 @@ const services: SeedService[] = [
     slug: 'usg-doppler-zyl-konczyn',
     categorySlug: 'zylaki-naczynka',
     name: 'USG Doppler żył kończyn dolnych',
-    priceGrosze: 35000,
+    priceGrosze: 40000,
     durationMin: 40,
     seoSummary:
       'USG Doppler żył kończyn dolnych ocenia drożność i wydolność zastawek – kluczowe badanie przed leczeniem żylaków i planowaniem skleroterapii lub laseroterapii.',
@@ -119,7 +119,7 @@ const services: SeedService[] = [
     slug: 'zamykanie-naczynek-nog',
     categorySlug: 'zylaki-naczynka',
     name: 'Zamykanie naczynek na nogach',
-    priceGrosze: 25000,
+    priceGrosze: 42000,
     durationMin: 30,
     seoSummary:
       'Zamykanie pękniętych naczynek na nogach laserem lub skleroterapią – zabieg ambulatoryjny, widoczna poprawa już po sesji, krótka rekonwalescencja.',
