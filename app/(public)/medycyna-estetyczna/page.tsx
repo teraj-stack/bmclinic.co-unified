@@ -40,6 +40,23 @@ export default function MedycynaEstetycznaPage() {
           </p>
         </header>
 
+        <div className="rounded-2xl border border-amber-400/35 bg-gradient-to-r from-amber-500/15 via-slate-900 to-emerald-500/10 p-5 flex flex-wrap items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="text-xs font-bold uppercase tracking-wider text-amber-300">
+              Pełny Portal Estetyczny BMClinics.ai (55 widoków scalonych na :3016)
+            </div>
+            <div className="text-sm text-slate-200">
+              Diagnostyka skóry w Warszawie, karty 12 technologii (Virtue RF, PicoKing, HIFU, AlexPulse, Fusion Plasma), wskazania, zespół (dr Halina Gabara) oraz 14 artykułów dermatologicznych.
+            </div>
+          </div>
+          <Link
+            href="/bmclinics-ai"
+            className="rounded-xl bg-amber-300 px-4 py-2.5 text-xs font-bold text-slate-950 hover:bg-amber-200 transition shrink-0"
+          >
+            Otwórz BMClinics.ai (55 widoków) →
+          </Link>
+        </div>
+
         <AestheticTechnologiesClient technologies={technologies} />
 
         <section className="space-y-4 border-t border-white/10 pt-8">
