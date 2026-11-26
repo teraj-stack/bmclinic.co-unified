@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello World</title>
+    <script>
+      (function() {
+        try {
+          var g = typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : this);
+          if (g && g.fetch) {
+            var origFetch = g.fetch.bind(g);
+            var currentFetch = origFetch;
+            Object.defineProperty(g, 'fetch', {
+              get: function() { return currentFetch; },
+              set: function(v) { currentFetch = v; },
+              configurable: true,
+              enumerable: true
+            });
+          }
+        } catch (e) {
+          console.warn('Fetch patch error:', e);
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/spatial-3d/assets/index-4osovHd4.js"></script>
+    <link rel="stylesheet" crossorigin href="/spatial-3d/assets/index-1U1_h7gb.css">
+    <link rel="stylesheet" href="/bm-unified-theme.css?v=3" />
+  <script src="/bm-unified-shell.js" defer></script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+

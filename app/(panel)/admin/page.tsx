@@ -72,6 +72,66 @@ export default async function AdminDashboard() {
           >
             Panel Holding (SEO / AEO / Skaner) ↗
           </a>
+          <a
+            href="/vault/"
+            className="metal-chrome-edge rounded-xl bg-white/5 px-4 py-2.5 text-sm font-medium"
+          >
+            Pełny Chronos Vault (/vault/) ↗
+          </a>
+          <a
+            href="/taskkill/?map=scalenie-3016"
+            className="metal-chrome-edge rounded-xl bg-white/5 px-4 py-2.5 text-sm font-medium"
+          >
+            Drzewo Raportu Wdrożenia ↗
+          </a>
+          <a
+            href="/superagent"
+            className="metal-chrome-edge rounded-xl bg-white/5 px-4 py-2.5 text-sm font-medium"
+          >
+            Superagent AI Safety ↗
+          </a>
+          <a
+            href="/aether/"
+            className="metal-chrome-edge rounded-xl bg-white/5 px-4 py-2.5 text-sm font-medium"
+          >
+            Aether Haptyka (/aether/) ↗
+          </a>
+          <a
+            href="/spatial-3d/"
+            className="metal-chrome-edge rounded-xl bg-white/5 px-4 py-2.5 text-sm font-medium"
+          >
+            Spatial 3D Studio (/spatial-3d/) ↗
+          </a>
+          <a
+            href="/parallax-3d/"
+            className="metal-chrome-edge rounded-xl bg-white/5 px-4 py-2.5 text-sm font-medium"
+          >
+            Parallax 3D Zdjęcia (/parallax-3d/) ↗
+          </a>
+          <Link
+            href="/admin/magazyn"
+            className="metal-chrome-edge rounded-xl bg-white/5 px-4 py-2.5 text-sm font-medium"
+          >
+            Magazyn &amp; Sklep CML ↗
+          </Link>
+          <Link
+            href="/admin/bezpieczenstwo"
+            className="metal-chrome-edge rounded-xl bg-white/5 px-4 py-2.5 text-sm font-medium"
+          >
+            2FA &amp; Raporty Kliniki ↗
+          </Link>
+          <a
+            href="/cml-wilanow/"
+            className="metal-chrome-edge rounded-xl bg-white/5 px-4 py-2.5 text-sm font-medium"
+          >
+            Proktologia 3D (/cml-wilanow/) ↗
+          </a>
+          <a
+            href="/ai-studio-app/"
+            className="metal-chrome-edge rounded-xl bg-white/5 px-4 py-2.5 text-sm font-medium"
+          >
+            AI Studio (/ai-studio-app/) ↗
+          </a>
         </div>
       </div>
 

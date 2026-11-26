@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 :root {
+  --font-montserrat: 'BM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-fraunces: Georgia, 'BM Serif', 'Times New Roman', serif;
   /* Brand anchors */
   --brand-black: #000000;
   --brand-near-black: #1d1b16;

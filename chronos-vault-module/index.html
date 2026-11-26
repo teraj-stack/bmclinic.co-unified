@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chronos Vault — Bezpieczne Zarządzanie Zadaniami i Zespołem</title>
+    <meta name="description" content="Platforma produktywności z szyfrowaniem E2EE, synchronizacją w chmurze, tablicą Kanban, kalendarzem, transkrypcją głosu AI, rozpoznawaniem pisma odręcznego (OCR), analityką PDF/CSV oraz trybem offline PWA." />
+    <meta property="og:site_name" content="Chronos Vault" />
+    <meta property="og:title" content="Chronos Vault — Bezpieczne Zarządzanie Zadaniami i Zespołem" />
+    <meta property="og:description" content="Platforma produktywności z szyfrowaniem E2EE, synchronizacją w chmurze, tablicą Kanban, kalendarzem, transkrypcją głosu AI, rozpoznawaniem pisma odręcznego (OCR), analityką PDF/CSV oraz trybem offline PWA." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Chronos Vault — Bezpieczne Zarządzanie Zadaniami i Zespołem" />
+    <meta name="twitter:description" content="Centralny panel sterowania AI SEO & AEO, adaptacyjny model predykcyjny, analityka zasięgu, tablica Kanban E2EE, grafiki kliniczne i monitoring chmurowy." />
+    <meta name="theme-color" content="#0F172A" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="ChronosVault" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "name": "Chronos Vault",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "All",
+            "inLanguage": "pl-PL",
+            "description": "Zintegrowana platforma produktywności zespołu oraz centralny panel sterowania AI monitorujący treści SEO i AEO, optymalizację fraz kluczowych w czasie, zasięg organiczny i społecznościowy oraz telemetrię chmurową.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "PLN"
+            }
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Jak działa silnik AI SEO i AEO w Chronos Vault?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Silnik analizuje strukturę nagłówków, bezpośrednie bloki odpowiedzi dla wyszukiwarek konwersacyjnych (AEO), dane strukturalne Schema.org oraz automatycznie aktualizuje frazy kluczowe w czasie wraz z wygaszaniem nieaktualnych wag predykcyjnych."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "W jaki sposób realizowane są cykliczne raporty PDF z wysyłką e-mail?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Harmonogramy dzienne, tygodniowe i miesięczne generują wielostronicowe podsumowania PDF wyników SEO, AEO, zasięgu i anomalii oraz realizują wysyłkę na wskazane adresy e-mail przez wyzwalacze zdarzeń po stronie serwera."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-blue-600 selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      (function () {
+        var initialVersion = null;
+        // Restore scroll position after a version reload
+        try {
+          var savedY = sessionStorage.getItem('chronos_scroll_y_v1');
+          if (savedY) {
+            sessionStorage.removeItem('chronos_scroll_y_v1');
+            requestAnimationFrame(function () {
+              window.scrollTo(0, parseInt(savedY, 10) || 0);
+            });
+          }
+        } catch (e) {}
+
+        // Anti-window-lock safeguard: prevents accidental/malicious pointer-lock,
+        // fullscreen traps, or frozen scroll/pointer-events inside the web app.
+        function unlockWindowState() {
+          try {
+            if (document.pointerLockElement && document.exitPointerLock) {
+              document.exitPointerLock();
+            }
+            if (document.fullscreenElement && document.exitFullscreen) {
+              document.exitFullscreen().catch(function () {});
+            }
+            document.documentElement.style.pointerEvents = '';
+            document.body.style.pointerEvents = '';
+            if (document.body.style.overflow === 'hidden') {
+              document.body.style.overflow = '';
+            }
+            window.onbeforeunload = null;
+          } catch (e) {}
+        }
+        var lastEscTs = 0;
+        window.addEventListener('keydown', function (ev) {
+          if (ev.key === 'Escape') {
+            var now = Date.now();
+            if (now - lastEscTs < 600) unlockWindowState();
+            lastEscTs = now;
+          } else if (ev.ctrlKey && ev.shiftKey && (ev.key === 'U' || ev.key === 'u')) {
+            unlockWindowState();
+          }
+        }, true);
+        // Periodic check: never allow the root document to stay stuck with pointerEvents: none
+        setInterval(function () {
+          if (document.body && document.body.style.pointerEvents === 'none') {
+            document.body.style.pointerEvents = '';
+          }
+        }, 2000);
+
+        // Subtle live 5s refresh indicator pill (bottom-right) so user sees live ticks without losing active view
+        var badge = document.createElement('div');
+        badge.id = 'chronos-live-5s-badge';
+        badge.style.cssText =
+          'position:fixed;right:12px;bottom:12px;z-index:9999;padding:4px 10px;border-radius:999px;font:600 11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(15,23,42,0.82);color:#e2e8f0;border:1px solid rgba(56,189,248,0.45);backdrop-filter:blur(6px);pointer-events:none;transition:transform 0.2s ease,border-color 0.2s ease;';
+        function fmtTime() {
+          return new Date().toLocaleTimeString('pl-PL', { hour12: false });
+        }
+        badge.textContent = '● Live 5s · ' + fmtTime();
+        document.body.appendChild(badge);
+
+        // Every 5s: soft-refresh live data in-place (preserving exact open view & running functions).
+        // Only perform a full page reload when a new server build (ETag/Last-Modified) is detected.
+        setInterval(function () {
+          if (document.visibilityState !== 'visible') return;
+          badge.textContent = '● Live 5s · ' + fmtTime();
+          badge.style.borderColor = '#22c55e';
+          badge.style.transform = 'scale(1.04)';
+          setTimeout(function () {
+            badge.style.borderColor = 'rgba(56,189,248,0.45)';
+            badge.style.transform = 'scale(1)';
+          }, 350);
+          window.dispatchEvent(new CustomEvent('chronos:soft-refresh', { detail: { ts: Date.now() } }));
+          if (document.querySelector('input:focus, textarea:focus, select:focus, [contenteditable="true"]:focus')) {
+            return;
+          }
+          fetch('/', { method: 'HEAD', cache: 'no-store' })
+            .then(function (res) {
+              var ver = res.headers.get('etag') || res.headers.get('last-modified') || '';
+              if (!initialVersion) {
+                initialVersion = ver;
+              } else if (ver && ver !== initialVersion) {
+                try { sessionStorage.setItem('chronos_scroll_y_v1', String(window.scrollY || 0)); } catch (e) {}
+                window.location.reload();
+              }
+            })
+            .catch(function () {});
+        }, 5000);
+      })();
+    </script>
+  </body>
+</html>

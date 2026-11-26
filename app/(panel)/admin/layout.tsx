@@ -13,8 +13,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <nav className="flex flex-row gap-4 sm:flex-col sm:gap-2">
           <Link href="/admin">Pulpit</Link>
           <Link href="/admin/uslugi">Usługi</Link>
+          <Link href="/admin/magazyn">Magazyn &amp; Sklep CML</Link>
           <Link href="/admin/lekarze">Lekarze</Link>
           <Link href="/admin/zamowienia">Zamówienia</Link>
+          <Link href="/admin/bezpieczenstwo">2FA &amp; Raporty</Link>
           <Link href="/admin/chronos">Chronos (Kalendarz / PDF / AI)</Link>
         </nav>
       </aside>

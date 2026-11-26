@@ -1,0 +1,38 @@
+[
+  {
+    "id": "vb-1795726031157",
+    "timestamp": "2026-11-26T20:47:11.158Z",
+    "transcript": "słyszysz mnie teraz czy nie",
+    "intent": "general_command",
+    "summary": "Polecam kontynuować budowę zgodnie z aktualnymi zadaniami.",
+    "spokenReplyPl": "Słyszę Cię, kontynuuj budowę zgodnie z planem.",
+    "model": "ollama:bm-voice-builder:latest"
+  },
+  {
+    "id": "vb-1795723419186",
+    "timestamp": "2026-11-26T20:03:39.186Z",
+    "transcript": "Zweryfikuj typy TypeScript i stan budowy",
+    "intent": "verify_build",
+    "summary": "Sprawdzenie typów TypeScript i stanu repozytorium",
+    "spokenReplyPl": "Weryfikacja TypeScript dla bmclinic-chronos-master zakończona pomyślnie bez błędów.",
+    "model": "ollama:bm-voice-builder:latest"
+  },
+  {
+    "id": "vb-1795723402898",
+    "timestamp": "2026-11-26T20:03:22.898Z",
+    "transcript": "Sprawdź status wszystkich serwerów i portów",
+    "intent": "check_services",
+    "summary": "Sprawdzanie statusu wszystkich serwerów i portów",
+    "spokenReplyPl": "Aktywnych jest 5 z 5 monitorowanych usług (porty 3016–3019 i Ollama).",
+    "model": "ollama:bm-voice-builder:latest"
+  },
+  {
+    "id": "vb-1795720821131",
+    "timestamp": "2026-11-26T19:20:21.131Z",
+    "transcript": "Sprawdź status wszystkich serwerów i portów",
+    "intent": "check_services",
+    "summary": "Sprawdzanie statusu wszystkich serwerów i portów",
+    "spokenReplyPl": "Aktywnych jest 5 z 5 monitorowanych usług (porty 3016–3019 i Ollama).",
+    "model": "ollama:bm-voice-builder:latest"
+  }
+]

@@ -66,3 +66,6 @@ release/
 **/.env.local
 
 .github/workflows/
+chronos-vault-module/data/voice-notes/
+data/voice-notes/
+*.gguf

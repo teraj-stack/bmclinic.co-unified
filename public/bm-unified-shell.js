@@ -1,0 +1,256 @@
+(function () {
+  var SKIN_KEY = 'bm-unified-skin';
+  var HERO_KEY = 'bm-choice-home';
+  var SCALE_KEY = 'bm-ui-scale';
+  var CONTRAST_KEY = 'bm-wcag-contrast';
+  var MOTION_KEY = 'bm-wcag-reduced-motion';
+  var SKINS = [
+    { id: 'obsidian-gold', label: 'Obsidian & Gold', swatch: '#dfc6a7', tag: 'Strona główna' },
+    { id: 'emerald-brass', label: 'Deep Emerald & Brass', swatch: '#d4b46a', tag: 'Butikowa' },
+    { id: 'ivory-stone', label: 'Swiss Ivory & Stone', swatch: '#9f825e', tag: 'Jasna' },
+    { id: 'nordic-frost', label: 'Nordic Frost & Glass', swatch: '#c5d6e6', tag: 'Chłodna' },
+  ];
+
+  function getSavedSkin() {
+    try {
+      var val = localStorage.getItem(SKIN_KEY);
+      if (val && SKINS.some(function (s) { return s.id === val; })) return val;
+    } catch (e) {}
+    return 'obsidian-gold';
+  }
+
+  function applySkin(skinId) {
+    document.documentElement.setAttribute('data-bm-skin', skinId);
+    try {
+      localStorage.setItem(SKIN_KEY, skinId);
+    } catch (e) {}
+    var opts = document.querySelectorAll('#bm-unified-dock .bm-skin-option');
+    opts.forEach(function (btn) {
+      btn.classList.toggle('is-active', btn.getAttribute('data-skin') === skinId);
+    });
+    var active = SKINS.find(function (s) { return s.id === skinId; }) || SKINS[0];
+    var labelEl = document.getElementById('bm-skin-current-label');
+    if (labelEl) labelEl.textContent = active.label;
+  }
+
+  function resolveHeroPhotoUrl() {
+    try {
+      var idNum = parseInt(localStorage.getItem(HERO_KEY) || '', 10);
+      if (idNum >= 1 && idNum <= 91) {
+        var padded = String(idNum).padStart(3, '0');
+        return "url('/assets/hd_" + padded + ".webp')";
+      }
+    } catch (e) {}
+    return "url('/assets/hd_091.webp')";
+  }
+
+  function isFirstPageHome() {
+    var path = window.location.pathname || '/';
+    return path === '/' && !!document.getElementById('hero');
+  }
+
+  function ensureUnifiedStylesheet() {
+    if (!document.querySelector('link[href*="/bm-unified-theme.css"]')) {
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = '/bm-unified-theme.css?v=3';
+      document.head.appendChild(link);
+    }
+  }
+
+  function applyUiScale(scaleVal) {
+    var allowed = ['0.9', '1', '1.12'];
+    var val = allowed.indexOf(String(scaleVal)) >= 0 ? String(scaleVal) : '1';
+    document.documentElement.style.setProperty('--bm-ui-scale', val);
+    try {
+      localStorage.setItem(SCALE_KEY, val);
+    } catch (e) {}
+    if (val === '1') {
+      document.documentElement.style.fontSize = '';
+    } else {
+      document.documentElement.style.fontSize = Math.round(parseFloat(val) * 16 * 10) / 10 + 'px';
+    }
+    document.querySelectorAll('#bm-unified-dock .bm-scale-btn').forEach(function (btn) {
+      btn.classList.toggle('is-active', btn.getAttribute('data-scale') === val);
+    });
+  }
+
+  function applyWcagFlags() {
+    try {
+      var hc = localStorage.getItem(CONTRAST_KEY) === '1';
+      var rm = localStorage.getItem(MOTION_KEY) === '1';
+      document.documentElement.classList.toggle('bm-wcag-contrast', hc);
+      document.documentElement.classList.toggle('bm-wcag-reduced-motion', rm);
+      var hcBtn = document.getElementById('bm-wcag-contrast-btn');
+      var rmBtn = document.getElementById('bm-wcag-motion-btn');
+      if (hcBtn) hcBtn.classList.toggle('is-active', hc);
+      if (rmBtn) rmBtn.classList.toggle('is-active', rm);
+    } catch (e) {}
+  }
+
+  function mountUnifiedShell() {
+    ensureUnifiedStylesheet();
+    var skinId = getSavedSkin();
+    applySkin(skinId);
+    try {
+      applyUiScale(localStorage.getItem(SCALE_KEY) || '1');
+    } catch (e) {}
+    applyWcagFlags();
+    document.documentElement.style.setProperty('--bm-hero-photo', resolveHeroPhotoUrl());
+
+    var onHome = isFirstPageHome();
+    if (!onHome) {
+      if (!document.getElementById('bm-unified-backdrop')) {
+        var backdrop = document.createElement('div');
+        backdrop.id = 'bm-unified-backdrop';
+        backdrop.setAttribute('aria-hidden', 'true');
+        document.body.insertBefore(backdrop, document.body.firstChild);
+      }
+      document.body.classList.add('bm-has-backdrop');
+
+      var cls = (document.body.className || '') + ' ' + (document.documentElement.className || '');
+      var isDarkModule =
+        /dark|bg-navy-950|bg-zinc-950|bg-slate-950/.test(cls) ||
+        window.location.pathname.indexOf('/superagent') === 0 ||
+        window.location.pathname.indexOf('/voice-builder') === 0 ||
+        window.location.pathname.indexOf('/agent-llm') === 0 ||
+        window.location.pathname.indexOf('/myskincode') === 0 ||
+        window.location.pathname.indexOf('/sentinel') === 0 ||
+        window.location.pathname.indexOf('/taskkill') === 0;
+      if (isDarkModule && skinId !== 'ivory-stone') {
+        document.body.classList.add('bm-dark-surface');
+      }
+
+      var isVaultSpa = window.location.pathname.indexOf('/vault') === 0;
+      if (!isVaultSpa && !document.getElementById('bm-back-to-menu')) {
+        var back = document.createElement('a');
+        back.id = 'bm-back-to-menu';
+        back.href = '/';
+        back.textContent = '← Wróć do menu';
+        back.title = 'Wróć do głównego menu BM Clinic';
+        back.style.cssText =
+          'position:fixed;bottom:16px;left:16px;z-index:99995;padding:8px 14px;font-size:12px;font-weight:600;text-decoration:none;';
+        document.body.appendChild(back);
+      }
+    }
+
+    if (!document.getElementById('bm-unified-dock')) {
+      var dock = document.createElement('div');
+      dock.id = 'bm-unified-dock';
+      // Keep bottom-right dock clear of Chronos 5s badge & Next LiveEditorToolbar pill
+      if (!onHome) {
+        dock.style.bottom = '68px';
+      }
+
+      var activeSkin = SKINS.find(function (s) { return s.id === skinId; }) || SKINS[0];
+      dock.innerHTML =
+        '<div id="bm-skin-menu" class="bm-skin-menu hidden" role="dialog" aria-label="Wybór skórki BM Clinic">' +
+        '  <div class="bm-skin-heading">BM Clinic · Skórki UI</div>' +
+        SKINS.map(function (s) {
+          return (
+            '<button type="button" class="bm-skin-option' +
+            (s.id === skinId ? ' is-active' : '') +
+            '" data-skin="' +
+            s.id +
+            '">' +
+            '<span style="display:flex;align-items:center;gap:8px;"><span class="bm-skin-swatch" style="background:' +
+            s.swatch +
+            '"></span>' +
+            s.label +
+            '</span><span style="font-size:10px;opacity:.65;">' +
+            s.tag +
+            '</span></button>'
+          );
+        }).join('') +
+        '  <div class="bm-skin-heading" style="margin-top:8px;">Skalowanie UI (Spatial)</div>' +
+        '  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:6px;">' +
+        '    <button type="button" class="bm-skin-option bm-scale-btn" data-scale="0.9" style="justify-content:center;padding:5px;margin:0;font-size:11px;">90%</button>' +
+        '    <button type="button" class="bm-skin-option bm-scale-btn" data-scale="1" style="justify-content:center;padding:5px;margin:0;font-size:11px;">100%</button>' +
+        '    <button type="button" class="bm-skin-option bm-scale-btn" data-scale="1.12" style="justify-content:center;padding:5px;margin:0;font-size:11px;">112%</button>' +
+        '  </div>' +
+        '  <div class="bm-skin-heading" style="margin-top:8px;">Dostępność WCAG (:3024)</div>' +
+        '  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px;">' +
+        '    <button type="button" id="bm-wcag-contrast-btn" class="bm-skin-option" style="justify-content:center;padding:5px;margin:0;font-size:10px;">Kontrast AAA</button>' +
+        '    <button type="button" id="bm-wcag-motion-btn" class="bm-skin-option" style="justify-content:center;padding:5px;margin:0;font-size:10px;">Bez animacji</button>' +
+        '  </div>' +
+        '  <div class="bm-skin-footer">' +
+        '    <a href="/sklep">Sklep ↗</a>' +
+        '    <a href="/magazyn">Magazyn ↗</a>' +
+        '    <a href="/spatial-3d/">Spatial 3D ↗</a>' +
+        '  </div>' +
+        '</div>' +
+        '<button type="button" id="bm-skin-toggle" class="bm-unified-pill bm-skin-btn" title="Zmień wspólną skórkę BM Clinic">' +
+        '  <span class="bm-skin-dot"></span>' +
+        '  <span id="bm-skin-current-label">' +
+        activeSkin.label +
+        '</span>' +
+        '</button>';
+      document.body.appendChild(dock);
+
+      var toggle = document.getElementById('bm-skin-toggle');
+      var menu = document.getElementById('bm-skin-menu');
+      if (toggle && menu) {
+        toggle.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          menu.classList.toggle('hidden');
+        });
+        menu.querySelectorAll('.bm-skin-option').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var nextSkin = btn.getAttribute('data-skin') || 'obsidian-gold';
+            applySkin(nextSkin);
+            if (!onHome) {
+              if (nextSkin === 'ivory-stone') {
+                document.body.classList.remove('bm-dark-surface');
+              } else if (
+                /dark|bg-navy-950|bg-zinc-950|bg-slate-950/.test(document.body.className) ||
+                window.location.pathname.indexOf('/superagent') === 0 ||
+        window.location.pathname.indexOf('/voice-builder') === 0 ||
+        window.location.pathname.indexOf('/agent-llm') === 0 ||
+                window.location.pathname.indexOf('/myskincode') === 0 ||
+                window.location.pathname.indexOf('/sentinel') === 0
+              ) {
+                document.body.classList.add('bm-dark-surface');
+              }
+            }
+            menu.classList.add('hidden');
+          });
+        });
+        menu.querySelectorAll('.bm-scale-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            applyUiScale(btn.getAttribute('data-scale') || '1');
+          });
+        });
+        var hcBtnEl = document.getElementById('bm-wcag-contrast-btn');
+        if (hcBtnEl) {
+          hcBtnEl.addEventListener('click', function () {
+            try {
+              var next = localStorage.getItem(CONTRAST_KEY) === '1' ? '0' : '1';
+              localStorage.setItem(CONTRAST_KEY, next);
+            } catch (e) {}
+            applyWcagFlags();
+          });
+        }
+        var rmBtnEl = document.getElementById('bm-wcag-motion-btn');
+        if (rmBtnEl) {
+          rmBtnEl.addEventListener('click', function () {
+            try {
+              var next = localStorage.getItem(MOTION_KEY) === '1' ? '0' : '1';
+              localStorage.setItem(MOTION_KEY, next);
+            } catch (e) {}
+            applyWcagFlags();
+          });
+        }
+        applyWcagFlags();
+        document.addEventListener('click', function (ev) {
+          if (!dock.contains(ev.target)) menu.classList.add('hidden');
+        });
+      }
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mountUnifiedShell);
+  } else {
+    mountUnifiedShell();
+  }
+})();

@@ -1,5 +1,7 @@
 import { getServicesCatalog } from '@/lib/servicesCatalog';
+import { getShopInventory } from '@/lib/shopInventoryStore';
 import AddToCartButton from '@/components/cart/AddToCartButton';
+import ShopCmlCatalogClient from '@/components/shop/ShopCmlCatalogClient';
 import Link from 'next/link';
 import { ShieldCheck, CreditCard, Sparkles, ArrowRight } from 'lucide-react';
 
@@ -13,6 +15,7 @@ export const metadata = {
 
 export default async function SklepPage() {
   const services = await getServicesCatalog();
+  const cmlInventory = getShopInventory();
 
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-[#0b1324] py-12 px-4 sm:px-6">
@@ -117,6 +120,8 @@ export default async function SklepPage() {
             </div>
           )}
         </div>
+
+        <ShopCmlCatalogClient initialProducts={cmlInventory} />
       </div>
     </main>
   );

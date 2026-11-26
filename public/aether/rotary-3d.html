@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Aether 3D — Pokrętło CNC 270° (Lekki Tryb Tablet)</title>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+    input, textarea, select { -webkit-user-select: auto; user-select: auto; }
+    html, body {
+      margin: 0; padding: 0; min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      background: radial-gradient(circle at 50% 20%, #0d3b44, #041316 70%);
+      color: #ecfeff; display: flex; flex-direction: column; align-items: center;
+    }
+    .wrap { width: 100%; max-width: 560px; padding: max(16px, env(safe-area-inset-top)) 16px 28px; display: flex; flex-direction: column; gap: 14px; }
+    .hdr { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .tag { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #38e0f0; font-weight: 700; }
+    h1 { margin: 2px 0 0; font-size: 19px; }
+    a.back { color: #a5f3fc; font-size: 12px; font-weight: 600; text-decoration: none; padding: 7px 11px; border-radius: 12px; border: 1px solid rgba(103,232,249,0.28); background: rgba(255,255,255,0.06); }
+    #unlockBtn { width: 100%; padding: 13px; border-radius: 16px; border: none; font-weight: 700; font-size: 14px; color: #fff; background: linear-gradient(135deg, #06b6d4, #6366f1); cursor: pointer; }
+    .stage { border-radius: 28px; overflow: hidden; border: 1px solid rgba(103,232,249,0.3); background: rgba(3,12,16,0.75); box-shadow: 0 24px 60px rgba(0,0,0,0.55); touch-action: none; }
+    canvas { width: 100%; height: min(52vh, 390px); display: block; cursor: grab; }
+    .hud { padding: 11px 14px; border-radius: 14px; background: rgba(0,0,0,0.35); border: 1px solid rgba(103,232,249,0.22); font-size: 12.5px; display: flex; justify-content: space-between; gap: 8px; }
+    .presets { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .chip { padding: 11px 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.06); color: #fff; text-align: left; cursor: pointer; }
+    .chip.active { background: rgba(56,224,240,0.2); border-color: #38e0f0; }
+    .chip strong { display: block; font-size: 12.5px; }
+    .chip span { font-size: 10.5px; color: rgba(207,250,254,0.7); }
+
+    /* High-End Hi-Fi Audio Ultra-Flat Flush Brushed Steel Buttons (0.3mm micro-travel, heavy actuation) */
+    .mats, .presets {
+      background: linear-gradient(180deg, #0b0e12 0%, #141920 100%);
+      padding: 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(203, 213, 225, 0.18);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.9);
+      gap: 4px !important;
+    }
+    .chip {
+      position: relative;
+      overflow: hidden;
+      padding: 5px 8px 6px !important;
+      min-height: 36px;
+      border-radius: 3px !important;
+      border: 1px solid rgba(203, 213, 225, 0.22) !important;
+      border-bottom-color: rgba(15, 23, 42, 0.85) !important;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.022) 0px, rgba(255,255,255,0.022) 1px, transparent 1px, transparent 3px),
+        linear-gradient(180deg, #434b57 0%, #343b45 18%, #2a3038 86%, #20252c 100%) !important;
+      color: #f1f5f9 !important;
+      box-shadow:
+        inset 0 0.5px 0 rgba(255, 255, 255, 0.26),
+        inset 0 -0.5px 0 rgba(0, 0, 0, 0.65),
+        0 0.5px 1px rgba(0, 0, 0, 0.85) !important;
+      transition: transform 0.045s ease, box-shadow 0.06s ease, border-color 0.1s ease !important;
+      touch-action: manipulation;
+    }
+    .chip::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      right: 6px;
+      width: 12px;
+      height: 2px;
+      border-radius: 1px;
+      background: rgba(15, 23, 42, 0.88);
+      box-shadow: inset 0 0.5px 1px rgba(0, 0, 0, 0.9);
+      transition: background 0.1s ease, box-shadow 0.1s ease;
+    }
+    .chip.active::before {
+      background: #38e0f0;
+      box-shadow: 0 0 6px rgba(56, 224, 240, 0.95), 0 0 2px #ffffff;
+    }
+    .chip::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 1.5px;
+      width: 0%;
+      background: linear-gradient(90deg, #94a3b8, #e2e8f0, #38e0f0);
+      transition: width 0.11s linear;
+    }
+    .chip.pressing {
+      transform: translateY(0.3px) scale(0.998) !important;
+      box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.72),
+        inset 0 0.5px 0 rgba(255, 255, 255, 0.12) !important;
+    }
+    .chip.pressing::after {
+      width: 100%;
+    }
+    .chip.engaged {
+      transform: translateY(0.5px) scale(0.997) !important;
+      border-color: rgba(226, 232, 240, 0.52) !important;
+    }
+    .chip.active {
+      border-color: rgba(148, 163, 184, 0.5) !important;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.028) 0px, rgba(255,255,255,0.028) 1px, transparent 1px, transparent 3px),
+        linear-gradient(180deg, #4f5866 0%, #3b434e 18%, #2e353f 86%, #242a32 100%) !important;
+    }
+    .chip strong {
+      font-size: 10.5px !important;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #f8fafc !important;
+      padding-right: 16px;
+      line-height: 1.15;
+    }
+    .chip span {
+      font-size: 9px !important;
+      color: #cbd5e1 !important;
+      opacity: 0.74;
+      line-height: 1.15;
+    }
+
+    /* Intuitive First-Launch Audio & Speaker Permission Sheet (iPhone/iPad/Android) */
+    .audio-gate-backdrop {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(2, 10, 14, 0.84);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .audio-gate-backdrop.hidden { display: none !important; }
+    .audio-gate-card {
+      width: 100%; max-width: 380px; border-radius: 18px; padding: 22px 20px;
+      background: linear-gradient(180deg, #0d2229 0%, #061419 100%);
+      border: 1px solid rgba(103, 232, 249, 0.35);
+      box-shadow: 0 28px 64px rgba(0,0,0,0.72);
+      text-align: center; color: #ecfeff; display: flex; flex-direction: column; gap: 12px;
+    }
+    .audio-gate-icon {
+      width: 52px; height: 52px; margin: 0 auto; border-radius: 14px;
+      background: rgba(56, 224, 240, 0.14); border: 1px solid rgba(56, 224, 240, 0.45);
+      display: flex; align-items: center; justify-content: center; font-size: 24px;
+    }
+    .audio-gate-card h2 { margin: 0; font-size: 17px; font-weight: 700; }
+    .audio-gate-card p { margin: 0; font-size: 12.5px; color: rgba(207, 250, 254, 0.78); line-height: 1.45; }
+    .audio-gate-primary {
+      width: 100%; padding: 13px 16px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, #22d3ee, #6366f1); color: #041316;
+      font-size: 14px; font-weight: 800; cursor: pointer;
+    }
+    .audio-gate-secondary {
+      width: 100%; padding: 10px 14px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.16); background: rgba(255,255,255,0.06);
+      color: rgba(207, 250, 254, 0.8); font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .audio-status-chip {
+      position: fixed; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); z-index: 9000;
+      padding: 6px 11px; border-radius: 999px; font-size: 11px; font-weight: 700;
+      border: 1px solid rgba(103, 232, 249, 0.4); background: rgba(4, 19, 22, 0.88);
+      color: #38e0f0; cursor: pointer; backdrop-filter: blur(8px);
+    }
+    .audio-status-chip.muted { border-color: rgba(248, 113, 113, 0.55); color: #fca5a5; }
+
+  </style>
+</head>
+<body>
+
+  <!-- Intuitive Speaker Access Prompt (First-Launch Modal for iPhone/iPad/Android) -->
+  <div id="audioGateModal" class="audio-gate-backdrop" role="dialog" aria-modal="true" aria-label="Dostęp do głośników i haptyki">
+    <div class="audio-gate-card">
+      <div class="audio-gate-icon">🔊</div>
+      <h2>Włączyć głośniki i haptykę?</h2>
+      <p>Aether Tactile Studio generuje w czasie rzeczywistym dźwięki materiałów (szkło, stal, zamsz, żel) oraz wibracje. Na iPhonie automatycznie aktywujemy tryb <strong>Playback</strong> (działa nawet z włączonym wyciszeniem).</p>
+      <button type="button" id="audioGateAllow" class="audio-gate-primary">Tak, włącz głośniki i haptykę</button>
+      <button type="button" id="audioGateSilent" class="audio-gate-secondary">Wejdź bez dźwięku (włączę później)</button>
+    </div>
+  </div>
+  <button type="button" id="audioStatusChip" class="audio-status-chip muted">🔇 Dźwięk: dotknij, aby włączyć</button>
+
+  <div class="wrap">
+    <div class="hdr">
+      <div>
+        <div class="tag">Model 3D #1 · Ultralekki (60 FPS)</div>
+        <h1>Pokrętło CNC 270°</h1>
+      </div>
+      <a class="back" href="./">Całe Studio</a>
+    </div>
+    <button id="unlockBtn" type="button" style="display:none;">Dotknij raz, aby włączyć dźwięk &lt;160 Hz i wibracje</button>
+    <div class="stage"><canvas id="c" width="540" height="420"></canvas></div>
+    <div class="hud"><span id="hudStatus">Kręć palcem po okręgu (270°)</span><span id="degInfo" style="color:#38e0f0;font-family:monospace;">50% · 0.0°</span></div>
+    <div class="presets" id="presets"></div>
+  </div>
+  <script>
+    (function(){
+      document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+      document.addEventListener('selectstart', function (e) { e.preventDefault(); });
+      document.querySelectorAll('canvas').forEach(function (cv) {
+        cv.addEventListener('touchstart', function () { if (typeof __unlockMobileAudioNow === 'function' && (!ctx || ctx.state !== 'running')) __unlockMobileAudioNow(false); }, { passive: true });
+        cv.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false });
+      });
+
+      
+      var PROFILES = {
+        'satin-tick-4ms': { name: '05. Satynowy Mikro-Tik', hz: 112, drop: 64, ms: 4, wave: 'triangle', trans: 0.24, vib: 3 },
+        'ceramic-pip-5ms': { name: '04. Ceramiczna Zapadka', hz: 96, drop: 52, ms: 5, wave: 'triangle', trans: 0.22, vib: 4 },
+        'anodized-relay-9ms': { name: '06. Anodowany Przekaźnik', hz: 68, drop: 38, ms: 9, wave: 'triangle', trans: 0.19, vib: 6 },
+        'leica-shutter-snap-6ms': { name: '10. Migawka Leica', hz: 94, drop: 42, ms: 6, wave: 'triangle', trans: 0.34, vib: 7 },
+        'calacatta-marble-tap-8ms': { name: '12. Marmur Calacatta', hz: 82, drop: 38, ms: 8, wave: 'triangle', trans: 0.22, vib: 6 },
+        'deep-sub-pulse-16ms': { name: '14. Sub-Bass 52 Hz', hz: 52, drop: 28, ms: 16, wave: 'sine', trans: 0.06, vib: 12 },
+        'titanium-whisper-7ms': { name: '08. Tytanowy Klik', hz: 74, drop: 41, ms: 7, wave: 'sine', trans: 0.11, vib: 5 },
+        'vacuum-seal-14ms': { name: '07. Próżniowe Domknięcie', hz: 42, drop: 26, ms: 14, wave: 'sine', trans: 0.05, vib: 9 },
+        'monolith-thud-12ms': { name: '03. Monolityczny Opór', hz: 46, drop: 28, ms: 12, wave: 'sine', trans: 0.06, vib: 12 },
+        'crystal-glass-tap-9ms': { name: '09. Kryształowy Impuls Szkła', hz: 108, drop: 64, ms: 9, wave: 'sine', trans: 0.28, vib: 7 },
+        'velvet-clinic-chime-15ms': { name: '11. Aksamitny Rezonans', hz: 64, drop: 46, ms: 15, wave: 'sine', trans: 0.08, vib: 8 }
+      };
+      var ctx = null;
+      var intensity = 85;
+      function ensureAudio() {
+        var AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return null;
+        if (!ctx) ctx = new AudioCtx();
+        if (ctx.state === 'suspended') ctx.resume().catch(function(){});
+        var b = document.getElementById('unlockBtn');
+        if (b) b.style.display = 'none';
+        return ctx;
+      }
+      function playClick(id, label, vibMs, mult) {
+        var spec = PROFILES[id] || PROFILES['crystal-glass-tap-9ms'];
+        var gain = Math.max(0.12, Math.min(1.25, (intensity / 100) * (mult || 1)));
+        if (navigator.vibrate) { try { navigator.vibrate(vibMs || spec.vib); } catch(e){} }
+        var hud = document.getElementById('hudStatus');
+        if (hud) hud.textContent = label + ' · ' + spec.hz + '→' + spec.drop + ' Hz';
+        var ac = ensureAudio();
+        if (!ac) return;
+        var now = ac.currentTime;
+        var dur = Math.max(0.004, Math.min(0.02, spec.ms / 1000)) + 0.006;
+        var osc = ac.createOscillator();
+        osc.type = spec.wave;
+        osc.frequency.setValueAtTime(spec.hz, now);
+        osc.frequency.exponentialRampToValueAtTime(spec.drop, now + dur);
+        var sub = ac.createOscillator();
+        sub.type = 'sine';
+        sub.frequency.setValueAtTime(Math.max(24, spec.hz * 0.5), now);
+        var lp = ac.createBiquadFilter();
+        lp.type = 'lowpass'; lp.frequency.setValueAtTime(152, now); lp.Q.setValueAtTime(0.85, now);
+        var sg = ac.createGain(); sg.gain.setValueAtTime(0.28 * gain, now);
+        var eg = ac.createGain();
+        eg.gain.setValueAtTime(0.0001, now);
+        eg.gain.linearRampToValueAtTime(Math.min(0.65, 0.45 * gain), now + 0.0009);
+        eg.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+        osc.connect(lp); sub.connect(sg); sg.connect(lp); lp.connect(eg); eg.connect(ac.destination);
+        osc.start(now); sub.start(now); osc.stop(now + dur + 0.004); sub.stop(now + dur + 0.004);
+        if (spec.trans > 0.02) {
+          var co = ac.createOscillator(); co.type = 'triangle';
+          co.frequency.setValueAtTime(Math.min(780, spec.hz * 6.2), now);
+          co.frequency.exponentialRampToValueAtTime(140, now + 0.0028);
+          var cg = ac.createGain();
+          cg.gain.setValueAtTime(spec.trans * 0.34 * gain, now);
+          cg.gain.exponentialRampToValueAtTime(0.0001, now + 0.0032);
+          co.connect(cg); cg.connect(ac.destination); co.start(now); co.stop(now + 0.0045);
+        }
+      }
+
+      var PRESETS = [
+        { id: 'cnc120', label: '120T CNC (Wzorzec)', sub: '270° · co 10 główna', detents: 120, major: 10, minor: 'satin-tick-4ms', majorS: 'anodized-relay-9ms' },
+        { id: 'att60', label: 'Attenuator 60T', sub: 'Wyrazisty przekaźnik', detents: 60, major: 5, minor: 'ceramic-pip-5ms', majorS: 'leica-shutter-snap-6ms' },
+        { id: 'fly24', label: 'Koło Zamachowe 24T', sub: 'Głęboka zapadka 56 Hz', detents: 24, major: 4, minor: 'calacatta-marble-tap-8ms', majorS: 'deep-sub-pulse-16ms' },
+        { id: 'oil96', label: 'Tłumik Olejowy 96T', sub: 'Cichy mikro-klik 48 Hz', detents: 96, major: 12, minor: 'titanium-whisper-7ms', majorS: 'vacuum-seal-14ms' }
+      ];
+      var preset = PRESETS[0], norm = 0.5, lastD = 60, dragging = false;
+      var canvas = document.getElementById('c'), rctx = canvas.getContext('2d');
+      var degInfo = document.getElementById('degInfo');
+      document.getElementById('unlockBtn').addEventListener('click', function(){ playClick('anodized-relay-9ms', 'Pokrętło CNC 270° gotowe', 8); });
+
+
+      // High-End Hi-Fi Brushed Steel Heavy-Force Click Synthesizer (minimal travel, 95ms break-over force)
+      function playHiFiSteelClick(stage, label) {
+        var ac = ensureAudio();
+        if (navigator.vibrate) {
+          try {
+            if (stage === 'preload') navigator.vibrate(2);
+            else if (stage === 'actuate') navigator.vibrate([11, 10, 4]);
+            else navigator.vibrate(3);
+          } catch (e) {}
+        }
+        if (stage === 'actuate') {
+          var hud = document.getElementById('hudStatus') || document.getElementById('telemetryText');
+          if (hud) hud.textContent = 'STAL HI-FI (Heavy Click): ' + label + ' · 86→36 Hz · 5 ms';
+        }
+        if (!ac) return;
+        var now = ac.currentTime;
+        if (stage === 'preload') {
+          var po = ac.createOscillator(); po.type = 'triangle';
+          po.frequency.setValueAtTime(140, now); po.frequency.exponentialRampToValueAtTime(92, now + 0.004);
+          var pg = ac.createGain();
+          pg.gain.setValueAtTime(0.055, now); pg.gain.exponentialRampToValueAtTime(0.0001, now + 0.0045);
+          po.connect(pg); pg.connect(ac.destination); po.start(now); po.stop(now + 0.005);
+          return;
+        }
+        // Heavy steel chassis break-over click (86->36 Hz 5ms body + sharp machined steel snap)
+        var body = ac.createOscillator(); body.type = 'triangle';
+        body.frequency.setValueAtTime(86, now);
+        body.frequency.exponentialRampToValueAtTime(36, now + 0.009);
+        var lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(154, now); lp.Q.setValueAtTime(1.1, now);
+        var bg = ac.createGain();
+        bg.gain.setValueAtTime(0.0001, now);
+        bg.gain.linearRampToValueAtTime(0.56, now + 0.0007);
+        bg.gain.exponentialRampToValueAtTime(0.0001, now + 0.011);
+        body.connect(lp); lp.connect(bg); bg.connect(ac.destination);
+        body.start(now); body.stop(now + 0.013);
+
+        // High-precision stainless steel microswitch break transient
+        var snap = ac.createOscillator(); snap.type = 'triangle';
+        snap.frequency.setValueAtTime(760, now);
+        snap.frequency.exponentialRampToValueAtTime(165, now + 0.0032);
+        var sg = ac.createGain();
+        sg.gain.setValueAtTime(0.32, now);
+        sg.gain.exponentialRampToValueAtTime(0.0001, now + 0.0036);
+        snap.connect(sg); sg.connect(ac.destination);
+        snap.start(now); snap.stop(now + 0.0045);
+      }
+
+      function attachHeavySteelButton(btn, label, onActuate) {
+        var timer = null;
+        var actuated = false;
+        btn.addEventListener('pointerdown', function (e) {
+          e.preventDefault();
+          actuated = false;
+          btn.classList.add('pressing');
+          playHiFiSteelClick('preload', label);
+          if (btn.setPointerCapture) { try { btn.setPointerCapture(e.pointerId); } catch (err) {} }
+          timer = setTimeout(function () {
+            actuated = true;
+            btn.classList.add('engaged');
+            playHiFiSteelClick('actuate', label);
+            onActuate();
+            setTimeout(function () { btn.classList.remove('engaged'); }, 140);
+          }, 110);
+        });
+        function cancelPress() {
+          if (timer) { clearTimeout(timer); timer = null; }
+          btn.classList.remove('pressing');
+          if (!actuated) {
+            var hud = document.getElementById('hudStatus') || document.getElementById('telemetryText');
+            if (hud) hud.textContent = 'Przycisk stalowy Hi-Fi: dociśnij mocniej (~0,1 s), aby przełamać zapadkę';
+          }
+        }
+        btn.addEventListener('pointerup', cancelPress);
+        btn.addEventListener('pointercancel', cancelPress);
+        btn.addEventListener('pointerleave', cancelPress);
+      }
+
+      function renderPresets() {
+        var box = document.getElementById('presets'); box.innerHTML = '';
+        PRESETS.forEach(function(p){
+          var b = document.createElement('button'); b.type = 'button';
+          b.className = 'chip' + (preset.id === p.id ? ' active' : '');
+          b.innerHTML = '<strong>' + p.label + '</strong><span>' + p.sub + '</span>';
+          attachHeavySteelButton(b, p.label, function(){ preset = p; lastD = Math.round(norm * p.detents); renderPresets(); });
+          box.appendChild(b);
+        });
+      }
+
+      function onPtr(x, y) {
+        var r = canvas.getBoundingClientRect();
+        var deg = Math.atan2(y - (r.top + r.height/2), x - (r.left + r.width/2)) * 180 / Math.PI + 90;
+        if (deg > 180) deg -= 360;
+        var hit = false;
+        if (deg < -135) { deg = -135; hit = norm > 0.01; }
+        if (deg > 135) { deg = 135; hit = norm < 0.99; }
+        norm = (deg + 135) / 270;
+        var d = Math.round(norm * preset.detents);
+        if (hit) playClick('monolith-thud-12ms', 'Opór krańcowy 270°', 12, 1.0);
+        else if (d !== lastD) {
+          var maj = d % preset.major === 0;
+          playClick(maj ? preset.majorS : preset.minor, 'Krok ' + d + '/' + preset.detents + (maj ? ' (Główna)' : ''), maj ? 8 : 3, maj ? 1.0 : 0.55);
+          lastD = d;
+        }
+        degInfo.textContent = Math.round(norm * 100) + '% · ' + (deg >= 0 ? '+' : '') + deg.toFixed(1) + '°';
+      }
+      canvas.addEventListener('pointerdown', function(e){ dragging = true; canvas.setPointerCapture(e.pointerId); onPtr(e.clientX, e.clientY); });
+      canvas.addEventListener('pointermove', function(e){ if (dragging) onPtr(e.clientX, e.clientY); });
+      canvas.addEventListener('pointerup', function(){ dragging = false; });
+      canvas.addEventListener('pointercancel', function(){ dragging = false; });
+
+      function draw() {
+        var w = canvas.width, h = canvas.height, cx = w/2, cy = h/2, rad = Math.min(w, h) * 0.34;
+        rctx.clearRect(0, 0, w, h);
+        var ticks = Math.min(60, preset.detents);
+        for (var i = 0; i <= ticks; i++) {
+          var t = i / ticks, a = ((-135 + t * 270) - 90) * Math.PI / 180;
+          var maj = i % Math.max(1, Math.round(ticks / 12)) === 0;
+          rctx.beginPath();
+          rctx.moveTo(cx + Math.cos(a) * (rad + 18), cy + Math.sin(a) * (rad + 18));
+          rctx.lineTo(cx + Math.cos(a) * (rad + (maj ? 38 : 26)), cy + Math.sin(a) * (rad + (maj ? 38 : 26)));
+          rctx.strokeStyle = t <= norm + 0.002 ? (maj ? '#38e0f0' : 'rgba(56,224,240,0.7)') : 'rgba(207,250,254,0.18)';
+          rctx.lineWidth = maj ? 3.2 : 1.7; rctx.stroke();
+        }
+        var bz = rctx.createLinearGradient(cx-rad, cy-rad, cx+rad, cy+rad);
+        bz.addColorStop(0, '#bae6fd'); bz.addColorStop(0.4, '#1e3a46'); bz.addColorStop(1, '#38bdf8');
+        rctx.beginPath(); rctx.arc(cx, cy, rad + 7, 0, Math.PI*2); rctx.fillStyle = bz; rctx.fill();
+        var fc = rctx.createRadialGradient(cx-rad*0.3, cy-rad*0.35, 10, cx, cy, rad);
+        fc.addColorStop(0, '#365664'); fc.addColorStop(0.55, '#122730'); fc.addColorStop(1, '#061217');
+        rctx.beginPath(); rctx.arc(cx, cy, rad - 3, 0, Math.PI*2); rctx.fillStyle = fc; rctx.fill();
+        var ang = ((-135 + norm * 270) - 90) * Math.PI / 180;
+        rctx.beginPath();
+        rctx.moveTo(cx + Math.cos(ang)*(rad*0.28), cy + Math.sin(ang)*(rad*0.28));
+        rctx.lineTo(cx + Math.cos(ang)*(rad*0.72), cy + Math.sin(ang)*(rad*0.72));
+        rctx.strokeStyle = '#38e0f0'; rctx.lineWidth = 6; rctx.lineCap = 'round';
+        rctx.shadowColor = '#38e0f0'; rctx.shadowBlur = 18; rctx.stroke(); rctx.shadowBlur = 0;
+        rctx.fillStyle = '#ecfeff'; rctx.font = '700 32px -apple-system, sans-serif';
+        rctx.textAlign = 'center'; rctx.textBaseline = 'middle';
+        rctx.fillText(Math.round(norm * 100) + '%', cx, cy + 2);
+        requestAnimationFrame(draw);
+      }
+      renderPresets(); draw();
+    
+
+      // === UNIVERSAL iOS / ANDROID SPEAKER UNLOCK & PLAYBACK SESSION ROUTER ===
+      var __silentAudioEl = null;
+      function __forceIOSPlaybackRoute() {
+        try {
+          if (navigator && navigator.audioSession && 'type' in navigator.audioSession) {
+            navigator.audioSession.type = 'playback';
+          }
+        } catch (e) {}
+        try {
+          if (!__silentAudioEl) {
+            __silentAudioEl = document.createElement('audio');
+            __silentAudioEl.setAttribute('playsinline', '');
+            __silentAudioEl.setAttribute('webkit-playsinline', '');
+            __silentAudioEl.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA';
+            __silentAudioEl.volume = 0.01;
+          }
+          var p = __silentAudioEl.play();
+          if (p && p.catch) p.catch(function () {});
+        } catch (e) {}
+      }
+
+      function __updateAudioChip(ac) {
+        var chip = document.getElementById('audioStatusChip');
+        if (!chip) return;
+        if (ac && ac.state === 'running') {
+          chip.classList.remove('muted');
+          chip.textContent = '🔊 Głośniki: AKTYWNE';
+        } else {
+          chip.classList.add('muted');
+          chip.textContent = '🔇 Dotknij, aby włączyć głośniki';
+        }
+      }
+
+      function __unlockMobileAudioNow(withChime) {
+        __forceIOSPlaybackRoute();
+        var ac = ensureAudio();
+        if (ac) {
+          try {
+            // Play a real 1-sample silent WebAudio buffer synchronously inside the touch gesture (Apple iOS requirement)
+            var buf = ac.createBuffer(1, 1, ac.sampleRate || 44100);
+            var src = ac.createBufferSource();
+            src.buffer = buf;
+            src.connect(ac.destination);
+            src.start(0);
+          } catch (e) {}
+          if (ac.state !== 'running') {
+            ac.resume().then(function () { __updateAudioChip(ac); }).catch(function () {});
+          }
+          if (withChime) {
+            // Crisp audible confirmation ping so user immediately hears speakers are live
+            setTimeout(function () {
+              try {
+                var now = ac.currentTime;
+                var o = ac.createOscillator(); o.type = 'sine';
+                o.frequency.setValueAtTime(880, now);
+                o.frequency.exponentialRampToValueAtTime(1320, now + 0.06);
+                var g = ac.createGain();
+                g.gain.setValueAtTime(0.0001, now);
+                g.gain.linearRampToValueAtTime(0.24, now + 0.004);
+                g.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+                o.connect(g); g.connect(ac.destination);
+                o.start(now); o.stop(now + 0.16);
+              } catch (e) {}
+              __updateAudioChip(ac);
+            }, 30);
+          } else {
+            __updateAudioChip(ac);
+          }
+        }
+        var gate = document.getElementById('audioGateModal');
+        if (gate) gate.classList.add('hidden');
+        var ub = document.getElementById('unlockBtn') || document.getElementById('unlockBanner');
+        if (ub) ub.style.display = 'none';
+      }
+
+      var __allowBtn = document.getElementById('audioGateAllow');
+      var __silentBtn = document.getElementById('audioGateSilent');
+      var __chipBtn = document.getElementById('audioStatusChip');
+      if (__allowBtn) {
+        __allowBtn.addEventListener('click', function () { __unlockMobileAudioNow(true); });
+        __allowBtn.addEventListener('touchend', function (e) { e.preventDefault(); __unlockMobileAudioNow(true); }, { passive: false });
+      }
+      if (__silentBtn) {
+        __silentBtn.addEventListener('click', function () {
+          var gate = document.getElementById('audioGateModal');
+          if (gate) gate.classList.add('hidden');
+        });
+      }
+      if (__chipBtn) {
+        __chipBtn.addEventListener('click', function () { __unlockMobileAudioNow(true); });
+      }
+      // Global capture unlock on first tap anywhere (never blocked by canvas preventDefault!)
+      ['touchstart', 'touchend', 'pointerdown', 'click'].forEach(function (evtName) {
+        window.addEventListener(evtName, function () {
+          if (!ctx || ctx.state !== 'running') {
+            __forceIOSPlaybackRoute();
+            var ac = ensureAudio();
+            if (ac && ac.state !== 'running') ac.resume().then(function () { __updateAudioChip(ac); }).catch(function () {});
+            else __updateAudioChip(ac);
+          }
+        }, { capture: true, passive: true });
+      });
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden && ctx && ctx.state === 'suspended') {
+          ctx.resume().then(function () { __updateAudioChip(ctx); }).catch(function () {});
+        }
+      });
+
+    })();
+  </script>
+</body>
+</html>

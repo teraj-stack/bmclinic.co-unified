@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pl" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Process Killer Toolkit — Remix (52)</title>
+      <style id="sentinel-calm-overlay-fix">
+      /* Remove distracting full-screen animated rings, sweep waves, and laser overlays */
+      div.fixed.inset-0.pointer-events-none,
+      svg.fixed.inset-0.pointer-events-none,
+      canvas.fixed.inset-0.pointer-events-none {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
+    </style>
+    <link rel="stylesheet" href="/bm-unified-theme.css" />
+    <script src="/bm-unified-shell.js" defer></script>
+  </head>
+  <body class="bg-zinc-950 text-zinc-100 antialiased">
+    <a id="bm-back-to-menu" href="/" style="position:fixed;bottom:16px;left:16px;z-index:99999;padding:8px 14px;border-radius:999px;background:rgba(15,23,42,0.92);border:1px solid rgba(56,189,248,0.5);color:#f8fafc;font-size:12px;font-weight:600;text-decoration:none;backdrop-filter:blur(8px);">← Wróć do menu</a>
+    <div id="root"></div>
+    <script type="module" src="/sentinel-toolkit/src/main.tsx"></script>
+  </body>
+</html>

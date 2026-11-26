@@ -38,6 +38,17 @@
       ['zabiegi-miejscowe', 'Zabiegi chirurgiczne w znieczuleniu miejscowym', 2000, true],
       ['C02', 'Leczenie wrastającego paznokcia'],
       ['C03', 'Chirurgiczne opracowanie rany']
+    ]],
+    ['Preparaty, Błonnik & Pakiety CML (Magazyn)', [
+      ['e-konsultacja-proktologiczna', 'E-Konsultacja Proktologiczna (Dr Jan Bujok · SKU CML-EKON-01)', 250],
+      ['pakiet-proktologia-kompleks', 'Pakiet Diagnostyczny: Wizyta + Anoskopia (SKU CML-PAK-02)', 420],
+      ['zestaw-gojenie-lhp', 'Zestaw Regeneracyjny CML po zabiegu LHP / FiLaC (SKU CML-POST-03)', 189],
+      ['dermokosmetyk-procto-cleanse', 'Pianka CML ProctoCleanse 150ml (SKU CML-SKIN-04)', 79],
+      ['chusteczki-procto-wipes', 'Chusteczki Medyczne CML ProctoWipes 40 szt. (SKU CML-HYG-07)', 39],
+      ['blonnik-psyllium-pro', 'Błonnik Witalny CML Psyllium Pro 300g (SKU CML-SUP-08)', 69],
+      ['czopki-oslonowe-proctohyal', 'Czopki CML ProctoHyal 10 szt. (SKU CML-SUP-09)', 59],
+      ['e-recepta-kontynuacja', 'Kontynuacja Terapii — E-Recepta (SKU CML-EREP-05)', 120],
+      ['pakiet-laser-lhp-pre', 'Kwalifikacja + Badania Krwi do LHP (SKU CML-PAK-06)', 350]
     ]]
   ];
 

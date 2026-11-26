@@ -1,0 +1,332 @@
+[
+  {
+    "id": 101,
+    "title": "✅ Sky Lobby + 91 grafik + Nawigacja (/holding, /vault/, /taskkill/)",
+    "body": "Główna strona BM Clinic (/): Sky Lobby, galeria 91 grafik, karty specjalizacji, kalkulator objawów, mapa kliniki, sklep i połączona górna nawigacja.",
+    "status": "Done",
+    "priority": "Krytyczny",
+    "type": "Feature",
+    "labels": [
+      "Grupa 1: Kompletne — Rdzeń BM Clinic (/)"
+    ],
+    "assignee": "Milenka + Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/"
+  },
+  {
+    "id": 102,
+    "title": "✅ Rezerwacje wizyt, cennik zabiegów i płatności online",
+    "body": "Pełne podstrony Next.js: /rezerwacja, /cennik, /uslugi/[kategoria]/[uslugaSlug], /sklep, /sklep/koszyk, /logowanie, /pacjent, /lekarz, /admin.",
+    "status": "Done",
+    "priority": "Wysoki",
+    "type": "Feature",
+    "labels": [
+      "Grupa 1: Kompletne — Rdzeń BM Clinic (/)"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/cennik"
+  },
+  {
+    "id": 103,
+    "title": "✅ Portal Pacjenta MCML / LHP + Design Studio 3D + CMS",
+    "body": "Osadzone moduły /mcml, /design-studio, /mapa-strony, /demo/* oraz /api/cms i /admin/chronos + /lekarz/chronos.",
+    "status": "Done",
+    "priority": "Średni",
+    "type": "Feature",
+    "labels": [
+      "Grupa 1: Kompletne — Rdzeń BM Clinic (/)"
+    ],
+    "assignee": "Milenka",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/mcml/dla-pacjenta"
+  },
+  {
+    "id": 104,
+    "title": "✅ MySkinCode AI (/myskincode-ai/) — Diagnostyka Skóry MSC-MATRIX V2",
+    "body": "Pełna aplikacja MySkinCode AI (kamera, analiza fenotypów MSC-SEB/VAS/AGE, protokół pobrania zdjęcia) podpięta pod /myskincode-ai/ na hoście :3016.",
+    "status": "Done",
+    "priority": "Wysoki",
+    "type": "Feature",
+    "labels": [
+      "Grupa 1: Kompletne — Rdzeń BM Clinic (/)"
+    ],
+    "assignee": "Milenka",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/myskincode-ai/"
+  },
+  {
+    "id": 201,
+    "title": "✅ Panel BM Holding + Przycisk Powrotu (Cofnij → /)",
+    "body": "Pełny panel /holding/ z przyciskiem powrotu #holding-back-home-btn na stronę główną /, konfiguracją SEO/AEO i publikacją.",
+    "status": "Done",
+    "priority": "Krytyczny",
+    "type": "Feature",
+    "labels": [
+      "Grupa 2: Kompletne — BM Holding (/holding/)"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/holding/"
+  },
+  {
+    "id": 202,
+    "title": "✅ Telemetria CPU / RAM na żywo i Skaner Antywirusowy Plików",
+    "body": "API /api/holding/telemetry (live delta CPU OS + RSS), /api/config-scan, /api/code-analyze oraz /api/security/scan-url (skanowanie 477+ plików źródłowych).",
+    "status": "Done",
+    "priority": "Wysoki",
+    "type": "Feature",
+    "labels": [
+      "Grupa 2: Kompletne — BM Holding (/holding/)"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/api/holding/telemetry"
+  },
+  {
+    "id": 203,
+    "title": "✅ Łączniki GitHub & Bezpieczeństwo Holding (/api/github/*)",
+    "body": "Natywne endpointy /api/github/status, /api/github/accounts, /api/github/auth/url, /api/seo-aeo-config i /api/security/webhook/scan-result.",
+    "status": "Done",
+    "priority": "Średni",
+    "type": "Feature",
+    "labels": [
+      "Grupa 2: Kompletne — BM Holding (/holding/)"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/api/github/status"
+  },
+  {
+    "id": 301,
+    "title": "✅ Pełny Chronos Vault SPA (/vault/) — Wszystkie 13 Komponentów",
+    "body": "Kompletny Chronos Vault pod /vault/: Panel Sterowania, Tablica Kanban, Kalendarz Tygodniowy + /api/calendar/feed.ics, Raporty PDF, Analityka 3D.",
+    "status": "Done",
+    "priority": "Krytyczny",
+    "type": "Feature",
+    "labels": [
+      "Grupa 3: Kompletne — Chronos Vault (/vault/)"
+    ],
+    "assignee": "Milenka + Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/vault/"
+  },
+  {
+    "id": 302,
+    "title": "✅ Natywny Moduł Notatek Głosowych Audio + Rozpoznawanie Mowy pl-PL",
+    "body": "Nagrywanie mikrofonem (MediaRecorder) + dyktowanie pl-PL + trwały zapis plików w data/voice-notes/ i odtwarzacz w /vault/ oraz /admin/chronos.",
+    "status": "Done",
+    "priority": "Krytyczny",
+    "type": "Feature",
+    "labels": [
+      "Grupa 3: Kompletne — Chronos Vault (/vault/)"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/api/voice-notes"
+  },
+  {
+    "id": 303,
+    "title": "✅ Modele 3D Wyposażenia Kliniki, Holograficzne Wykresy SEO i Control Plane",
+    "body": "ClinicEquipmentView, ClinicDeviceTwin3D, HolographicSeo3DCharts, CentralControlPanelView + API /api/system/control-plane, autoscale i /api/seo-control/*.",
+    "status": "Done",
+    "priority": "Wysoki",
+    "type": "Feature",
+    "labels": [
+      "Grupa 3: Kompletne — Chronos Vault (/vault/)"
+    ],
+    "assignee": "Milenka",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/api/system/control-plane"
+  },
+  {
+    "id": 304,
+    "title": "✅ Google Drive Auto-Sync (co 60s) + Zaproszenia Zespołu PWA",
+    "body": "Synchronizacja na żywo z Dyskiem Google (/api/gdrive-sync/status, /api/gdrive-sync/now) i zaproszenia /api/invites z kodem weryfikacji.",
+    "status": "Done",
+    "priority": "Średni",
+    "type": "Feature",
+    "labels": [
+      "Grupa 3: Kompletne — Chronos Vault (/vault/)"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/api/gdrive-sync/status"
+  },
+  {
+    "id": 401,
+    "title": "✅ Drzewo Zadań & Mapy Myśli TaskKill Studio (/taskkill/)",
+    "body": "Interaktywne drzewo z grupami, wagą gałęzi, filtrami priorytetów i zapisem API /api/mindmaps, /api/tasks, /api/layout.",
+    "status": "Done",
+    "priority": "Krytyczny",
+    "type": "Feature",
+    "labels": [
+      "Grupa 4: Kompletne — Drzewo & Sentinel Security"
+    ],
+    "assignee": "Milenka + Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/taskkill/?map=scalenie-3016"
+  },
+  {
+    "id": 402,
+    "title": "✅ Sentinel Shield, Sentinel Toolkit i Skaner AI Kodu (/sentinel-shield/)",
+    "body": "Osadzone podaplikacje /sentinel-shield/, /sentinel-toolkit/, /sentinel-pack/ oraz endpointy /api/security/test-connector i scan-and-remediate.",
+    "status": "Done",
+    "priority": "Wysoki",
+    "type": "Feature",
+    "labels": [
+      "Grupa 4: Kompletne — Drzewo & Sentinel Security"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/sentinel-shield/"
+  },
+  {
+    "id": 403,
+    "title": "✅ Superagent AI Safety SDK — Guard & Redact RODO (/superagent)",
+    "body": "Osadzony safety-agent v0.1.8-rc1 (SDK + MCP) na hoście 3016: endpointy /api/superagent/status, /api/superagent/guard, /api/superagent/redact oraz panel /superagent z linkiem do dokumentacji :3012.",
+    "status": "Done",
+    "priority": "Wysoki",
+    "type": "Feature",
+    "labels": [
+      "Grupa 4: Kompletne — Drzewo & Sentinel Security"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/superagent"
+  },
+  {
+    "id": 404,
+    "title": "✅ Magic Sounds · Aether Tactile Studio — Haptyka & UI (/aether/)",
+    "body": "Tymczasowe modułowe podpięcie Aether Tactile Studio przez aetherBridge.ts (/aether/, proxy API /api/studio /api/gemini oraz /ws/live -> :3017) z pełną możliwością łatwego odłączenia.",
+    "status": "Done",
+    "priority": "Wysoki",
+    "type": "Feature",
+    "labels": [
+      "Grupa 4: Kompletne — Drzewo & Sentinel Security"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/aether/"
+  },
+  {
+    "id": 405,
+    "title": "✅ Spatial 3D & Studio Skalowania UI (/spatial-3d/)",
+    "body": "Zaadoptowane z pakietu Hello World: Spatial3DLayerWorkspace, Css3DPlayground, WebBuilderStudio, ClinicBookingApp, GraftgenPostOpMobileCompanion oraz globalne skalowanie UI 90%/100%/115%.",
+    "status": "Done",
+    "priority": "Wysoki",
+    "type": "Feature",
+    "labels": [
+      "Grupa 4: Kompletne — Drzewo & Sentinel Security"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/spatial-3d/"
+  },
+  {
+    "id": 406,
+    "title": "✅ Parallax 3D — Przestrzenne Zdjęcia & Mapa Głębi (/parallax-3d/)",
+    "body": "Wbudowany silnik Three.js Parallax 3D (ThreeCanvas, DepthEditorModal, ControlDock, nagrywanie wideo oraz /api/analyze-depth) na hoście 3016.",
+    "status": "Done",
+    "priority": "Wysoki",
+    "type": "Feature",
+    "labels": [
+      "Grupa 4: Kompletne — Drzewo & Sentinel Security"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/parallax-3d/"
+  },
+  {
+    "id": 501,
+    "title": "⚠️ BRAK 1: Klucz GEMINI_API_KEY w .env (Aktywny Tryb Lokalny pl-PL)",
+    "body": "Brak pliku .env z GEMINI_API_KEY: transkrypcja głosu zapisuje audio na dysk i używa dyktowania pl-PL + parsera lokalnego; OCR szkicu i czat AI potrzebują klucza Gemini.",
+    "status": "In Progress",
+    "priority": "Krytyczny",
+    "type": "Task",
+    "labels": [
+      "Grupa 5: Braki i Konfiguracja do Uzupełnienia"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-28",
+    "url": "/vault/"
+  },
+  {
+    "id": 502,
+    "title": "⚠️ BRAK 2: Logowanie Firebase / Uprawnienia Firestore w Chronos Vault",
+    "body": "Przy niezalogowanym oknie w /vault/ Firestore zgłasza Missing or insufficient permissions dla taskLists/publicProfiles/clinicDevices. Wymaga zalogowania kontem Google lub wdrożenia reguł Firestore.",
+    "status": "Backlog",
+    "priority": "Wysoki",
+    "type": "Task",
+    "labels": [
+      "Grupa 5: Braki i Konfiguracja do Uzupełnienia"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-28",
+    "url": "/vault/"
+  },
+  {
+    "id": 503,
+    "title": "✅ ZSYNCHRONIZOWANO: Wspólna Baza Zadań (/admin/chronos ↔ /vault/ ↔ /taskkill/)",
+    "body": "Moduły /admin/chronos i /lekarz/chronos w Next.js, pełny Chronos Vault (/vault/) oraz TaskKill (/taskkill/) synchronizują teraz wspólną listę zadań przez /api/tasks?map=...",
+    "status": "Done",
+    "priority": "Wysoki",
+    "type": "Feature",
+    "labels": [
+      "Grupa 3: Kompletne — Chronos Vault (/vault/)"
+    ],
+    "assignee": "Milenka + Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-26",
+    "url": "/admin/chronos"
+  },
+  {
+    "id": 504,
+    "title": "⚠️ BRAK 4: Sekrety Produkcyjne Płatności (Stripe/P24) i Google OAuth .env",
+    "body": "Dla środowiska produkcyjnego na domenie wymagane są zmienne .env: NEXTAUTH_SECRET, GOOGLE_CLIENT_ID/SECRET, STRIPE_SECRET_KEY / P24 oraz EMAIL_WEBHOOK_URL.",
+    "status": "Backlog",
+    "priority": "Średni",
+    "type": "Task",
+    "labels": [
+      "Grupa 5: Braki i Konfiguracja do Uzupełnienia"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-26",
+    "endDate": "2026-12-01",
+    "url": "/admin"
+  },
+  {
+    "id": 505,
+    "title": "⚠️ BRAK 5: Finalna Rewizja Cennika Zabiegów w servicesCatalog.ts",
+    "body": "Część zabiegów flebologicznych/proktologicznych została zaktualizowana, ale pełny cennik (21 usług) pozostaje oznaczony do końcowej akceptacji.",
+    "status": "In Progress",
+    "priority": "Średni",
+    "type": "Task",
+    "labels": [
+      "Grupa 5: Braki i Konfiguracja do Uzupełnienia"
+    ],
+    "assignee": "Milenka",
+    "startDate": "2026-11-26",
+    "endDate": "2026-11-30",
+    "url": "/cennik"
+  }
+]

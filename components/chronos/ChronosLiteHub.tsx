@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { Calendar, FileText, Mic, PenTool, ShieldCheck } from 'lucide-react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Calendar, FileText, GitBranch, Mic, PenTool, RefreshCw, ShieldCheck } from 'lucide-react';
 import type { ExportableTask, GeneratedPDFReport } from '@/lib/chronos/export';
 import { CalendarSyncView } from './CalendarSyncView';
 import { PDFReportSearchPanel } from './PDFReportSearchPanel';
@@ -17,6 +17,56 @@ import {
 type HubTab = 'calendar' | 'pdf' | 'ai_security';
 
 const STORAGE_KEY = 'bmclinics_chronos_lite_tasks_v1';
+
+interface SharedMindMapMeta {
+  id: string;
+  name: string;
+  taskCount?: number;
+}
+
+interface RawTaskKillItem {
+  id: number;
+  title?: string;
+  body?: string;
+  status?: string;
+  priority?: string;
+  type?: string;
+  labels?: string[];
+  assignee?: string;
+  startDate?: string;
+  endDate?: string;
+  url?: string;
+  parentId?: number;
+  estimatedMinutes?: number;
+  [key: string]: unknown;
+}
+
+function mapRawStatusToExport(raw?: string): ExportableTask['status'] {
+  if (raw === 'Done') return 'done';
+  if (raw === 'In Progress') return 'in_progress';
+  return 'todo';
+}
+
+function mapExportStatusToRaw(status: ExportableTask['status'], prevRaw?: string): string {
+  if (status === 'done') return 'Done';
+  if (status === 'in_progress') return 'In Progress';
+  if (prevRaw === 'Paused') return 'Paused';
+  return 'Todo';
+}
+
+function mapRawPriorityToExport(raw?: string): ExportableTask['priority'] {
+  if (raw === 'Krytyczny') return 'urgent';
+  if (raw === 'Wysoki') return 'high';
+  if (raw === 'Niski') return 'low';
+  return 'medium';
+}
+
+function mapExportPriorityToRaw(priority: ExportableTask['priority']): string {
+  if (priority === 'urgent') return 'Krytyczny';
+  if (priority === 'high') return 'Wysoki';
+  if (priority === 'low') return 'Niski';
+  return 'Średni';
+}
 
 function makeTask(partial: Partial<ExportableTask> & { id: string; title: string }): ExportableTask {
   return {
@@ -85,29 +135,154 @@ export function ChronosLiteHub({
   const [includeIndexAppendix, setIncludeIndexAppendix] = useState(true);
   const [voiceModalOpen, setVoiceModalOpen] = useState(false);
   const [voiceInitialTab, setVoiceInitialTab] = useState<'voice' | 'handwriting'>('voice');
+  const [syncMapId, setSyncMapId] = useState<string>('bmclinic');
+  const [availableMaps, setAvailableMaps] = useState<SharedMindMapMeta[]>([
+    { id: 'bmclinic', name: 'BM Clinic — bmclinic.co' },
+    { id: 'scalenie-3016', name: 'Raport Wdrożeniowy & Scalenie (:3016)' },
+  ]);
+  const [isSyncing, setIsSyncing] = useState<boolean>(false);
+  const [syncBadge, setSyncBadge] = useState<string>('Łączenie...');
+  const rawMetaRef = useRef<Map<string, RawTaskKillItem>>(new Map());
+  const lastPushedJsonRef = useRef<string>('');
 
-  useEffect(() => {
+  const pullSharedTasks = useCallback(async (targetMapId: string) => {
+    setIsSyncing(true);
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setTasks(parsed);
+      const mapsRes = await fetch('/api/mindmaps', { cache: 'no-store' });
+      if (mapsRes.ok) {
+        const mapsData = await mapsRes.json();
+        if (Array.isArray(mapsData?.maps) && mapsData.maps.length > 0) {
+          setAvailableMaps(mapsData.maps);
         }
       }
+
+      const res = await fetch(`/api/tasks?map=${encodeURIComponent(targetMapId)}`, {
+        cache: 'no-store',
+      });
+      if (!res.ok || res.status === 204) {
+        setSyncBadge(`Brak zdalnych zadań (${targetMapId}) — tryb lokalny`);
+        return;
+      }
+      const items: RawTaskKillItem[] = await res.json();
+      if (!Array.isArray(items) || items.length === 0) return;
+
+      const metaMap = new Map<string, RawTaskKillItem>();
+      const mapped: ExportableTask[] = items.map((item) => {
+        const cid = `tk_${item.id}`;
+        metaMap.set(cid, item);
+        return makeTask({
+          id: cid,
+          listId: targetMapId,
+          listName: targetMapId === 'scalenie-3016' ? 'Raport Wdrożeniowy (:3016)' : 'BM Clinic & Chronos Vault',
+          title: item.title || `Zadanie #${item.id}`,
+          description: item.body || '',
+          status: mapRawStatusToExport(item.status),
+          priority: mapRawPriorityToExport(item.priority),
+          dueDate: (item.endDate || new Date().toISOString().slice(0, 10)).slice(0, 10),
+          estimatedMinutes: Number(item.estimatedMinutes) || 30,
+          tags: Array.isArray(item.labels) ? item.labels : ['BM Clinics'],
+          assigneeEmail: item.assignee || 'BM Clinic',
+        });
+      });
+
+      rawMetaRef.current = metaMap;
+      lastPushedJsonRef.current = JSON.stringify(items);
+      setTasks(mapped);
+      try {
+        localStorage.setItem(`${STORAGE_KEY}_${targetMapId}`, JSON.stringify(mapped));
+      } catch {
+        // Ignore storage write failure
+      }
+      setSyncBadge(`Zsynchronizowano (${mapped.length}) ↔ /vault/ & /taskkill/`);
     } catch {
-      // Ignore storage read issues
+      try {
+        const raw = localStorage.getItem(`${STORAGE_KEY}_${targetMapId}`) || localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) setTasks(parsed);
+        }
+      } catch {
+        // Ignore fallback failure
+      }
+      setSyncBadge('Tryb offline (cache przeglądarki)');
+    } finally {
+      setIsSyncing(false);
     }
   }, []);
+
+  useEffect(() => {
+    pullSharedTasks(syncMapId);
+  }, [pullSharedTasks, syncMapId]);
+
+  useEffect(() => {
+    const onFocus = () => {
+      pullSharedTasks(syncMapId);
+    };
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
+  }, [pullSharedTasks, syncMapId]);
+
+  const pushSharedTasks = useCallback(
+    async (nextTasks: ExportableTask[], targetMapId: string) => {
+      let maxNumId = 0;
+      nextTasks.forEach((t) => {
+        const m = /^tk_(\d+)$/.exec(t.id);
+        if (m) maxNumId = Math.max(maxNumId, Number(m[1]));
+      });
+
+      const serialized: RawTaskKillItem[] = nextTasks.map((t) => {
+        const existing = rawMetaRef.current.get(t.id);
+        const m = /^tk_(\d+)$/.exec(t.id);
+        const numId = existing?.id ?? (m ? Number(m[1]) : ++maxNumId);
+        const dueDay = (t.dueDate || new Date().toISOString().slice(0, 10)).slice(0, 10);
+        return {
+          ...(existing || {}),
+          id: numId,
+          title: t.title,
+          body: t.description,
+          status: mapExportStatusToRaw(t.status, existing?.status),
+          priority: mapExportPriorityToRaw(t.priority),
+          type: existing?.type || 'Task',
+          labels: Array.isArray(t.tags) && t.tags.length > 0 ? t.tags : ['Chronos Klinika'],
+          assignee: t.assigneeEmail || existing?.assignee || 'BM Clinic',
+          startDate: existing?.startDate || dueDay,
+          endDate: dueDay,
+          estimatedMinutes: t.estimatedMinutes || 30,
+        };
+      });
+
+      const payloadJson = JSON.stringify(serialized);
+      if (payloadJson === lastPushedJsonRef.current) return;
+      lastPushedJsonRef.current = payloadJson;
+
+      try {
+        const res = await fetch(`/api/tasks?map=${encodeURIComponent(targetMapId)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: payloadJson,
+        });
+        if (res.ok) {
+          const nextMeta = new Map<string, RawTaskKillItem>();
+          serialized.forEach((item) => nextMeta.set(`tk_${item.id}`, item));
+          rawMetaRef.current = nextMeta;
+          setSyncBadge(`Zsynchronizowano (${serialized.length}) ↔ /vault/ & /taskkill/`);
+        }
+      } catch {
+        setSyncBadge('Błąd zapisu do API — zapisano lokalnie');
+      }
+    },
+    []
+  );
 
   const persistTasks = (updater: (prev: ExportableTask[]) => ExportableTask[]) => {
     setTasks((prev) => {
       const next = updater(prev);
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        localStorage.setItem(`${STORAGE_KEY}_${syncMapId}`, JSON.stringify(next));
       } catch {
         // Ignore quota errors
       }
+      void pushSharedTasks(next, syncMapId);
       return next;
     });
   };
@@ -235,13 +410,51 @@ export function ChronosLiteHub({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">
-            Chronos Vault — Stabilne Moduły Kliniki (bez 3D)
+            Chronos Vault — Moduły Kliniki (Zsynchronizowane)
           </h1>
           <p className="text-sm opacity-75">
-            {roleLabel} · Kalendarz, raporty PDF, notatki głosowe/odręczne oraz optymalizator AI
+            {roleLabel} · Dwukierunkowy sync z /vault/ i /taskkill/ · <span className="font-medium text-emerald-500">{syncBadge}</span>
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <select
+            value={syncMapId}
+            onChange={(e) => setSyncMapId(e.target.value)}
+            aria-label="Wybierz zsynchronizowaną mapę zadań"
+            className="rounded-lg border bg-transparent px-3 py-2 text-xs font-medium"
+            style={{ borderColor: 'var(--border-color)' }}
+          >
+            {availableMaps.map((m) => (
+              <option key={m.id} value={m.id} className="text-slate-900">
+                Mapa: {m.name}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            onClick={() => pullSharedTasks(syncMapId)}
+            disabled={isSyncing}
+            className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium hover:opacity-90"
+            style={{ borderColor: 'var(--border-color)' }}
+          >
+            <RefreshCw className={`h-3.5 w-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
+            Synchronizuj
+          </button>
+          <a
+            href="/vault/"
+            className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium hover:opacity-90"
+            style={{ borderColor: 'var(--border-color)' }}
+          >
+            Pełny Vault ↗
+          </a>
+          <a
+            href={`/taskkill/?map=${encodeURIComponent(syncMapId)}`}
+            className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium hover:opacity-90"
+            style={{ borderColor: 'var(--border-color)' }}
+          >
+            <GitBranch className="h-3.5 w-3.5" />
+            Drzewo ↗
+          </a>
           <button
             type="button"
             onClick={() => {

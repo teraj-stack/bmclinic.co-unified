@@ -1,0 +1,49 @@
+{
+  "name": "safety-agent-mcp",
+  "version": "0.1.8-rc1",
+  "description": "MCP server for Superagent.sh API integration - security guardrails, PII redaction, and claim verification",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "superagent-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "test": "vitest run"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "mcp",
+    "superagent",
+    "security",
+    "guardrails",
+    "redaction",
+    "pii",
+    "prompt-injection",
+    "fact-checking",
+    "verification",
+    "claim-verification"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.1",
+    "safety-agent": "^0.1.8-rc1",
+    "zod": "^3.23.8"
+  },
+  "overrides": {
+    "fast-xml-parser": "^5.3.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "dotenv": "^16.3.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^4.0.16"
+  }
+}

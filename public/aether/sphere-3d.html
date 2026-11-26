@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Aether 3D — Sfera Haptyczna 3D (Log Wykres · Szkło vs Żel/Zamsz)</title>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+    input, textarea, select { -webkit-user-select: auto; user-select: auto; }
+    html, body {
+      margin: 0; padding: 0; min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      background: radial-gradient(circle at 50% 15%, #0d3b44, #041316 70%);
+      color: #ecfeff; display: flex; flex-direction: column; align-items: center;
+      overscroll-behavior: none;
+    }
+    .wrap { width: 100%; max-width: 600px; padding: max(12px, env(safe-area-inset-top)) 14px 28px; display: flex; flex-direction: column; gap: 10px; }
+    .hdr { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #38e0f0; font-weight: 700; }
+    h1 { margin: 2px 0 0; font-size: 17px; }
+    a.back { color: #a5f3fc; font-size: 11px; font-weight: 600; text-decoration: none; padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(103,232,249,0.28); background: rgba(255,255,255,0.06); }
+    #unlockBtn { width: 100%; padding: 11px; border-radius: 10px; border: none; font-weight: 700; font-size: 13px; color: #fff; background: linear-gradient(135deg, #06b6d4, #6366f1); cursor: pointer; }
+
+    .stage {
+      position: relative; border-radius: 20px; overflow: hidden;
+      border: 1px solid rgba(103,232,249,0.28); background: rgba(3,12,16,0.86);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.52); touch-action: none;
+    }
+    canvas#c { width: 100%; height: min(36vh, 285px); display: block; cursor: grab; touch-action: none; }
+    canvas#c:active { cursor: grabbing; }
+    .visc-badge {
+      position: absolute; top: 9px; left: 9px; right: 9px;
+      display: flex; justify-content: space-between; align-items: center; gap: 8px;
+      padding: 6px 10px; border-radius: 8px; background: rgba(4, 19, 22, 0.78);
+      border: 1px solid rgba(103,232,249,0.24); backdrop-filter: blur(10px);
+      font-size: 10.5px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; pointer-events: none;
+    }
+    .visc-meter { display: inline-flex; align-items: center; gap: 6px; color: #a5f3fc; }
+    .visc-bar { width: 52px; height: 5px; border-radius: 999px; background: rgba(255,255,255,0.12); overflow: hidden; }
+    .visc-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #38e0f0, #a78bfa, #f472b6); transition: width 0.12s ease; }
+
+    /* Logarithmic Comparison Chart (Glass vs Metal vs Suede vs Gel) */
+    .chart-card {
+      padding: 10px 12px; border-radius: 14px; background: rgba(3, 13, 18, 0.85);
+      border: 1px solid rgba(103,232,249,0.24); display: flex; flex-direction: column; gap: 7px;
+    }
+    .chart-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .chart-title { font-size: 11px; font-weight: 700; color: #e0f2fe; }
+    .chart-seg { display: inline-flex; gap: 3px; padding: 2px; border-radius: 6px; background: rgba(255,255,255,0.06); }
+    .chart-seg button {
+      border: none; background: transparent; color: rgba(207,250,254,0.68);
+      font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 4px; cursor: pointer;
+    }
+    .chart-seg button.active { background: rgba(56,224,240,0.24); color: #fff; }
+    canvas#chartCanvas { width: 100%; height: 132px; display: block; border-radius: 8px; background: rgba(2, 8, 12, 0.9); }
+    .legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 9.5px; color: rgba(207,250,254,0.8); font-family: ui-monospace, monospace; }
+    .legend i { display: inline-block; width: 8px; height: 8px; border-radius: 999px; margin-right: 4px; vertical-align: middle; }
+
+    /* Dual-Order Logarithmic Sliders Panel */
+    .sliders-card {
+      padding: 10px 12px; border-radius: 14px; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(103,232,249,0.2); display: flex; flex-direction: column; gap: 8px;
+    }
+    .bank-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 3px; border-radius: 7px; background: rgba(0,0,0,0.42); }
+    .bank-tab { border: none; background: transparent; color: rgba(207,250,254,0.68); font-size: 10.5px; font-weight: 700; padding: 6px 6px; border-radius: 5px; cursor: pointer; }
+    .bank-tab.active { background: rgba(56,224,240,0.2); color: #fff; box-shadow: inset 0 0 0 1px rgba(103,232,249,0.45); }
+    .sl-grid { display: flex; flex-direction: column; gap: 6px; }
+    .sl-row { display: flex; flex-direction: column; gap: 3px; }
+    .sl-top { display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; font-weight: 600; }
+    .sl-top .val { font-family: ui-monospace, monospace; color: #38e0f0; font-size: 10.5px; }
+    input[type="range"] { width: 100%; accent-color: #38e0f0; height: 5px; }
+    .formula-line {
+      font-size: 10px; color: rgba(207,250,254,0.72); padding-top: 5px;
+      border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; gap: 8px;
+    }
+    .hud { padding: 8px 11px; border-radius: 8px; background: rgba(0,0,0,0.38); border: 1px solid rgba(103,232,249,0.2); font-size: 10.5px; display: flex; justify-content: space-between; gap: 8px; }
+    .hidden { display: none !important; }
+
+    /* Ultra-Flat Flush Brushed Steel Hi-Fi Buttons (0.3px travel, heavy 110ms actuation) */
+    .mats {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+      background: linear-gradient(180deg, #0b0e12 0%, #141920 100%);
+      padding: 6px; border-radius: 8px;
+      border: 1px solid rgba(203, 213, 225, 0.18);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.9);
+    }
+    .chip {
+      position: relative; overflow: hidden;
+      padding: 5px 8px 6px; min-height: 36px; border-radius: 3px;
+      border: 1px solid rgba(203, 213, 225, 0.22);
+      border-bottom-color: rgba(15, 23, 42, 0.85);
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.022) 0px, rgba(255,255,255,0.022) 1px, transparent 1px, transparent 3px),
+        linear-gradient(180deg, #434b57 0%, #343b45 18%, #2a3038 86%, #20252c 100%);
+      color: #f1f5f9; text-align: left; cursor: pointer;
+      box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.26), inset 0 -0.5px 0 rgba(0,0,0,0.65), 0 0.5px 1px rgba(0,0,0,0.85);
+      transition: transform 0.045s ease, box-shadow 0.06s ease, border-color 0.1s ease;
+      touch-action: manipulation;
+    }
+    .chip::before {
+      content: ''; position: absolute; top: 4px; right: 6px; width: 12px; height: 2px; border-radius: 1px;
+      background: rgba(15,23,42,0.88); box-shadow: inset 0 0.5px 1px rgba(0,0,0,0.9);
+      transition: background 0.1s ease, box-shadow 0.1s ease;
+    }
+    .chip.active::before { background: #38e0f0; box-shadow: 0 0 5px rgba(56,224,240,0.9); }
+    .chip::after {
+      content: ''; position: absolute; left: 0; bottom: 0; height: 1.5px; width: 0%;
+      background: linear-gradient(90deg, #94a3b8, #e2e8f0, #38e0f0);
+      transition: width 0.11s linear;
+    }
+    .chip.pressing { transform: translateY(0.3px) scale(0.998); box-shadow: inset 0 1px 2px rgba(0,0,0,0.72); }
+    .chip.pressing::after { width: 100%; }
+    .chip.engaged { transform: translateY(0.5px) scale(0.997); border-color: rgba(226,232,240,0.52); }
+    .chip.active {
+      border-color: rgba(148,163,184,0.5);
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.028) 0px, rgba(255,255,255,0.028) 1px, transparent 1px, transparent 3px),
+        linear-gradient(180deg, #4f5866 0%, #3b434e 18%, #2e353f 86%, #242a32 100%);
+    }
+    .chip strong { display: block; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: #f8fafc; padding-right: 16px; line-height: 1.15; }
+    .chip span { display: block; font-size: 8.8px; color: #cbd5e1; opacity: 0.76; line-height: 1.15; margin-top: 1px; }
+
+    /* Intuitive First-Launch Audio & Speaker Permission Sheet (iPhone/iPad/Android) */
+    .audio-gate-backdrop {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(2, 10, 14, 0.84);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .audio-gate-backdrop.hidden { display: none !important; }
+    .audio-gate-card {
+      width: 100%; max-width: 380px; border-radius: 18px; padding: 22px 20px;
+      background: linear-gradient(180deg, #0d2229 0%, #061419 100%);
+      border: 1px solid rgba(103, 232, 249, 0.35);
+      box-shadow: 0 28px 64px rgba(0,0,0,0.72);
+      text-align: center; color: #ecfeff; display: flex; flex-direction: column; gap: 12px;
+    }
+    .audio-gate-icon {
+      width: 52px; height: 52px; margin: 0 auto; border-radius: 14px;
+      background: rgba(56, 224, 240, 0.14); border: 1px solid rgba(56, 224, 240, 0.45);
+      display: flex; align-items: center; justify-content: center; font-size: 24px;
+    }
+    .audio-gate-card h2 { margin: 0; font-size: 17px; font-weight: 700; }
+    .audio-gate-card p { margin: 0; font-size: 12.5px; color: rgba(207, 250, 254, 0.78); line-height: 1.45; }
+    .audio-gate-primary {
+      width: 100%; padding: 13px 16px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, #22d3ee, #6366f1); color: #041316;
+      font-size: 14px; font-weight: 800; cursor: pointer;
+    }
+    .audio-gate-secondary {
+      width: 100%; padding: 10px 14px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.16); background: rgba(255,255,255,0.06);
+      color: rgba(207, 250, 254, 0.8); font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .audio-status-chip {
+      position: fixed; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); z-index: 9000;
+      padding: 6px 11px; border-radius: 999px; font-size: 11px; font-weight: 700;
+      border: 1px solid rgba(103, 232, 249, 0.4); background: rgba(4, 19, 22, 0.88);
+      color: #38e0f0; cursor: pointer; backdrop-filter: blur(8px);
+    }
+    .audio-status-chip.muted { border-color: rgba(248, 113, 113, 0.55); color: #fca5a5; }
+
+  </style>
+</head>
+<body>
+
+  <!-- Intuitive Speaker Access Prompt (First-Launch Modal for iPhone/iPad/Android) -->
+  <div id="audioGateModal" class="audio-gate-backdrop" role="dialog" aria-modal="true" aria-label="Dostęp do głośników i haptyki">
+    <div class="audio-gate-card">
+      <div class="audio-gate-icon">🔊</div>
+      <h2>Włączyć głośniki i haptykę?</h2>
+      <p>Aether Tactile Studio generuje w czasie rzeczywistym dźwięki materiałów (szkło, stal, zamsz, żel) oraz wibracje. Na iPhonie automatycznie aktywujemy tryb <strong>Playback</strong> (działa nawet z włączonym wyciszeniem).</p>
+      <button type="button" id="audioGateAllow" class="audio-gate-primary">Tak, włącz głośniki i haptykę</button>
+      <button type="button" id="audioGateSilent" class="audio-gate-secondary">Wejdź bez dźwięku (włączę później)</button>
+    </div>
+  </div>
+  <button type="button" id="audioStatusChip" class="audio-status-chip muted">🔇 Dźwięk: dotknij, aby włączyć</button>
+
+  <div class="wrap">
+    <div class="hdr">
+      <div>
+        <div class="tag">Model 3D #2 · Logarytmiczne Widmo · Szkło vs Żel/Zamsz</div>
+        <h1>Sfera Haptyczna 3D</h1>
+      </div>
+      <a class="back" href="./">Całe Studio</a>
+    </div>
+
+    <button id="unlockBtn" type="button" style="display:none;">Dotknij raz, aby włączyć silnik akustyczny (skala log) i haptykę</button>
+
+    <div class="stage">
+      <div class="visc-badge">
+        <span id="matBadge">Szafir (9 Mohs)</span>
+        <span class="visc-meter">
+          <span id="viscBadge">Lepkość 4%</span>
+          <span class="visc-bar"><span class="visc-fill" id="viscFill" style="width:4%;"></span></span>
+        </span>
+      </div>
+      <canvas id="c" width="560" height="360"></canvas>
+    </div>
+
+    <!-- Live Logarithmic Spectrum & Time-Wave Comparison Chart -->
+    <div class="chart-card">
+      <div class="chart-top">
+        <span class="chart-title" id="chartTitle">Wykres Logarytmiczny (20 Hz → 10 kHz): Szkło vs Metal vs Zamsz vs Żel</span>
+        <div class="chart-seg">
+          <button type="button" class="active" data-chart="spectrum">Widmo (Log Hz)</button>
+          <button type="button" data-chart="wave">Fala w czasie (ms)</button>
+        </div>
+      </div>
+      <canvas id="chartCanvas" width="560" height="160"></canvas>
+      <div class="legend">
+        <span><i style="background:#7dd3fc;"></i>Szafir / Szkło (7–9 Mohs · pik 2ms + cymbałki)</span>
+        <span><i style="background:#2dd4bf;"></i>Metal CNC</span>
+        <span><i style="background:#a78bfa;"></i>Zamsz (28 Shore)</span>
+        <span><i style="background:#f472b6;"></i>Żel / Silikon</span>
+      </div>
+    </div>
+
+    <div class="sliders-card">
+      <div class="bank-tabs" role="tablist">
+        <button type="button" class="bank-tab active" data-bank="acoustic">Akustyka Log (2 rzędy: Pik + Cymbałki)</button>
+        <button type="button" class="bank-tab" data-bank="tribology">Trybologia (Miękkość · Mat · Lepkość)</button>
+      </div>
+
+      <div id="bank-acoustic" class="sl-grid">
+        <div class="sl-row">
+          <div class="sl-top">
+            <span>Pasmo I (Log): Korpus niskotonowy (24–160 Hz)</span>
+            <span class="val" id="lowHzVal">132 Hz</span>
+          </div>
+          <input type="range" id="lowHzLog" min="0" max="1000" value="898" />
+        </div>
+        <div class="sl-row">
+          <div class="sl-top">
+            <span>Pasmo II (Log · 2 rzędy): Alikwoty / Cymbałki (0,4–8,0 kHz)</span>
+            <span class="val" id="highHzVal">3.24 kHz</span>
+          </div>
+          <input type="range" id="highHzLog" min="0" max="1000" value="698" />
+        </div>
+        <div class="sl-row">
+          <div class="sl-top">
+            <span>Czas piku uderzenia (Log: 1,0–25 ms)</span>
+            <span class="val" id="peakMsVal">1.8 ms</span>
+          </div>
+          <input type="range" id="peakMsLog" min="0" max="1000" value="182" />
+        </div>
+        <div class="sl-row">
+          <div class="sl-top">
+            <span>Wybrzmienie rezonansu (Log: 5–450 ms · szkło dłużej, żel tłumi)</span>
+            <span class="val" id="ringMsVal">220 ms</span>
+          </div>
+          <input type="range" id="ringMsLog" min="0" max="1000" value="840" />
+        </div>
+      </div>
+
+      <div id="bank-tribology" class="sl-grid hidden">
+        <div class="sl-row">
+          <div class="sl-top">
+            <span>1. Miękkość materiału (100 − twardość)</span>
+            <span class="val" id="softnessVal">3%</span>
+          </div>
+          <input type="range" id="softnessSlider" min="0" max="100" value="3" />
+        </div>
+        <div class="sl-row">
+          <div class="sl-top">
+            <span>2. Szorstkość / Matowość (roughness3D)</span>
+            <span class="val" id="roughnessVal">2%</span>
+          </div>
+          <input type="range" id="roughnessSlider" min="0" max="100" value="2" />
+        </div>
+        <div class="sl-row">
+          <div class="sl-top">
+            <span>3. Tłumienie powrotu (100 − sprzęgło odwrotne)</span>
+            <span class="val" id="clutchVal">12%</span>
+          </div>
+          <input type="range" id="clutchSlider" min="0" max="100" value="12" />
+        </div>
+      </div>
+
+      <div class="formula-line">
+        <span id="dwellLine">Skala log · Czas docisku: +0%</span>
+        <strong style="color:#38e0f0;" id="totalViscLine">Lepkość: 4% · Rezonans: 220 ms</strong>
+      </div>
+    </div>
+
+    <div class="hud">
+      <span id="hudStatus">Szafir/Szkło: ostry pik 1,8 ms + rezonans cymbałek 220 ms vs Żel (tłumiony 8 ms)</span>
+      <span id="angInfo" style="color:#38e0f0;font-family:monospace;flex-shrink:0;">X: 0° · Y: 0°</span>
+    </div>
+
+    <div class="mats" id="mats"></div>
+  </div>
+
+  <script>
+    (function () {
+      document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+      document.addEventListener('selectstart', function (e) { e.preventDefault(); });
+      document.querySelectorAll('canvas').forEach(function (cv) {
+        cv.addEventListener('touchstart', function () { if (typeof __unlockMobileAudioNow === 'function' && (!ctx || ctx.state !== 'running')) __unlockMobileAudioNow(false); }, { passive: true });
+        cv.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false });
+      });
+
+      function fromLog(norm01000, minVal, maxVal) {
+        var t = Math.max(0, Math.min(1, norm01000 / 1000));
+        return minVal * Math.pow(maxVal / minVal, t);
+      }
+      function toLog(val, minVal, maxVal) {
+        var clamped = Math.max(minVal, Math.min(maxVal, val));
+        return Math.round((Math.log(clamped / minVal) / Math.log(maxVal / minVal)) * 1000);
+      }
+
+      var ctx = null, intensity = 88;
+      function ensureAudio() {
+        var AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return null;
+        if (!ctx) ctx = new AudioCtx();
+        if (ctx.state === 'suspended') ctx.resume().catch(function () {});
+        var b = document.getElementById('unlockBtn');
+        if (b) b.style.display = 'none';
+        return ctx;
+      }
+
+      function playDualBandMaterialSound(mode, label) {
+        var ac = ensureAudio();
+        var gain = Math.max(0.15, Math.min(1.2, intensity / 100));
+        var scale = mode === 'tick' ? 0.45 : 1.0;
+        if (navigator.vibrate) {
+          try { navigator.vibrate(mode === 'tick' ? 2 : Math.max(3, Math.round(peakMs * 1.1))); } catch (e) {}
+        }
+        var hud = document.getElementById('hudStatus');
+        if (hud && mode !== 'tick') {
+          hud.textContent = label + ' · Pik ' + peakMs.toFixed(1) + ' ms · Cymbałki ' + Math.round(ringMs) + ' ms (' + (highHz >= 1000 ? (highHz/1000).toFixed(2)+' kHz' : Math.round(highHz)+' Hz') + ')';
+        }
+        if (!ac) return;
+        var now = ac.currentTime;
+
+        var peakSec = Math.max(0.001, peakMs / 1000);
+        var body = ac.createOscillator();
+        body.type = roughness > 30 ? 'triangle' : 'sine';
+        body.frequency.setValueAtTime(lowHz, now);
+        body.frequency.exponentialRampToValueAtTime(Math.max(22, lowHz * 0.60), now + peakSec * 1.4);
+        var bodyLp = ac.createBiquadFilter(); bodyLp.type = 'lowpass'; bodyLp.frequency.setValueAtTime(165, now);
+        var bg = ac.createGain();
+        bg.gain.setValueAtTime(0.0001, now);
+        bg.gain.linearRampToValueAtTime(0.36 * gain * scale, now + Math.min(0.0004, peakSec * 0.2));
+        bg.gain.exponentialRampToValueAtTime(0.0001, now + peakSec + 0.004);
+        body.connect(bodyLp); bodyLp.connect(bg); bg.connect(ac.destination);
+        body.start(now); body.stop(now + peakSec + 0.008);
+
+        // Rigid glass/sapphire rings like a xylophone; elastic suede/gel rapidly damps vibrations
+        var rigidityFactor = Math.max(0.03, 1 - (softness / 100) * 0.94);
+        var effectiveRingSec = Math.max(0.005, (ringMs / 1000) * (0.14 + 0.86 * rigidityFactor));
+        var ringGain = (0.30 * rigidityFactor) * gain * scale;
+
+        if (ringGain > 0.012 && effectiveRingSec > 0.006) {
+          var ratios = [[1.0, 1.0, 1.0], [1.618, 0.54, 0.70], [2.756, 0.26, 0.44]];
+          ratios.forEach(function (r) {
+            var freq = Math.min(14000, highHz * r[0]);
+            var o = ac.createOscillator(); o.type = 'sine'; o.frequency.setValueAtTime(freq, now);
+            var g = ac.createGain();
+            var d = Math.max(0.005, effectiveRingSec * r[2]);
+            g.gain.setValueAtTime(0.0001, now);
+            g.gain.linearRampToValueAtTime(ringGain * r[1], now + 0.00025);
+            g.gain.exponentialRampToValueAtTime(0.0001, now + d);
+            o.connect(g); g.connect(ac.destination);
+            o.start(now); o.stop(now + d + 0.005);
+          });
+        }
+      }
+
+      function playViscousPull(visc, rough, mode) {
+        var ac = ensureAudio();
+        if (navigator.vibrate) {
+          try {
+            if (mode === 'detach') navigator.vibrate([Math.round(8 + visc * 14), 18, Math.round(6 + visc * 10)]);
+            else navigator.vibrate(Math.max(4, Math.round(4 + visc * 12)));
+          } catch (e) {}
+        }
+        if (!ac) return;
+        var now = ac.currentTime;
+        var osc = ac.createOscillator();
+        osc.type = rough > 0.3 ? 'triangle' : 'sine';
+        var dur = mode === 'detach' ? (0.045 + visc * 0.075) : (0.022 + visc * 0.038);
+        if (mode === 'detach') {
+          osc.frequency.setValueAtTime(34 + (1 - visc) * 20, now);
+          osc.frequency.exponentialRampToValueAtTime(74 + visc * 40, now + dur * 0.45);
+          osc.frequency.exponentialRampToValueAtTime(28, now + dur);
+        } else {
+          osc.frequency.setValueAtTime(58 - visc * 18 + rough * 18, now);
+          osc.frequency.exponentialRampToValueAtTime(28, now + dur);
+        }
+        var lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(145 - visc * 45 + rough * 20, now);
+        var g = ac.createGain();
+        g.gain.setValueAtTime(0.0001, now); g.gain.linearRampToValueAtTime(0.24 + visc * 0.30, now + 0.005); g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+        osc.connect(lp); lp.connect(g); g.connect(ac.destination); osc.start(now); osc.stop(now + dur + 0.005);
+      }
+
+      function playHiFiSteelClick(stage, label) {
+        var ac = ensureAudio();
+        if (navigator.vibrate) { try { navigator.vibrate(stage === 'preload' ? 2 : [11, 10, 4]); } catch (e) {} }
+        if (!ac) return;
+        var now = ac.currentTime;
+        if (stage === 'preload') {
+          var po = ac.createOscillator(); po.type = 'triangle';
+          po.frequency.setValueAtTime(140, now); po.frequency.exponentialRampToValueAtTime(92, now + 0.004);
+          var pg = ac.createGain(); pg.gain.setValueAtTime(0.055, now); pg.gain.exponentialRampToValueAtTime(0.0001, now + 0.0045);
+          po.connect(pg); pg.connect(ac.destination); po.start(now); po.stop(now + 0.005);
+          return;
+        }
+        var body = ac.createOscillator(); body.type = 'triangle';
+        body.frequency.setValueAtTime(86, now); body.frequency.exponentialRampToValueAtTime(36, now + 0.009);
+        var lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(154, now);
+        var bg = ac.createGain(); bg.gain.setValueAtTime(0.0001, now); bg.gain.linearRampToValueAtTime(0.54, now + 0.0007); bg.gain.exponentialRampToValueAtTime(0.0001, now + 0.011);
+        body.connect(lp); lp.connect(bg); bg.connect(ac.destination); body.start(now); body.stop(now + 0.013);
+        var snap = ac.createOscillator(); snap.type = 'triangle';
+        snap.frequency.setValueAtTime(760, now); snap.frequency.exponentialRampToValueAtTime(165, now + 0.0032);
+        var sg = ac.createGain(); sg.gain.setValueAtTime(0.32, now); sg.gain.exponentialRampToValueAtTime(0.0001, now + 0.0036);
+        snap.connect(sg); sg.connect(ac.destination); snap.start(now); snap.stop(now + 0.0045);
+      }
+
+      function attachHeavySteelButton(btn, label, onActuate) {
+        var timer = null;
+        btn.addEventListener('pointerdown', function (e) {
+          e.preventDefault(); btn.classList.add('pressing');
+          playHiFiSteelClick('preload', label);
+          if (btn.setPointerCapture) { try { btn.setPointerCapture(e.pointerId); } catch (err) {} }
+          timer = setTimeout(function () {
+            btn.classList.add('engaged');
+            playHiFiSteelClick('actuate', label);
+            onActuate();
+            setTimeout(function () { btn.classList.remove('engaged'); }, 140);
+          }, 110);
+        });
+        function cancelPress() { if (timer) { clearTimeout(timer); timer = null; } btn.classList.remove('pressing'); }
+        btn.addEventListener('pointerup', cancelPress);
+        btn.addEventListener('pointercancel', cancelPress);
+        btn.addEventListener('pointerleave', cancelPress);
+      }
+
+      var MATS = [
+        { id: 'sapphire', label: 'Szafir (9 Mohs)', sub: 'Pik 1.8ms · Cymbałki 240ms', color: '#7dd3fc', softness: 3, roughness: 2, clutchDamp: 12, lowHz: 132, highHz: 3240, peakMs: 1.8, ringMs: 240, amp: 0.96 },
+        { id: 'shiny', label: 'Szkło twarde', sub: '6.5 Mohs · Cymbałki 165ms', color: '#38e0f0', softness: 8, roughness: 6, clutchDamp: 36, lowHz: 118, highHz: 2480, peakMs: 2.2, ringMs: 165, amp: 0.88 },
+        { id: 'frost', label: 'Szkło matowe', sub: 'Mat 34% · Rezonans 65ms', color: '#818cf8', softness: 26, roughness: 34, clutchDamp: 52, lowHz: 94, highHz: 1860, peakMs: 3.8, ringMs: 65, amp: 0.64 },
+        { id: 'metal', label: 'Metal CNC', sub: 'Stal · Rezonans 95ms', color: '#2dd4bf', softness: 4, roughness: 28, clutchDamp: 14, lowHz: 86, highHz: 2890, peakMs: 2.5, ringMs: 95, amp: 0.80 },
+        { id: 'suede', label: 'Zamsz', sub: '28 Shore · Tłumiony 14ms', color: '#a78bfa', softness: 72, roughness: 88, clutchDamp: 74, lowHz: 54, highHz: 520, peakMs: 11.0, ringMs: 14, amp: 0.28 },
+        { id: 'gel', label: 'Żel / Silikon', sub: '15 Shore · Lepki 88%', color: '#f472b6', softness: 94, roughness: 68, clutchDamp: 90, lowHz: 42, highHz: 420, peakMs: 15.0, ringMs: 8, amp: 0.18 }
+      ];
+
+      var mat = MATS[0];
+      var softness = mat.softness, roughness = mat.roughness, clutchDamp = mat.clutchDamp;
+      var lowHz = mat.lowHz, highHz = mat.highHz, peakMs = mat.peakMs, ringMs = mat.ringMs;
+      var baseViscosity = 0.04, dwellBoost = 0, viscosity = 0.04, holdStartMs = 0;
+      var chartMode = 'spectrum';
+
+      var rotX = 0.35, rotY = 0.6, velX = 0.002, velY = 0.007;
+      var drag = false, lx = 0, ly = 0, dist = 0, pulse = 0, zc = 0;
+      var pullX = 0, pullY = 0, targetPullX = 0, targetPullY = 0;
+      var pointerCanvasX = 0, pointerCanvasY = 0, hasPointer = false, stretchMag = 0;
+
+      var canvas = document.getElementById('c'), sctx = canvas.getContext('2d');
+      var chartCanvas = document.getElementById('chartCanvas'), cctx = chartCanvas.getContext('2d');
+      var angInfo = document.getElementById('angInfo');
+      var lowHzLog = document.getElementById('lowHzLog'), highHzLog = document.getElementById('highHzLog');
+      var peakMsLog = document.getElementById('peakMsLog'), ringMsLog = document.getElementById('ringMsLog');
+      var softnessSlider = document.getElementById('softnessSlider'), roughnessSlider = document.getElementById('roughnessSlider'), clutchSlider = document.getElementById('clutchSlider');
+      var viscBadge = document.getElementById('viscBadge'), viscFill = document.getElementById('viscFill'), matBadge = document.getElementById('matBadge');
+      var totalViscLine = document.getElementById('totalViscLine'), dwellLine = document.getElementById('dwellLine'), hudStatus = document.getElementById('hudStatus');
+
+      function drawComparisonChart() {
+        var w = chartCanvas.width, h = chartCanvas.height;
+        var padL = 34, padR = 12, padT = 14, padB = 22;
+        var pw = w - padL - padR, ph = h - padT - padB;
+        cctx.clearRect(0, 0, w, h);
+
+        // Background grid
+        cctx.strokeStyle = 'rgba(103, 232, 249, 0.12)';
+        cctx.lineWidth = 1;
+        cctx.fillStyle = 'rgba(207, 250, 254, 0.58)';
+        cctx.font = '10px ui-monospace, monospace';
+
+        var compareList = [
+          { id: 'gel', color: '#f472b6', low: 42, high: 420, peak: 15, ring: 8, amp: 0.22, soft: 94 },
+          { id: 'suede', color: '#a78bfa', low: 54, high: 520, peak: 11, ring: 14, amp: 0.30, soft: 72 },
+          { id: 'metal', color: '#2dd4bf', low: 86, high: 2890, peak: 2.5, ring: 95, amp: 0.78, soft: 4 },
+          { id: 'sapphire', color: '#7dd3fc', low: 132, high: 3240, peak: 1.8, ring: 240, amp: 0.96, soft: 3 }
+        ];
+        // Override active curve with live slider settings
+        var activeCurve = { id: mat.id, color: mat.color, low: lowHz, high: highHz, peak: peakMs, ring: ringMs, amp: Math.max(0.2, 1 - softness / 115), soft: softness };
+
+        if (chartMode === 'spectrum') {
+          // Logarithmic Frequency Axis: 20 Hz -> 10,000 Hz (nearly 3 orders of magnitude!)
+          var ticks = [20, 50, 100, 250, 500, 1000, 2500, 5000, 10000];
+          ticks.forEach(function (hz) {
+            var x = padL + (Math.log(hz / 20) / Math.log(10000 / 20)) * pw;
+            cctx.beginPath(); cctx.moveTo(x, padT); cctx.lineTo(x, padT + ph); cctx.stroke();
+            cctx.textAlign = 'center';
+            cctx.fillText(hz >= 1000 ? (hz / 1000) + 'k' : String(hz), x, h - 6);
+          });
+          cctx.textAlign = 'right';
+          cctx.fillText('1.0', padL - 5, padT + 6);
+          cctx.fillText('0.5', padL - 5, padT + ph * 0.5 + 3);
+          cctx.fillText('0', padL - 5, padT + ph);
+
+          function plotSpec(item, isLive) {
+            cctx.beginPath();
+            var rigid = Math.max(0.04, 1 - item.soft / 100);
+            for (var px = 0; px <= pw; px += 2) {
+              var hz = 20 * Math.pow(10000 / 20, px / pw);
+              var logHz = Math.log(hz);
+              // Band I low-end body bump
+              var d1 = (logHz - Math.log(item.low)) / (0.28 + item.soft * 0.004);
+              var v1 = Math.exp(-d1 * d1) * (0.42 + (1 - rigid) * 0.35);
+              // Band II sharp high-Q xylophone/glass harmonic peaks
+              var qW = 0.045 + (1 - rigid) * 0.25;
+              var d2 = (logHz - Math.log(item.high)) / qW;
+              var d3 = (logHz - Math.log(Math.min(9500, item.high * 1.618))) / (qW * 0.9);
+              var d4 = (logHz - Math.log(Math.min(9800, item.high * 2.4))) / (qW * 0.85);
+              var v2 = (Math.exp(-d2 * d2) + 0.55 * Math.exp(-d3 * d3) + 0.28 * Math.exp(-d4 * d4)) * item.amp * rigid;
+              var val = Math.min(1, v1 * 0.55 + v2);
+              var y = padT + ph - val * ph;
+              if (px === 0) cctx.moveTo(padL + px, y); else cctx.lineTo(padL + px, y);
+            }
+            cctx.strokeStyle = item.color;
+            cctx.lineWidth = isLive ? 2.6 : 1.25;
+            cctx.globalAlpha = isLive ? 1.0 : 0.42;
+            cctx.stroke();
+            cctx.globalAlpha = 1;
+          }
+
+          compareList.forEach(function (it) { if (it.id !== mat.id) plotSpec(it, false); });
+          plotSpec(activeCurve, true);
+        } else {
+          // Time-Amplitude Envelope + Carrier Wave: 0 -> 260 ms showing short crisp glass peak + long chime vs short damped gel!
+          var timeTicks = [0, 25, 50, 100, 150, 200, 250];
+          timeTicks.forEach(function (ms) {
+            var x = padL + (ms / 260) * pw;
+            cctx.beginPath(); cctx.moveTo(x, padT); cctx.lineTo(x, padT + ph); cctx.stroke();
+            cctx.textAlign = 'center';
+            cctx.fillText(ms + 'ms', x, h - 6);
+          });
+          var midY = padT + ph / 2;
+          cctx.beginPath(); cctx.moveTo(padL, midY); cctx.lineTo(padL + pw, midY); cctx.stroke();
+
+          function plotWave(item, isLive) {
+            var rigid = Math.max(0.04, 1 - item.soft / 100);
+            var effRing = Math.max(6, item.ring * (0.14 + 0.86 * rigid));
+            var visualFreq = Math.min(48, 4 + (item.high / 140));
+            cctx.beginPath();
+            for (var px = 0; px <= pw; px += 1.5) {
+              var tMs = (px / pw) * 260;
+              var attack = Math.min(1, tMs / Math.max(0.6, item.peak * 0.5));
+              var strikePeak = Math.exp(-tMs / Math.max(1.2, item.peak)) * item.amp;
+              var ringEnv = Math.exp(-tMs / effRing) * item.amp * rigid * 0.72;
+              var env = attack * Math.min(1, strikePeak + ringEnv);
+              var wave = Math.sin((tMs / 260) * Math.PI * 2 * visualFreq) * env;
+              var y = midY - wave * (ph * 0.46);
+              if (px === 0) cctx.moveTo(padL + px, y); else cctx.lineTo(padL + px, y);
+            }
+            cctx.strokeStyle = item.color;
+            cctx.lineWidth = isLive ? 2.2 : 1.1;
+            cctx.globalAlpha = isLive ? 1.0 : 0.36;
+            cctx.stroke();
+            cctx.globalAlpha = 1;
+          }
+
+          compareList.forEach(function (it) { if (it.id !== mat.id) plotWave(it, false); });
+          plotWave(activeCurve, true);
+        }
+      }
+
+      document.querySelectorAll('.chart-seg button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          document.querySelectorAll('.chart-seg button').forEach(function (x) { x.classList.remove('active'); });
+          b.classList.add('active');
+          chartMode = b.getAttribute('data-chart');
+          document.getElementById('chartTitle').textContent =
+            chartMode === 'spectrum'
+              ? 'Wykres Logarytmiczny (20 Hz → 10 kHz): Szkło vs Metal vs Zamsz vs Żel'
+              : 'Fala w Czasie (0 → 260 ms): Pik i Cymbałki Szkła vs Tłumienie Żelu/Zamszu';
+          drawComparisonChart();
+        });
+      });
+
+      function syncUI() {
+        baseViscosity = Math.max(0, Math.min(1, 0.45 * (softness / 100) + 0.35 * (roughness / 100) + 0.20 * (clutchDamp / 100)));
+        viscosity = Math.min(1, baseViscosity + dwellBoost);
+        var vp = Math.round(viscosity * 100);
+
+        lowHzLog.value = String(toLog(lowHz, 24, 160));
+        highHzLog.value = String(toLog(highHz, 400, 8000));
+        peakMsLog.value = String(toLog(peakMs, 1.0, 25.0));
+        ringMsLog.value = String(toLog(ringMs, 5.0, 450.0));
+
+        document.getElementById('lowHzVal').textContent = Math.round(lowHz) + ' Hz';
+        document.getElementById('highHzVal').textContent = highHz >= 1000 ? (highHz / 1000).toFixed(2) + ' kHz' : Math.round(highHz) + ' Hz';
+        document.getElementById('peakMsVal').textContent = peakMs.toFixed(1) + ' ms';
+        document.getElementById('ringMsVal').textContent = Math.round(ringMs) + ' ms';
+
+        softnessSlider.value = String(softness);
+        roughnessSlider.value = String(roughness);
+        clutchSlider.value = String(clutchDamp);
+        document.getElementById('softnessVal').textContent = softness + '%';
+        document.getElementById('roughnessVal').textContent = roughness + '%';
+        document.getElementById('clutchVal').textContent = clutchDamp + '%';
+
+        viscBadge.textContent = 'Lepkość ' + vp + '%';
+        viscFill.style.width = vp + '%';
+        totalViscLine.textContent = 'Lepkość: ' + vp + '% · Rezonans: ' + Math.round(ringMs) + ' ms';
+        dwellLine.textContent = 'Skala log · Czas docisku: +' + Math.round(dwellBoost * 100) + '%';
+        matBadge.textContent = mat.label + (vp >= 65 ? ' · Silne przywieranie' : ringMs >= 100 ? ' · Rezonans cymbałek' : ' · Tłumiony');
+        drawComparisonChart();
+      }
+
+      document.querySelectorAll('.bank-tab').forEach(function (tb) {
+        tb.addEventListener('click', function () {
+          var target = tb.getAttribute('data-bank');
+          document.querySelectorAll('.bank-tab').forEach(function (x) { x.classList.remove('active'); });
+          tb.classList.add('active');
+          document.getElementById('bank-acoustic').classList.toggle('hidden', target !== 'acoustic');
+          document.getElementById('bank-tribology').classList.toggle('hidden', target !== 'tribology');
+        });
+      });
+
+      lowHzLog.addEventListener('input', function () { lowHz = fromLog(Number(lowHzLog.value), 24, 160); syncUI(); });
+      highHzLog.addEventListener('input', function () { highHz = fromLog(Number(highHzLog.value), 400, 8000); syncUI(); });
+      peakMsLog.addEventListener('input', function () { peakMs = fromLog(Number(peakMsLog.value), 1.0, 25.0); syncUI(); });
+      ringMsLog.addEventListener('input', function () { ringMs = fromLog(Number(ringMsLog.value), 5.0, 450.0); syncUI(); });
+      softnessSlider.addEventListener('input', function () { softness = Number(softnessSlider.value); syncUI(); });
+      roughnessSlider.addEventListener('input', function () { roughness = Number(roughnessSlider.value); syncUI(); });
+      clutchSlider.addEventListener('input', function () { clutchDamp = Number(clutchSlider.value); syncUI(); });
+
+      var PTS = [], phi = Math.PI * (3 - Math.sqrt(5));
+      for (var i = 0; i < 165; i++) {
+        var y = 1 - (i / 164) * 2, r = Math.sqrt(Math.max(0, 1 - y * y)), th = phi * i;
+        PTS.push({ x: Math.cos(th) * r, y: y, z: Math.sin(th) * r });
+      }
+
+      document.getElementById('unlockBtn').addEventListener('click', function () {
+        pulse = 1;
+        playDualBandMaterialSound('strike', mat.label);
+      });
+
+      function renderMats() {
+        var box = document.getElementById('mats');
+        box.innerHTML = '';
+        MATS.forEach(function (m) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'chip' + (mat.id === m.id ? ' active' : '');
+          b.innerHTML = '<strong>' + m.label + '</strong><span>' + m.sub + '</span>';
+          attachHeavySteelButton(b, m.label, function () {
+            mat = m;
+            softness = m.softness; roughness = m.roughness; clutchDamp = m.clutchDamp;
+            lowHz = m.lowHz; highHz = m.highHz; peakMs = m.peakMs; ringMs = m.ringMs;
+            dwellBoost = 0; pulse = 1.1;
+            syncUI();
+            renderMats();
+          });
+          box.appendChild(b);
+        });
+      }
+
+      function toCanvasCoords(clientX, clientY) {
+        var r = canvas.getBoundingClientRect();
+        return {
+          x: ((clientX - r.left) / Math.max(1, r.width)) * canvas.width,
+          y: ((clientY - r.top) / Math.max(1, r.height)) * canvas.height
+        };
+      }
+
+      canvas.addEventListener('pointerdown', function (e) {
+        drag = true; hasPointer = true; holdStartMs = performance.now();
+        lx = e.clientX; ly = e.clientY; dist = 0;
+        var pt = toCanvasCoords(e.clientX, e.clientY);
+        pointerCanvasX = pt.x; pointerCanvasY = pt.y;
+        zc = 0.05 + (softness / 100) * 0.18;
+        pulse = 1.05;
+        canvas.setPointerCapture(e.pointerId);
+        if (viscosity > 0.45) {
+          playViscousPull(viscosity, roughness / 100, 'drag');
+          hudStatus.textContent = mat.label + ' · lepkość ' + Math.round(viscosity * 100) + '% (tłumienie drgań)';
+        } else {
+          playDualBandMaterialSound('strike', mat.label);
+        }
+      });
+
+      canvas.addEventListener('pointermove', function (e) {
+        if (!drag) return;
+        var dx = e.clientX - lx, dy = e.clientY - ly;
+        lx = e.clientX; ly = e.clientY;
+        var pt = toCanvasCoords(e.clientX, e.clientY);
+        pointerCanvasX = pt.x; pointerCanvasY = pt.y;
+
+        var rotSensitivity = 0.0135 * (1 - viscosity * 0.72);
+        rotY += dx * rotSensitivity; rotX += dy * rotSensitivity;
+        velY = dx * rotSensitivity * 0.42; velX = dy * rotSensitivity * 0.42;
+
+        var cx = canvas.width / 2, cy = canvas.height / 2;
+        var maxPull = 12 + viscosity * 76;
+        var relX = pt.x - cx, relY = pt.y - cy;
+        var relLen = Math.hypot(relX, relY) || 1;
+        var pullStrength = Math.min(maxPull, relLen * (0.10 + viscosity * 0.54));
+        targetPullX = (relX / relLen) * pullStrength * (0.14 + viscosity * 0.95);
+        targetPullY = (relY / relLen) * pullStrength * (0.14 + viscosity * 0.95);
+
+        dist += Math.hypot(dx, dy);
+        var tickStep = 38 - (roughness / 100) * 16 - viscosity * 8;
+        if (dist > Math.max(12, tickStep)) {
+          dist = 0;
+          pulse = Math.min(1.25, pulse + 0.22 + viscosity * 0.25);
+          if (viscosity >= 0.35) playViscousPull(viscosity, roughness / 100, 'drag');
+          else playDualBandMaterialSound('tick', mat.label);
+        }
+      });
+
+      function releaseFinger() {
+        if (!drag) return;
+        drag = false; hasPointer = false; zc = 0;
+        var wasStretched = Math.hypot(pullX, pullY);
+        targetPullX = 0; targetPullY = 0;
+        if (viscosity >= 0.25 && wasStretched > 8) {
+          playViscousPull(viscosity, roughness / 100, 'detach');
+          hudStatus.textContent = 'Odklejenie (' + mat.label + ') · powrót tłumiony ' + clutchDamp + '%';
+          pulse = 1.12;
+        }
+        dwellBoost = 0;
+        syncUI();
+      }
+      canvas.addEventListener('pointerup', releaseFinger);
+      canvas.addEventListener('pointercancel', releaseFinger);
+
+      function draw() {
+        var w = canvas.width, h = canvas.height, cx = w / 2, cy = h / 2;
+        sctx.clearRect(0, 0, w, h);
+
+        if (drag && baseViscosity > 0.2) {
+          var heldSec = Math.min(2.5, (performance.now() - holdStartMs) / 1000);
+          var nextBoost = (heldSec / 2.5) * 0.16 * (0.4 + softness / 100);
+          if (Math.abs(nextBoost - dwellBoost) > 0.008) { dwellBoost = nextBoost; syncUI(); }
+        }
+
+        var inertiaDamp = 0.984 - viscosity * 0.24;
+        if (!drag) {
+          rotY += velY; rotX += velX;
+          velY = velY * inertiaDamp + (0.005 * (1 - viscosity * 0.8)) * (1 - inertiaDamp);
+          velX *= inertiaDamp;
+        }
+
+        var followRate = drag ? (0.28 - viscosity * 0.14) : (0.24 - (clutchDamp / 100) * 0.17);
+        pullX += (targetPullX - pullX) * followRate;
+        pullY += (targetPullY - pullY) * followRate;
+        stretchMag = Math.hypot(pullX, pullY);
+        var visualDecay = Math.min(0.975, 0.88 + (ringMs / 450) * 0.092);
+        pulse *= visualDecay;
+
+        var sc = Math.min(w, h) * 0.37 * (1 - zc + pulse * 0.055);
+        var centerShiftX = cx + pullX * 0.42;
+        var centerShiftY = cy + pullY * 0.42;
+
+        if (pulse > 0.06 && ringMs >= 60 && softness < 40) {
+          sctx.save();
+          sctx.beginPath();
+          sctx.arc(centerShiftX, centerShiftY, sc * (1.04 + (1 - pulse) * 0.28), 0, Math.PI * 2);
+          sctx.strokeStyle = mat.color;
+          sctx.lineWidth = 1.5;
+          sctx.globalAlpha = pulse * 0.48;
+          sctx.stroke();
+          sctx.restore();
+        }
+
+        if (viscosity > 0.18 && (drag || stretchMag > 4)) {
+          var tetherX = drag ? pointerCanvasX : (cx + pullX * 1.45);
+          var tetherY = drag ? pointerCanvasY : (cy + pullY * 1.45);
+          var tGrad = sctx.createLinearGradient(centerShiftX, centerShiftY, tetherX, tetherY);
+          tGrad.addColorStop(0, mat.color + '88'); tGrad.addColorStop(1, '#f472b6aa');
+          sctx.save();
+          sctx.beginPath();
+          var neckWidth = Math.max(5, (24 + viscosity * 46) * Math.max(0.25, 1 - stretchMag / 170));
+          sctx.moveTo(centerShiftX, centerShiftY); sctx.lineTo(tetherX, tetherY);
+          sctx.strokeStyle = tGrad; sctx.lineWidth = neckWidth; sctx.lineCap = 'round';
+          sctx.globalAlpha = Math.min(0.62, viscosity * 0.78 * Math.min(1, stretchMag / 18 + 0.3));
+          sctx.stroke();
+          if (drag) {
+            sctx.beginPath(); sctx.arc(tetherX, tetherY, 14 + viscosity * 18, 0, Math.PI * 2);
+            sctx.fillStyle = mat.color; sctx.globalAlpha = 0.20 + viscosity * 0.24; sctx.fill();
+            sctx.strokeStyle = '#ffffff'; sctx.lineWidth = 1.4; sctx.globalAlpha = 0.65; sctx.stroke();
+          }
+          sctx.restore();
+        }
+
+        var stretchAngle = Math.atan2(pullY, pullX);
+        var stretchX = 1 + (stretchMag / 160) * (0.22 + (softness / 100) * 0.58);
+        var stretchY = 1 / Math.sqrt(stretchX);
+
+        sctx.save();
+        sctx.translate(centerShiftX, centerShiftY);
+        sctx.rotate(stretchAngle);
+        sctx.scale(stretchX, stretchY);
+
+        var og = sctx.createRadialGradient(-sc * 0.3, -sc * 0.35, 10, 0, 0, sc * 1.15);
+        var specAlpha = (0.52 - (roughness / 100) * 0.34).toFixed(2);
+        og.addColorStop(0, 'rgba(224,242,254,' + specAlpha + ')');
+        og.addColorStop(0.45, mat.color + '55');
+        og.addColorStop(1, 'rgba(0,0,0,0)');
+        sctx.beginPath(); sctx.arc(0, 0, sc * 1.1, 0, Math.PI * 2); sctx.fillStyle = og; sctx.fill();
+        sctx.beginPath(); sctx.arc(0, 0, sc, 0, Math.PI * 2);
+        sctx.strokeStyle = mat.color; sctx.lineWidth = 2.0 + pulse * 2.2 + viscosity * 1.5; sctx.stroke();
+        sctx.restore();
+
+        var cX = Math.cos(rotX), sX = Math.sin(rotX), cY = Math.cos(rotY), sY = Math.sin(rotY);
+        var proj = PTS.map(function (p) {
+          var x1 = p.x * cY - p.z * sY, z1 = p.x * sY + p.z * cY;
+          var y2 = p.y * cX - z1 * sX, z2 = p.y * sX + z1 * cX;
+          var persp = 2.6 / (2.6 - z2);
+          var sx = centerShiftX + x1 * sc * persp * 0.86;
+          var sy = centerShiftY + y2 * sc * persp * 0.86;
+          if (viscosity > 0.12 && (hasPointer || stretchMag > 2) && z2 > -0.2) {
+            var tx = hasPointer ? pointerCanvasX : (cx + pullX * 1.3);
+            var ty = hasPointer ? pointerCanvasY : (cy + pullY * 1.3);
+            var dxp = tx - sx, dyp = ty - sy;
+            var d = Math.hypot(dxp, dyp);
+            var influence = Math.exp(-d / (70 + viscosity * 85)) * viscosity * 0.60 * Math.max(0, z2 + 0.2);
+            sx += dxp * influence; sy += dyp * influence;
+          }
+          return { sx: sx, sy: sy, z: z2, r: Math.max(1.5, (z2 + 1.35) * (2.1 + (roughness / 100) * 0.9)) };
+        }).sort(function (a, b) { return a.z - b.z; });
+
+        proj.forEach(function (pr) {
+          sctx.beginPath(); sctx.arc(pr.sx, pr.sy, pr.r + pulse * 1.3, 0, Math.PI * 2);
+          sctx.fillStyle = pr.z > 0.25 ? '#e0f2fe' : mat.color;
+          sctx.globalAlpha = Math.max(0.16, Math.min(1, (pr.z + 1.1) / 2));
+          sctx.fill();
+        });
+        sctx.globalAlpha = 1;
+
+        angInfo.textContent =
+          'X: ' + Math.round(((rotX * 180 / Math.PI) % 360 + 360) % 360) +
+          '° · Y: ' + Math.round(((rotY * 180 / Math.PI) % 360 + 360) % 360) + '°';
+        requestAnimationFrame(draw);
+      }
+
+      syncUI();
+      renderMats();
+      draw();
+    
+
+      // === UNIVERSAL iOS / ANDROID SPEAKER UNLOCK & PLAYBACK SESSION ROUTER ===
+      var __silentAudioEl = null;
+      function __forceIOSPlaybackRoute() {
+        try {
+          if (navigator && navigator.audioSession && 'type' in navigator.audioSession) {
+            navigator.audioSession.type = 'playback';
+          }
+        } catch (e) {}
+        try {
+          if (!__silentAudioEl) {
+            __silentAudioEl = document.createElement('audio');
+            __silentAudioEl.setAttribute('playsinline', '');
+            __silentAudioEl.setAttribute('webkit-playsinline', '');
+            __silentAudioEl.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA';
+            __silentAudioEl.volume = 0.01;
+          }
+          var p = __silentAudioEl.play();
+          if (p && p.catch) p.catch(function () {});
+        } catch (e) {}
+      }
+
+      function __updateAudioChip(ac) {
+        var chip = document.getElementById('audioStatusChip');
+        if (!chip) return;
+        if (ac && ac.state === 'running') {
+          chip.classList.remove('muted');
+          chip.textContent = '🔊 Głośniki: AKTYWNE';
+        } else {
+          chip.classList.add('muted');
+          chip.textContent = '🔇 Dotknij, aby włączyć głośniki';
+        }
+      }
+
+      function __unlockMobileAudioNow(withChime) {
+        __forceIOSPlaybackRoute();
+        var ac = ensureAudio();
+        if (ac) {
+          try {
+            // Play a real 1-sample silent WebAudio buffer synchronously inside the touch gesture (Apple iOS requirement)
+            var buf = ac.createBuffer(1, 1, ac.sampleRate || 44100);
+            var src = ac.createBufferSource();
+            src.buffer = buf;
+            src.connect(ac.destination);
+            src.start(0);
+          } catch (e) {}
+          if (ac.state !== 'running') {
+            ac.resume().then(function () { __updateAudioChip(ac); }).catch(function () {});
+          }
+          if (withChime) {
+            // Crisp audible confirmation ping so user immediately hears speakers are live
+            setTimeout(function () {
+              try {
+                var now = ac.currentTime;
+                var o = ac.createOscillator(); o.type = 'sine';
+                o.frequency.setValueAtTime(880, now);
+                o.frequency.exponentialRampToValueAtTime(1320, now + 0.06);
+                var g = ac.createGain();
+                g.gain.setValueAtTime(0.0001, now);
+                g.gain.linearRampToValueAtTime(0.24, now + 0.004);
+                g.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+                o.connect(g); g.connect(ac.destination);
+                o.start(now); o.stop(now + 0.16);
+              } catch (e) {}
+              __updateAudioChip(ac);
+            }, 30);
+          } else {
+            __updateAudioChip(ac);
+          }
+        }
+        var gate = document.getElementById('audioGateModal');
+        if (gate) gate.classList.add('hidden');
+        var ub = document.getElementById('unlockBtn') || document.getElementById('unlockBanner');
+        if (ub) ub.style.display = 'none';
+      }
+
+      var __allowBtn = document.getElementById('audioGateAllow');
+      var __silentBtn = document.getElementById('audioGateSilent');
+      var __chipBtn = document.getElementById('audioStatusChip');
+      if (__allowBtn) {
+        __allowBtn.addEventListener('click', function () { __unlockMobileAudioNow(true); });
+        __allowBtn.addEventListener('touchend', function (e) { e.preventDefault(); __unlockMobileAudioNow(true); }, { passive: false });
+      }
+      if (__silentBtn) {
+        __silentBtn.addEventListener('click', function () {
+          var gate = document.getElementById('audioGateModal');
+          if (gate) gate.classList.add('hidden');
+        });
+      }
+      if (__chipBtn) {
+        __chipBtn.addEventListener('click', function () { __unlockMobileAudioNow(true); });
+      }
+      // Global capture unlock on first tap anywhere (never blocked by canvas preventDefault!)
+      ['touchstart', 'touchend', 'pointerdown', 'click'].forEach(function (evtName) {
+        window.addEventListener(evtName, function () {
+          if (!ctx || ctx.state !== 'running') {
+            __forceIOSPlaybackRoute();
+            var ac = ensureAudio();
+            if (ac && ac.state !== 'running') ac.resume().then(function () { __updateAudioChip(ac); }).catch(function () {});
+            else __updateAudioChip(ac);
+          }
+        }, { capture: true, passive: true });
+      });
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden && ctx && ctx.state === 'suspended') {
+          ctx.resume().then(function () { __updateAudioChip(ctx); }).catch(function () {});
+        }
+      });
+
+    })();
+  </script>
+</body>
+</html>

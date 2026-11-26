@@ -1,0 +1,21 @@
+export let Phenotype = /* @__PURE__ */ function(Phenotype) {
+	Phenotype["SEB"] = "SEB";
+	Phenotype["XER"] = "XER";
+	Phenotype["VAS"] = "VAS";
+	Phenotype["AGE"] = "AGE";
+	Phenotype["OIL"] = "OIL";
+	Phenotype["MIX"] = "MIX";
+	Phenotype["NOR"] = "NOR";
+	Phenotype["CIC"] = "CIC";
+	Phenotype["REM"] = "REM";
+	return Phenotype;
+}({});
+export let Grade = /* @__PURE__ */ function(Grade) {
+	Grade["G0"] = "G0";
+	Grade["G1"] = "G1";
+	Grade["G2"] = "G2";
+	Grade["G3"] = "G3";
+	return Grade;
+}({});
+
+//# sourceMappingURL=data:application/json;base64,eyJtYXBwaW5ncyI6IkFBQUEsT0FBTyxJQUFLLFlBQUw7Q0FDTDtDQUNBO0NBQ0E7Q0FDQTtDQUNBO0NBQ0E7Q0FDQTtDQUNBO0NBQ0E7O0FBQ0Y7QUFFQSxPQUFPLElBQUssUUFBTDtDQUNMO0NBQ0E7Q0FDQTtDQUNBOztBQUNGIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbInR5cGVzLnRzIl0sInZlcnNpb24iOjMsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBlbnVtIFBoZW5vdHlwZSB7XG4gIFNFQiA9ICdTRUInLFxuICBYRVIgPSAnWEVSJyxcbiAgVkFTID0gJ1ZBUycsXG4gIEFHRSA9ICdBR0UnLFxuICBPSUwgPSAnT0lMJyxcbiAgTUlYID0gJ01JWCcsXG4gIE5PUiA9ICdOT1InLFxuICBDSUMgPSAnQ0lDJyxcbiAgUkVNID0gJ1JFTSdcbn1cblxuZXhwb3J0IGVudW0gR3JhZGUge1xuICBHMCA9ICdHMCcsXG4gIEcxID0gJ0cxJyxcbiAgRzIgPSAnRzInLFxuICBHMyA9ICdHMydcbn1cblxuZXhwb3J0IGludGVyZmFjZSBMaXZlR3VpZGFuY2VTbmFwc2hvdCB7XG4gIGxpdmVHdWlkYW5jZVNjb3JlPzogbnVtYmVyO1xuICBkaXN0YW5jZUNtPzogbnVtYmVyO1xuICBwb3NlWWF3RGVncmVlcz86IG51bWJlcjtcbiAgcG9zZVBpdGNoRGVncmVlcz86IG51bWJlcjtcbiAgcG9zZVJvbGxEZWdyZWVzPzogbnVtYmVyO1xuICBjb3NtZXRpY3NDb25maWRlbmNlPzogbnVtYmVyO1xuICBjb3NtZXRpY3NEZXRlY3RlZEtpbmRzPzogc3RyaW5nW107XG4gIGNvbG9yVGVtcGVyYXR1cmVLZWx2aW4/OiBudW1iZXI7XG4gIGNvbG9yQ2FyZERldGVjdGVkPzogYm9vbGVhbjtcbn1cblxuZXhwb3J0IGludGVyZmFjZSBNU0NSZXN1bHQge1xuICBwcmltYXJ5UGhlbm90eXBlOiBQaGVub3R5cGU7XG4gIHByaW1hcnlHcmFkZTogR3JhZGU7XG4gIHNlY29uZGFyeVBoZW5vdHlwZT86IFBoZW5vdHlwZTtcbiAgc2Vjb25kYXJ5R3JhZGU/OiBHcmFkZTtcbiAgc25hcHNob3Q6IExpdmVHdWlkYW5jZVNuYXBzaG90O1xufVxuXG5leHBvcnQgdHlwZSBBcHBTdGF0ZSA9ICdsYW5kaW5nJyB8ICdzY2FubmluZycgfCAnYW5hbHl6aW5nJyB8ICdyZXN1bHRzJyB8ICd0aW1lbGluZScgfCAnY2F0YWxvZyc7XG4iXX0=

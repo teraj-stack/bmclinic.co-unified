@@ -46,7 +46,18 @@ export default function SiteHeader() {
       {/* Black glass — image logo left; wallpaper reads through frost */}
       <div className="site-header-glass">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5">
-          <Link href="/" className="shrink-0" aria-label="Bujok Medical — strona główna">
+          <div className="flex shrink-0 items-center gap-2.5">
+            {pathname !== '/' && (
+              <Link
+                id="bm-back-to-menu"
+                href="/"
+                className="bm-unified-pill inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold"
+                title="Wróć do głównego menu BM Clinic"
+              >
+                ← Wróć do menu
+              </Link>
+            )}
+            <Link href="/" className="shrink-0" aria-label="Bujok Medical — strona główna">
             <picture>
               <source srcSet="/brand/logo-bujok-medical-header.webp" type="image/webp" />
               <img
@@ -60,6 +71,7 @@ export default function SiteHeader() {
               />
             </picture>
           </Link>
+          </div>
 
           <nav className="hidden items-center gap-0.5 text-[13px] font-medium tracking-[-0.01em] lg:flex">
             {links.map((link) => {

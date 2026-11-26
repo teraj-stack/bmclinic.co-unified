@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Fraunces, Montserrat } from 'next/font/google';
+import Script from 'next/script';
 import SiteHeader from '@/components/layout/SiteHeader';
 import SiteFooter from '@/components/layout/SiteFooter';
 import AuthProvider from '@/components/auth/AuthProvider';
@@ -7,20 +7,6 @@ import { CartProvider } from '@/components/cart/CartProvider';
 import KillNextPortal from '@/components/dev/KillNextPortal';
 import LiveEditorToolbar from '@/components/cms/LiveEditorToolbar';
 import './globals.css';
-
-const montserrat = Montserrat({
-  variable: '--font-montserrat',
-  subsets: ['latin', 'latin-ext'],
-  weight: ['300', '400', '500', '600', '700', '800', '900'],
-  display: 'swap',
-});
-
-const fraunces = Fraunces({
-  variable: '--font-fraunces',
-  subsets: ['latin', 'latin-ext'],
-  weight: ['300', '400', '500', '600', '700', '800', '900'],
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL ?? 'https://bmclinic.net'),
@@ -35,9 +21,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pl">
-      <body
-        className={`${montserrat.variable} ${fraunces.variable} flex min-h-screen flex-col antialiased`}
-      >
+      <body className="flex min-h-screen flex-col antialiased">
         <KillNextPortal />
         <AuthProvider>
           <CartProvider>
@@ -47,6 +31,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <LiveEditorToolbar />
           </CartProvider>
         </AuthProvider>
+        <Script src="/bm-unified-shell.js" strategy="afterInteractive" />
       </body>
     </html>
   );

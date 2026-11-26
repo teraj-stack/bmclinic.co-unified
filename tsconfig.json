@@ -23,5 +23,12 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "chronos-vault-module",
+    "taskkill-assets",
+    "public",
+    "superagent-sdk",
+    "superagent-mcp"
+  ]
 }
