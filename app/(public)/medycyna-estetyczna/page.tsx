@@ -46,7 +46,7 @@ export default function MedycynaEstetycznaPage() {
           <h2 className="text-xl font-bold text-white">
             Dedykowane Aplikacje Interaktywne (Offline HTML)
           </h2>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-3">
             <a
               href="/estetyka/aplikacja-bioelektryczna.html"
               target="_blank"
@@ -77,6 +77,22 @@ export default function MedycynaEstetycznaPage() {
               </div>
               <p className="mt-1 text-xs text-slate-300">
                 Dedykowana prezentacja i protokół Zimnej Plazmy He-Tech wpięty w bmclinic.co →
+              </p>
+            </a>
+            <a
+              href="/estetyka/bm-clinic-medycyna-estetyczna-offline.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-2xl border border-emerald-500/30 bg-slate-900/80 p-5 transition hover:border-emerald-400"
+            >
+              <div className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
+                Moduł Offline (:3021) · HTML
+              </div>
+              <div className="mt-1 text-lg font-bold text-white">
+                Medycyna Estetyczna (Offline Bundle)
+              </div>
+              <p className="mt-1 text-xs text-slate-300">
+                Pełny pakiet offline BM Clinic Medycyna Estetyczna scalony z localhost:3021 →
               </p>
             </a>
           </div>
