@@ -32,6 +32,7 @@ const links = [
   { href: '/sklep', label: 'Sklep zabiegowy' },
   { href: '/o-nas', label: 'O nas' },
   { href: '/kontakt', label: 'Kontakt' },
+  { href: '/holding', label: 'Holding & SEO' },
 ];
 
 export default function SiteHeader() {

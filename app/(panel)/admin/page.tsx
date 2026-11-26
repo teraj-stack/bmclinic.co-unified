@@ -66,6 +66,12 @@ export default async function AdminDashboard() {
           >
             Otwórz Szufladę CMS & CLI
           </Link>
+          <a
+            href="/holding"
+            className="metal-chrome-edge rounded-xl bg-white/5 px-4 py-2.5 text-sm font-medium"
+          >
+            Panel Holding (SEO / AEO / Skaner) ↗
+          </a>
         </div>
       </div>
 

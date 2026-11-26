@@ -29,6 +29,10 @@ const nextConfig: NextConfig = {
           source: '/',
           destination: '/bmclinic-home.html',
         },
+        {
+          source: '/holding',
+          destination: '/holding/index.html',
+        },
       ],
       afterFiles: [
         {
@@ -41,6 +45,10 @@ const nextConfig: NextConfig = {
         },
       ],
       fallback: [
+        {
+          source: '/holding/:path((?!assets/|.*\\.).*)',
+          destination: '/holding/index.html',
+        },
         {
           source: '/mcml',
           destination: '/mcml/index.html',
