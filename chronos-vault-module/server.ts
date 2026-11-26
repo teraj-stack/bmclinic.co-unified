@@ -1936,6 +1936,7 @@ self.addEventListener('activate', (event) => {
     'spatial-3d',
     'cml-wilanow',
     'ai-studio-app',
+    'ruta',
   ]) {
     const mountDir = fs.existsSync(path.join(MASTER_ROOT_DIR, 'public', mountName))
       ? path.join(MASTER_ROOT_DIR, 'public', mountName)

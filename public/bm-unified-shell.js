@@ -114,6 +114,7 @@
         window.location.pathname.indexOf('/superagent') === 0 ||
         window.location.pathname.indexOf('/voice-builder') === 0 ||
         window.location.pathname.indexOf('/agent-llm') === 0 ||
+        window.location.pathname.indexOf('/ruta') === 0 ||
         window.location.pathname.indexOf('/myskincode') === 0 ||
         window.location.pathname.indexOf('/sentinel') === 0 ||
         window.location.pathname.indexOf('/taskkill') === 0;
@@ -206,6 +207,7 @@
                 window.location.pathname.indexOf('/superagent') === 0 ||
         window.location.pathname.indexOf('/voice-builder') === 0 ||
         window.location.pathname.indexOf('/agent-llm') === 0 ||
+        window.location.pathname.indexOf('/ruta') === 0 ||
                 window.location.pathname.indexOf('/myskincode') === 0 ||
                 window.location.pathname.indexOf('/sentinel') === 0
               ) {
