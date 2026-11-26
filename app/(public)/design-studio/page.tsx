@@ -1,15 +1,15 @@
-import MobileDesignStudioClient from '@/components/design/MobileDesignStudioClient';
+import DesignStudioAetherClient from '@/components/design/DesignStudioAetherClient';
 
 export const metadata = {
-  title: 'Mobile UI & Prompt Library — BM Clinics Design Studio',
+  title: 'BM Clinic × Aether Design Studio (:3016 + :3017) — Galeria, Generator Kodu, Kity UI & Sterowniki',
   description:
-    '10 trendujących bibliotek kolorystycznych na telefony, 4 rodzaje ergonomicznych przycisków, 4 układy mobilne i automatyczne prompty do generowania ekranów kliniki.',
+    'Połączone Design Studio z silnikiem animacji i haptyki Aether :3017, galerią modelową z generatorem całych projektów frontendowych, automatyzacjami, Web-Kit, Mobile-Kit, sterownikami i szablonami Vercel.',
 };
 
 export default function DesignStudioPage() {
   return (
-    <main className="min-h-screen bg-[#070b14]">
-      <MobileDesignStudioClient />
+    <main className="min-h-screen bg-[#040a09]">
+      <DesignStudioAetherClient />
     </main>
   );
 }

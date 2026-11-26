@@ -117,7 +117,9 @@
         window.location.pathname.indexOf('/ruta') === 0 ||
         window.location.pathname.indexOf('/myskincode') === 0 ||
         window.location.pathname.indexOf('/sentinel') === 0 ||
-        window.location.pathname.indexOf('/taskkill') === 0;
+        window.location.pathname.indexOf('/taskkill') === 0 ||
+        window.location.pathname.indexOf('/design-studio') === 0 ||
+        window.location.pathname.indexOf('/desingstudio') === 0;
       if (isDarkModule && skinId !== 'ivory-stone') {
         document.body.classList.add('bm-dark-surface');
       }

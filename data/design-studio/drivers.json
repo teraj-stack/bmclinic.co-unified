@@ -1,0 +1,93 @@
+[
+  {
+    "id": "drv-aether-rotary-3017",
+    "name": "Aether Rotary 120T & Haptic Synth Driver (:3017)",
+    "category": "haptic-3017",
+    "version": "3.0.17",
+    "latestVersion": "3.0.17",
+    "status": "installed",
+    "source": "http://127.0.0.1:3017/api/driver-calibration",
+    "capabilities": [
+      "270° CNC Detents",
+      "74 Hz WebAudio Click",
+      "Axial Push Impulse"
+    ],
+    "updatedAt": "2026-11-26T22:03:31.925Z"
+  },
+  {
+    "id": "drv-three-webgl-187",
+    "name": "Three.js WebGL2 / Shader Driver Pack",
+    "category": "webgl-3d",
+    "version": "0.187.0",
+    "latestVersion": "0.187.0",
+    "status": "installed",
+    "source": "aether-tactile-studio/package.json",
+    "capabilities": [
+      "Depth Parallax",
+      "PBR Metallic Roughness",
+      "Post-Processing Bloom"
+    ],
+    "updatedAt": "2026-11-26T22:03:31.925Z"
+  },
+  {
+    "id": "drv-mediapipe-vision",
+    "name": "MediaPipe Tasks Vision (Face & Hand Landmarker)",
+    "category": "vision-ai",
+    "version": "0.10.22",
+    "latestVersion": "0.10.22",
+    "status": "installed",
+    "source": "chomik-mediapipe-unified (:3018)",
+    "capabilities": [
+      "468 Face Mesh",
+      "Depth Estimation",
+      "Gesture Controls"
+    ],
+    "updatedAt": "2026-11-26T22:03:31.925Z"
+  },
+  {
+    "id": "drv-ollama-metal",
+    "name": "Ollama Apple M1 Pro Metal Runtime (:11434)",
+    "category": "local-llm",
+    "version": "0.18.x-metal",
+    "latestVersion": "0.18.x-metal",
+    "status": "synced-3017",
+    "source": "http://127.0.0.1:11434/api/tags",
+    "capabilities": [
+      "agy-operator:latest",
+      "bm-voice-builder:latest",
+      "superagent-guard-local:latest",
+      "qwen2.5vl:7b"
+    ],
+    "updatedAt": "2026-11-26T22:03:31.925Z"
+  },
+  {
+    "id": "drv-next-react-tw4",
+    "name": "Next.js + React 19 + Tailwind CSS v4 Runtime",
+    "category": "framework",
+    "version": "15.5.22 / 19.1.0 / 4.x",
+    "latestVersion": "15.5.22 / 19.1.0 / 4.x",
+    "status": "installed",
+    "source": "bmclinic-chronos-master/package.json",
+    "capabilities": [
+      "App Router RSC",
+      "Motion 12.43",
+      "OKLCH / Fresnel CSS4"
+    ],
+    "updatedAt": "2026-11-26T22:03:31.925Z"
+  },
+  {
+    "id": "drv-macos-voice-tts",
+    "name": "macOS Native Polish Speech & Audio Driver",
+    "category": "audio-tts",
+    "version": "say + afconvert (PL)",
+    "latestVersion": "say + afconvert (PL)",
+    "status": "installed",
+    "source": "server-master.ts /api/tts-speech",
+    "capabilities": [
+      "Głos Zosia/Krzysztof",
+      "Zero-Latency PCM/WAV",
+      "WebAudio Fallback"
+    ],
+    "updatedAt": "2026-11-26T22:03:31.925Z"
+  }
+]
