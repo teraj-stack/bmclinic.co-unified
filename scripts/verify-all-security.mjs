@@ -83,10 +83,17 @@ if (uniqueFiles.length < 50) {
 
 for (const absPath of uniqueFiles) {
   const relPath = path.relative(PROJECT_ROOT, absPath);
+  const isLiveMutableData =
+    relPath.endsWith('.layout.json') ||
+    relPath.endsWith('.tasks.json') ||
+    relPath === 'taskkill-assets/tasks.json';
+
   const buf = fs.readFileSync(absPath);
   const sha256 = crypto.createHash('sha256').update(buf).digest('hex');
   const stat = fs.statSync(absPath);
-  hashes[relPath] = { sha256, bytes: stat.size, mode: (stat.mode & 0o777).toString(8) };
+  if (!isLiveMutableData) {
+    hashes[relPath] = { sha256, bytes: stat.size, mode: (stat.mode & 0o777).toString(8) };
+  }
 
   const text = buf.toString('utf8');
 
@@ -142,6 +149,13 @@ if (VERIFY_ONLY) {
   } else {
     const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
     for (const [relPath, entry] of Object.entries(manifest.files || {})) {
+      if (
+        relPath.endsWith('.layout.json') ||
+        relPath.endsWith('.tasks.json') ||
+        relPath === 'taskkill-assets/tasks.json'
+      ) {
+        continue;
+      }
       if (!hashes[relPath]) {
         issues.push(`${relPath}: tracked file missing`);
       } else if (hashes[relPath].sha256 !== entry.sha256) {

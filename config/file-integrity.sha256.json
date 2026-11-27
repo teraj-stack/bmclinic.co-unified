@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T12:38:14.258Z",
+  "generatedAt": "2026-11-27T16:37:34.524Z",
   "totalFiles": 367,
   "algorithm": "sha256",
   "files": {
@@ -1394,8 +1394,8 @@
       "mode": "644"
     },
     "chronos-vault-module/src/server/securityHardening.ts": {
-      "sha256": "cb470e1d9b844e4167c08e198c74d8f85e1c205dd02265a6184078954e1c75ac",
-      "bytes": 4674,
+      "sha256": "b50c62988d729c90f177e2e9371e9c9c14d6dc051d7b63e8bb31ca4135d4366a",
+      "bytes": 5105,
       "mode": "644"
     },
     "chronos-vault-module/tsconfig.json": {
@@ -1789,8 +1789,8 @@
       "mode": "644"
     },
     "scripts/verify-all-security.mjs": {
-      "sha256": "7bf95862f8e50c7a6c8198d6ae2cfb32da9e7e1aad3adde941289e785b78fa6c",
-      "bytes": 5839,
+      "sha256": "b9ec1b9a7a686c11ea7097ff69feb6c55ae4c8bb91971f7035214fd521e5f0e2",
+      "bytes": 6210,
       "mode": "755"
     },
     "server-master.ts": {
@@ -1818,24 +1818,9 @@
       "bytes": 250,
       "mode": "644"
     },
-    "taskkill-assets/mindmaps/scalenie-3016.layout.json": {
-      "sha256": "a001b99badbb00b6644baa5ea21b47301da8b0be54b3c5edcdecd26521ad9d4b",
-      "bytes": 2211,
-      "mode": "644"
-    },
-    "taskkill-assets/mindmaps/scalenie-3016.tasks.json": {
-      "sha256": "83e8cbbd73e29ddb31bf28fc08fe16e42f15e44cd99a43e13cd834547645c736",
-      "bytes": 19157,
-      "mode": "644"
-    },
     "taskkill-assets/mindmaps/voice-builder-log.json": {
       "sha256": "a1b151e6c8814f910d137d9026a76c99934e9b7911bf9fd13ced7518cbcd480f",
       "bytes": 1565,
-      "mode": "644"
-    },
-    "taskkill-assets/tasks.json": {
-      "sha256": "229e456c6b64a1016b24d3cf3e349a73da1e4498681c7f70c4e0ce2249698d7c",
-      "bytes": 26473,
       "mode": "644"
     }
   }

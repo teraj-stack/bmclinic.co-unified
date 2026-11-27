@@ -301,8 +301,8 @@
   },
   {
     "id": 304,
-    "title": "✅ Google Drive Auto-Sync (co 60s) + Zaproszenia Zespołu PWA",
-    "body": "Synchronizacja na żywo z Dyskiem Google (/api/gdrive-sync/status, /api/gdrive-sync/now) i zaproszenia /api/invites z kodem weryfikacji.",
+    "title": "✅ Google Drive Auto-Sync (co 15s) + Paczki ZIP & Dokumenty (milenka@bmclinic.co)",
+    "body": "Dwukierunkowy sync co 15s (/api/gdrive-sync/status) dla mindmaps/* i tasks.json, kopie .bak przed zapisem oraz paczki bez __MACOSX na Dysku Google (folder 1ntHKh3BpUCadcVYgoJtuwoaoelj-uqE0).",
     "status": "Done",
     "priority": "Średni",
     "type": "Feature",
@@ -538,5 +538,35 @@
     "startDate": "2026-11-27",
     "endDate": "2026-11-27",
     "url": "/superagent"
+  },
+  {
+    "id": 73,
+    "title": "✅ Audyt Bezpieczeństwa & Manifest SHA-256 (367 plików · verify:security)",
+    "body": "Skrypt scripts/verify-all-security.mjs + config/file-integrity.sha256.json sprawdzający sumy kontrolne SHA-256, JSON-y, brak wycieków kluczy i uprawnienia plików.",
+    "status": "Done",
+    "priority": "Krytyczny",
+    "type": "Feature",
+    "labels": [
+      "7. STREFA IV · Narzędzia Budowy Stron & Bezpieczeństwo"
+    ],
+    "assignee": "Janek",
+    "startDate": "2026-11-27",
+    "endDate": "2026-11-27",
+    "url": "/superagent"
+  },
+  {
+    "id": 506,
+    "title": "⚠️ BRAK 6: Zgoda gmail.send (403 OAuth) w Plugins Manager",
+    "body": "Wtyczka Gmail wymaga ponownego połączenia konta w Plugins Manager ze zgodą gmail.send; Google Drive Cloud (1ntHKh3BpUCadcVYgoJtuwoaoelj-uqE0) jest już udostępniony bezpośrednio na milenka@bmclinic.co.",
+    "status": "Backlog",
+    "priority": "Wysoki",
+    "type": "Task",
+    "labels": [
+      "5. BRAKI / KONFIGURACJA (.env & Zewnętrzne API)"
+    ],
+    "assignee": "Janek + Milenka",
+    "startDate": "2026-11-27",
+    "endDate": "2026-11-27",
+    "url": "/logowanie"
   }
 ]

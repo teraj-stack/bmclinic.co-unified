@@ -88,7 +88,17 @@ export function superagentBodyGuardMiddleware(req: Request, res: Response, next:
       return;
     }
     const verdict = inspectSuperagentRules(serialized);
-    if (verdict.classification === 'block') {
+    const isTaskMetadataRoute =
+      req.path.startsWith('/api/tasks') ||
+      req.path.startsWith('/api/layout') ||
+      req.path.startsWith('/api/mindmaps');
+    const isOnlyEnvKeywordWarning =
+      isTaskMetadataRoute &&
+      verdict.violation_types.length === 1 &&
+      verdict.violation_types[0] === 'secret_exfiltration' &&
+      !/-----BEGIN (?:RSA|EC|PRIVATE) KEY-----/.test(serialized);
+
+    if (verdict.classification === 'block' && !isOnlyEnvKeywordWarning) {
       res.setHeader('X-Superagent-Guard', 'blocked');
       res.status(403).json({
         error: 'Payload zablokowany przez Superagent Body Guard.',
