@@ -19,7 +19,11 @@ import {
   type CloudTriggerType,
   type ReportedErrorRecord,
 } from './src/server/cloudFunctionsEngine';
-import { securityHardeningMiddleware, apiRateLimitMiddleware } from './src/server/securityHardening';
+import {
+  securityHardeningMiddleware,
+  apiRateLimitMiddleware,
+  superagentBodyGuardMiddleware,
+} from './src/server/securityHardening';
 import {
   startGoogleDriveAutoSync,
   syncNowToGoogleDrive,
@@ -59,7 +63,13 @@ app.use(securityHardeningMiddleware);
 app.use('/api', apiRateLimitMiddleware);
 app.use((req, res, next) => {
   if (CHRONOS_JSON_PATHS.some((prefix) => req.path.startsWith(prefix))) {
-    chronosJsonParser(req, res, next);
+    chronosJsonParser(req, res, (err) => {
+      if (err) {
+        next(err);
+        return;
+      }
+      superagentBodyGuardMiddleware(req, res, next);
+    });
     return;
   }
   next();

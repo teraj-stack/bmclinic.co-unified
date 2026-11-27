@@ -2,9 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'crypto';
 import { registerTransaction } from '@/lib/payments';
 import { createPendingOrder } from '@/lib/orders';
+import { assertSuperagentSafePayload } from '@/lib/superagentEngine';
 
 export async function POST(req: NextRequest) {
   const { items, email } = await req.json();
+
+  const safety = assertSuperagentSafePayload({ items, email });
+  if (!safety.allowed) {
+    return NextResponse.json(
+      { error: safety.verdict.reasoning, cwe_codes: safety.verdict.cwe_codes },
+      { status: 403 }
+    );
+  }
 
   if (!Array.isArray(items) || items.length === 0 || !email) {
     return NextResponse.json({ error: 'Nieprawidłowe dane zamówienia' }, { status: 400 });

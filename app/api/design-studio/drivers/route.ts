@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readDrivers, writeDrivers, type DriverPackageEntry } from '@/lib/designStudioStore';
+import { assertSuperagentSafePayload } from '@/lib/superagentEngine';
 
 export const runtime = 'nodejs';
 
@@ -54,6 +55,13 @@ interface DriversPostPayload {
 export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as DriversPostPayload;
+    const safety = assertSuperagentSafePayload(body);
+    if (!safety.allowed) {
+      return NextResponse.json(
+        { ok: false, error: safety.verdict.reasoning, cwe_codes: safety.verdict.cwe_codes },
+        { status: 403 }
+      );
+    }
     const current = readDrivers();
     const now = new Date().toISOString();
     const telemetry = await probeAetherAndOllama();

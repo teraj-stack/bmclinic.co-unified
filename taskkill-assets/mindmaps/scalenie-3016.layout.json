@@ -1,0 +1,121 @@
+{
+  "positions": {
+    "label:balanced": {
+      "root": {
+        "x": -139,
+        "y": 498
+      },
+      "branch-label-Grupa 1: Kompletne — Rdzeń BM Clinic (/)": {
+        "x": 975,
+        "y": -541
+      },
+      "task-101": {
+        "x": 1738,
+        "y": -1190
+      },
+      "task-102": {
+        "x": 2068,
+        "y": -877
+      },
+      "task-103": {
+        "x": 1719,
+        "y": -453
+      },
+      "task-104": {
+        "x": 1733,
+        "y": -289
+      },
+      "branch-label-Grupa 4: Kompletne — Drzewo & Sentinel Security": {
+        "x": 975,
+        "y": 377
+      },
+      "task-401": {
+        "x": 1749,
+        "y": -33
+      },
+      "task-402": {
+        "x": 1733,
+        "y": 137
+      },
+      "task-403": {
+        "x": 1733,
+        "y": 301
+      },
+      "task-404": {
+        "x": 1733,
+        "y": 465
+      },
+      "task-405": {
+        "x": 1733,
+        "y": 629
+      },
+      "task-406": {
+        "x": 1733,
+        "y": 793
+      },
+      "branch-label-Grupa 2: Kompletne — BM Holding (/holding/)": {
+        "x": -975,
+        "y": -842
+      },
+      "task-201": {
+        "x": -1748,
+        "y": -1006
+      },
+      "task-202": {
+        "x": -1732,
+        "y": -836
+      },
+      "task-203": {
+        "x": -1718,
+        "y": -672
+      },
+      "branch-label-Grupa 3: Kompletne — Chronos Vault (/vault/)": {
+        "x": -975,
+        "y": -82
+      },
+      "task-301": {
+        "x": -1748,
+        "y": -416
+      },
+      "task-302": {
+        "x": -1748,
+        "y": -240
+      },
+      "task-303": {
+        "x": -1732,
+        "y": -70
+      },
+      "task-304": {
+        "x": -1718,
+        "y": 94
+      },
+      "task-503": {
+        "x": -1732,
+        "y": 258
+      },
+      "branch-label-Grupa 5: Braki i Konfiguracja do Uzupełnienia": {
+        "x": -975,
+        "y": 760
+      },
+      "task-501": {
+        "x": -1748,
+        "y": 514
+      },
+      "task-502": {
+        "x": -1732,
+        "y": 684
+      },
+      "task-504": {
+        "x": -1718,
+        "y": 848
+      },
+      "task-505": {
+        "x": -1718,
+        "y": 1012
+      }
+    }
+  },
+  "media": {},
+  "bg": "dark",
+  "updatedAt": 1795731840582
+}

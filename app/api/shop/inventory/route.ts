@@ -9,6 +9,7 @@ import {
   type ShopCategory,
   type ShopInventoryProduct,
 } from '@/lib/shopInventoryStore';
+import { assertSuperagentSafePayload } from '@/lib/superagentEngine';
 
 export async function GET() {
   const products = getShopInventory();
@@ -33,6 +34,14 @@ export async function POST(req: NextRequest) {
       badge?: string;
       requiresConsultation?: boolean;
     };
+
+    const safety = assertSuperagentSafePayload(body);
+    if (!safety.allowed) {
+      return NextResponse.json(
+        { error: safety.verdict.reasoning, cwe_codes: safety.verdict.cwe_codes },
+        { status: 403 }
+      );
+    }
 
     if (body?.action === 'reset') {
       const products = resetInventoryProducts();

@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
+import { inspectSuperagentRules } from '../../../lib/superagentEdgeGuard';
 
 const RATE_WINDOW_MS = 60_000;
 const RATE_MAX_REQUESTS = 180;
@@ -7,7 +8,7 @@ const rateBuckets = new Map<string, { count: number; resetAt: number }>();
 /**
  * Production HTTP security hardening middleware for Chronos Vault (Express).
  * Protects against MIME sniffing, clickjacking, referrer leaks, stack fingerprinting,
- * malformed/oversized URLs, and path traversal attempts.
+ * malformed/oversized URLs, path traversal attempts, and enforces Superagent HTTP Guard.
  */
 export function securityHardeningMiddleware(req: Request, res: Response, next: NextFunction): void {
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -21,10 +22,7 @@ export function securityHardeningMiddleware(req: Request, res: Response, next: N
     'camera=(self), microphone=(self), geolocation=(), payment=()'
   );
   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
-
-  if (process.env.NODE_ENV === 'production' && req.secure) {
-    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-  }
+  res.setHeader('X-Superagent-Guard', 'active; express-gateway');
 
   const rawUrl = req.originalUrl || '';
   if (rawUrl.length > 4096) {
@@ -50,6 +48,53 @@ export function securityHardeningMiddleware(req: Request, res: Response, next: N
     return;
   }
 
+  if (!req.path.startsWith('/api/superagent/')) {
+    const verdict = inspectSuperagentRules(decodedUrl);
+    if (verdict.classification === 'block') {
+      res.setHeader('X-Superagent-Guard', 'blocked');
+      res.status(403).json({
+        error: 'Blocked by Superagent Gateway Guard',
+        violation_types: verdict.violation_types,
+        cwe_codes: verdict.cwe_codes,
+      });
+      return;
+    }
+  }
+
+  if (process.env.NODE_ENV === 'production' && req.secure) {
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  }
+
+  next();
+}
+
+/**
+ * Superagent JSON payload guard executed after express.json() for Chronos Vault routes.
+ */
+export function superagentBodyGuardMiddleware(req: Request, res: Response, next: NextFunction): void {
+  if (req.path.startsWith('/api/superagent/') || !req.body || typeof req.body !== 'object') {
+    next();
+    return;
+  }
+  try {
+    const serialized = JSON.stringify(req.body);
+    if (serialized.length > 200_000) {
+      next();
+      return;
+    }
+    const verdict = inspectSuperagentRules(serialized);
+    if (verdict.classification === 'block') {
+      res.setHeader('X-Superagent-Guard', 'blocked');
+      res.status(403).json({
+        error: 'Payload zablokowany przez Superagent Body Guard.',
+        violation_types: verdict.violation_types,
+        cwe_codes: verdict.cwe_codes,
+      });
+      return;
+    }
+  } catch {
+    // Ignore non-serializable payloads
+  }
   next();
 }
 

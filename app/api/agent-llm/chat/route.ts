@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import {
   evaluateCommunicationCompliance,
   openOllamaChatStream,
-  runFastGuardCheck,
   type AgentChatMessage,
 } from '@/lib/agentLlmEngine';
+import { runSuperagentGuard } from '@/lib/superagentEngine';
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,7 +21,13 @@ export async function POST(req: NextRequest) {
     }
 
     const requestStart = performance.now();
-    const guard = runFastGuardCheck(lastUser.content);
+    const guardResult = await runSuperagentGuard(lastUser.content);
+    const guard = {
+      classification: guardResult.classification,
+      violations: guardResult.violation_types,
+      cweCodes: guardResult.cwe_codes,
+      engine: guardResult.engine,
+    };
     const encoder = new TextEncoder();
 
     if (guard.classification === 'block') {

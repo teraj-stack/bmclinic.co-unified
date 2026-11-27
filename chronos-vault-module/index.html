@@ -67,19 +67,109 @@
     <script>
       (function () {
         var initialVersion = null;
-        // Restore scroll position after a version reload
+        var SCROLL_KEY = 'chronos_scroll_state_v2';
+        var LEGACY_SCROLL_KEY = 'chronos_scroll_y_v1';
+        var userInteractedSinceLoad = false;
+
         try {
-          var savedY = sessionStorage.getItem('chronos_scroll_y_v1');
-          if (savedY) {
-            sessionStorage.removeItem('chronos_scroll_y_v1');
-            requestAnimationFrame(function () {
-              window.scrollTo(0, parseInt(savedY, 10) || 0);
-            });
+          if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
           }
         } catch (e) {}
 
-        // Anti-window-lock safeguard: prevents accidental/malicious pointer-lock,
-        // fullscreen traps, or frozen scroll/pointer-events inside the web app.
+        function readSavedScrollState() {
+          try {
+            var raw = sessionStorage.getItem(SCROLL_KEY);
+            if (raw) {
+              var parsed = JSON.parse(raw);
+              if (parsed && typeof parsed.y === 'number') return parsed;
+            }
+            var legacyY = sessionStorage.getItem(LEGACY_SCROLL_KEY);
+            if (legacyY) {
+              return { y: parseInt(legacyY, 10) || 0, x: 0, containers: [] };
+            }
+          } catch (e) {}
+          return null;
+        }
+
+        function saveCurrentScrollState() {
+          try {
+            var y = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            var x = window.scrollX || document.documentElement.scrollLeft || 0;
+            var containers = [];
+            var candidates = document.querySelectorAll('#root [class*="overflow-y"], main, [data-scroll-container]');
+            for (var i = 0; i < candidates.length && i < 24; i++) {
+              var el = candidates[i];
+              if (el.scrollTop > 0) {
+                containers.push({ idx: i, top: el.scrollTop });
+              }
+            }
+            sessionStorage.setItem(SCROLL_KEY, JSON.stringify({ y: y, x: x, containers: containers, ts: Date.now() }));
+            sessionStorage.setItem(LEGACY_SCROLL_KEY, String(y));
+          } catch (e) {}
+        }
+
+        var markUserScroll = function () {
+          userInteractedSinceLoad = true;
+        };
+        window.addEventListener('wheel', markUserScroll, { passive: true, once: true });
+        window.addEventListener('touchmove', markUserScroll, { passive: true, once: true });
+
+        var scrollSaveTimer = null;
+        window.addEventListener('scroll', function () {
+          if (scrollSaveTimer) clearTimeout(scrollSaveTimer);
+          scrollSaveTimer = setTimeout(saveCurrentScrollState, 120);
+        }, { passive: true });
+        document.addEventListener('scroll', function (ev) {
+          if (ev.target && ev.target !== document) {
+            if (scrollSaveTimer) clearTimeout(scrollSaveTimer);
+            scrollSaveTimer = setTimeout(saveCurrentScrollState, 120);
+          }
+        }, { passive: true, capture: true });
+        window.addEventListener('beforeunload', saveCurrentScrollState);
+        window.addEventListener('pagehide', saveCurrentScrollState);
+
+        var savedState = readSavedScrollState();
+        if (savedState && (savedState.y > 0 || (savedState.containers && savedState.containers.length > 0))) {
+          var applyRestore = function () {
+            if (userInteractedSinceLoad) return true;
+            if (savedState.y > 0) {
+              var maxScrollable = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+              window.scrollTo(savedState.x || 0, Math.min(savedState.y, Math.max(savedState.y, maxScrollable)));
+            }
+            if (savedState.containers && savedState.containers.length > 0) {
+              var candidates = document.querySelectorAll('#root [class*="overflow-y"], main, [data-scroll-container]');
+              for (var j = 0; j < savedState.containers.length; j++) {
+                var c = savedState.containers[j];
+                if (candidates[c.idx] && c.top > 0) {
+                  candidates[c.idx].scrollTop = c.top;
+                }
+              }
+            }
+            var currentY = window.scrollY || document.documentElement.scrollTop || 0;
+            return Math.abs(currentY - savedState.y) < 12;
+          };
+
+          [0, 80, 220, 480, 900, 1500].forEach(function (delay) {
+            setTimeout(applyRestore, delay);
+          });
+
+          var rootEl = document.getElementById('root');
+          if (rootEl && typeof MutationObserver !== 'undefined') {
+            var mo = new MutationObserver(function () {
+              if (userInteractedSinceLoad) {
+                mo.disconnect();
+                return;
+              }
+              if (applyRestore()) {
+                mo.disconnect();
+              }
+            });
+            mo.observe(rootEl, { childList: true, subtree: true });
+            setTimeout(function () { mo.disconnect(); }, 3000);
+          }
+        }
+
         function unlockWindowState() {
           try {
             if (document.pointerLockElement && document.exitPointerLock) {
@@ -106,51 +196,61 @@
             unlockWindowState();
           }
         }, true);
-        // Periodic check: never allow the root document to stay stuck with pointerEvents: none
         setInterval(function () {
           if (document.body && document.body.style.pointerEvents === 'none') {
             document.body.style.pointerEvents = '';
           }
         }, 2000);
 
-        // Subtle live 5s refresh indicator pill (bottom-right) so user sees live ticks without losing active view
         var badge = document.createElement('div');
-        badge.id = 'chronos-live-5s-badge';
+        badge.id = 'chronos-live-4s-badge';
         badge.style.cssText =
           'position:fixed;right:12px;bottom:12px;z-index:9999;padding:4px 10px;border-radius:999px;font:600 11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(15,23,42,0.82);color:#e2e8f0;border:1px solid rgba(56,189,248,0.45);backdrop-filter:blur(6px);pointer-events:none;transition:transform 0.2s ease,border-color 0.2s ease;';
         function fmtTime() {
           return new Date().toLocaleTimeString('pl-PL', { hour12: false });
         }
-        badge.textContent = '● Live 5s · ' + fmtTime();
+        badge.textContent = '● Live 4s · ' + fmtTime();
         document.body.appendChild(badge);
 
-        // Every 5s: soft-refresh live data in-place (preserving exact open view & running functions).
-        // Only perform a full page reload when a new server build (ETag/Last-Modified) is detected.
         setInterval(function () {
           if (document.visibilityState !== 'visible') return;
-          badge.textContent = '● Live 5s · ' + fmtTime();
+          saveCurrentScrollState();
+          var beforeY = window.scrollY || document.documentElement.scrollTop || 0;
+          var beforeX = window.scrollX || document.documentElement.scrollLeft || 0;
+
+          badge.textContent = '● Live 4s · ' + fmtTime();
           badge.style.borderColor = '#22c55e';
           badge.style.transform = 'scale(1.04)';
           setTimeout(function () {
             badge.style.borderColor = 'rgba(56,189,248,0.45)';
             badge.style.transform = 'scale(1)';
           }, 350);
+
           window.dispatchEvent(new CustomEvent('chronos:soft-refresh', { detail: { ts: Date.now() } }));
+          requestAnimationFrame(function () {
+            if (!userInteractedSinceLoad || Math.abs((window.scrollY || 0) - beforeY) > 8) {
+              var currentY = window.scrollY || document.documentElement.scrollTop || 0;
+              if (beforeY > 0 && currentY === 0) {
+                window.scrollTo(beforeX, beforeY);
+              }
+            }
+          });
+
           if (document.querySelector('input:focus, textarea:focus, select:focus, [contenteditable="true"]:focus')) {
             return;
           }
-          fetch('/', { method: 'HEAD', cache: 'no-store' })
+          fetch(window.location.pathname, { method: 'HEAD', cache: 'no-store' })
             .then(function (res) {
               var ver = res.headers.get('etag') || res.headers.get('last-modified') || '';
               if (!initialVersion) {
                 initialVersion = ver;
               } else if (ver && ver !== initialVersion) {
-                try { sessionStorage.setItem('chronos_scroll_y_v1', String(window.scrollY || 0)); } catch (e) {}
+                saveCurrentScrollState();
                 window.location.reload();
               }
             })
             .catch(function () {});
-        }, 5000);
+        }, 4000);
       })();
     </script>
   </body>

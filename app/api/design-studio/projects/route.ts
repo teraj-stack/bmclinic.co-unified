@@ -7,6 +7,7 @@ import {
   type DesignGalleryItem,
   type GalleryProjectPalette,
 } from '@/lib/designStudioStore';
+import { assertSuperagentSafePayload } from '@/lib/superagentEngine';
 
 export const runtime = 'nodejs';
 
@@ -35,6 +36,19 @@ interface CreateProjectPayload {
 export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as CreateProjectPayload;
+    const safety = assertSuperagentSafePayload({
+      action: body.action,
+      title: body.title,
+      subtitle: body.subtitle,
+      animationMode: body.animationMode,
+      kitTarget: body.kitTarget,
+    });
+    if (!safety.allowed) {
+      return NextResponse.json(
+        { ok: false, error: safety.verdict.reasoning, cwe_codes: safety.verdict.cwe_codes },
+        { status: 403 }
+      );
+    }
     const current = readProjects();
 
     if (body.action === 'regenerate-all') {

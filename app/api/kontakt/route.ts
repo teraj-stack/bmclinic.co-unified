@@ -3,6 +3,7 @@ import { randomUUID } from 'crypto';
 import fs from 'fs/promises';
 import path from 'path';
 import nodemailer from 'nodemailer';
+import { assertSuperagentSafePayload } from '@/lib/superagentEngine';
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,6 +15,14 @@ export async function POST(req: NextRequest) {
 
     if (!name || !email || !message) {
       return NextResponse.json({ error: 'Brak wymaganych pól' }, { status: 400 });
+    }
+
+    const safety = assertSuperagentSafePayload({ name, email, phone, message });
+    if (!safety.allowed) {
+      return NextResponse.json(
+        { error: safety.verdict.reasoning, cwe_codes: safety.verdict.cwe_codes },
+        { status: 403 }
+      );
     }
 
     const inquiryId = `msg-${randomUUID()}`;

@@ -7,6 +7,7 @@ import { createCalendarEvent } from '@/lib/googleCalendar';
 import { getDoctorCalendarCreds } from '@/lib/doctors';
 import { savePendingVisit } from '@/lib/visits';
 import { getServiceById } from '@/lib/servicesCatalog';
+import { assertSuperagentSafePayload } from '@/lib/superagentEngine';
 
 async function persistBookingLocally(record: Record<string, unknown>) {
   try {
@@ -79,6 +80,14 @@ export async function POST(req: NextRequest) {
 
     if (!doctorId || !serviceId || !patientEmail || !start || !end) {
       return NextResponse.json({ error: 'Brak wymaganych danych rezerwacji' }, { status: 400 });
+    }
+
+    const safety = assertSuperagentSafePayload({ doctorId, serviceId, patientEmail, patientPhone, patientName });
+    if (!safety.allowed) {
+      return NextResponse.json(
+        { error: safety.verdict.reasoning, cwe_codes: safety.verdict.cwe_codes },
+        { status: 403 }
+      );
     }
 
     const service = await getServiceById(serviceId);

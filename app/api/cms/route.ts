@@ -13,6 +13,7 @@ import {
   type CmsState,
 } from '@/lib/cmsStore';
 import type { CatalogService } from '@/lib/servicesCatalog';
+import { assertSuperagentSafePayload } from '@/lib/superagentEngine';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,6 +29,13 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    const safety = assertSuperagentSafePayload(body);
+    if (!safety.allowed) {
+      return NextResponse.json(
+        { error: safety.verdict.reasoning, cwe_codes: safety.verdict.cwe_codes },
+        { status: 403 }
+      );
+    }
     const action = body?.action as string | undefined;
 
     let nextState: CmsState;

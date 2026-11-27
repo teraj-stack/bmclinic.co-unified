@@ -1,28 +1,64 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { inspectSuperagentRules } from '@/lib/superagentEdgeGuard';
 
 const AUTH_SECRET =
   process.env.NEXTAUTH_SECRET || 'bmclinics-live-cms-secret-2026-mlasers0110';
 
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: AUTH_SECRET });
+  const pathname = req.nextUrl.pathname;
 
-  if (req.nextUrl.pathname.startsWith('/admin') && token?.role !== 'ADMIN') {
-    return NextResponse.redirect(new URL('/logowanie', req.url));
+  // Global Superagent Edge inspection on URL/query (skip Superagent's own test endpoint)
+  if (!pathname.startsWith('/api/superagent/')) {
+    let inspectTarget = pathname + req.nextUrl.search;
+    try {
+      inspectTarget = decodeURIComponent(inspectTarget);
+    } catch {
+      // Keep raw string if malformed
+    }
+    const edgeGuard = inspectSuperagentRules(inspectTarget);
+    if (edgeGuard.classification === 'block') {
+      return NextResponse.json(
+        {
+          error: 'Żądanie zablokowane przez Superagent System Guard.',
+          classification: edgeGuard.classification,
+          violation_types: edgeGuard.violation_types,
+          cwe_codes: edgeGuard.cwe_codes,
+        },
+        {
+          status: 403,
+          headers: { 'X-Superagent-Guard': 'blocked' },
+        }
+      );
+    }
   }
+
   if (
-    req.nextUrl.pathname.startsWith('/lekarz') &&
-    !['DOCTOR', 'ADMIN'].includes(token?.role as string)
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/lekarz') ||
+    pathname.startsWith('/pacjent')
   ) {
-    return NextResponse.redirect(new URL('/logowanie', req.url));
-  }
-  if (req.nextUrl.pathname.startsWith('/pacjent') && !token) {
-    return NextResponse.redirect(new URL('/logowanie', req.url));
+    const token = await getToken({ req, secret: AUTH_SECRET });
+
+    if (pathname.startsWith('/admin') && token?.role !== 'ADMIN') {
+      return NextResponse.redirect(new URL('/logowanie', req.url));
+    }
+    if (
+      pathname.startsWith('/lekarz') &&
+      !['DOCTOR', 'ADMIN'].includes(token?.role as string)
+    ) {
+      return NextResponse.redirect(new URL('/logowanie', req.url));
+    }
+    if (pathname.startsWith('/pacjent') && !token) {
+      return NextResponse.redirect(new URL('/logowanie', req.url));
+    }
   }
 
-  return NextResponse.next();
+  const res = NextResponse.next();
+  res.headers.set('X-Superagent-Guard', 'active; edge+node');
+  return res;
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/lekarz/:path*', '/pacjent/:path*'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };
