@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import CategoryBackground from '@/components/theme/CategoryBackground';
+import CategorySubthemeShell from '@/components/theme/CategorySubthemeShell';
 import { CATEGORY_THEMES } from '@/lib/categoryThemes';
 
 interface Props {
@@ -36,13 +37,13 @@ export default async function KategoriaLayout({ children, params }: Props) {
   };
 
   return (
-    <div data-category={theme.slug} className="category-shell min-h-screen">
+    <CategorySubthemeShell slug={theme.slug} subthemes={theme.subthemes}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <CategoryBackground motionStyle={theme.motionStyle} />
       <main className="relative z-10 px-4 py-8">{children}</main>
-    </div>
+    </CategorySubthemeShell>
   );
 }

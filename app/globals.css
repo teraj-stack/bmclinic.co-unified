@@ -179,31 +179,88 @@
   --foreground: var(--text-primary);
 }
 
+/* Proktologia — Ciemna Zieleń & Grafit (wg wzorca mobilnego) */
 [data-category='proktologia'] {
-  --cat-accent: #c4a874;
-  --cat-accent-dark: #8b7355;
-  --cat-accent-light: rgba(196, 168, 116, 0.14);
-  --cat-bg: #0f0e0c;
-  --cat-card-bg: #1d1b16;
-  --cat-text: #f1f0ed;
+  --cat-accent: #2ee6b5;
+  --cat-accent-dark: #065f46;
+  --cat-accent-light: rgba(46, 230, 181, 0.16);
+  --cat-bg:
+    radial-gradient(960px 560px at 82% 2%, rgba(20, 110, 96, 0.34), transparent 62%),
+    radial-gradient(760px 520px at 14% 86%, rgba(16, 78, 72, 0.25), transparent 60%),
+    linear-gradient(180deg, #041312 0%, #071b19 52%, #0a1416 100%);
+  --cat-card-bg: rgba(11, 31, 29, 0.9);
+  --cat-card-border: rgba(46, 230, 181, 0.24);
+  --cat-text: #ecfdf8;
+  --cat-muted: #a6c4bd;
+  --cat-cta-bg: linear-gradient(135deg, #0f766e 0%, #059669 100%);
+  --cat-cta-text: #ffffff;
+  --cat-secondary-bg: rgba(16, 44, 41, 0.85);
+  --cat-secondary-border: rgba(46, 230, 181, 0.32);
+  --cat-secondary-text: #d1fae5;
 }
 
+/* Flebologia (domyślnie Profil Kobiety) — Lawendowo-Niebieska */
 [data-category='zylaki-naczynka'] {
-  --cat-accent: #a8b0b8;
-  --cat-accent-dark: #7a8490;
-  --cat-accent-light: rgba(168, 176, 184, 0.14);
-  --cat-bg: #0c0e10;
-  --cat-card-bg: #1a1c1f;
-  --cat-text: #f1f0ed;
+  --cat-accent: #4f46e5;
+  --cat-accent-dark: #3730a3;
+  --cat-accent-light: rgba(99, 102, 241, 0.16);
+  --cat-bg:
+    radial-gradient(920px 580px at 84% 4%, rgba(165, 180, 252, 0.45), transparent 60%),
+    radial-gradient(780px 500px at 12% 88%, rgba(196, 181, 253, 0.36), transparent 60%),
+    linear-gradient(180deg, #f6f4ff 0%, #eef2ff 52%, #e6f0ff 100%);
+  --cat-card-bg: rgba(255, 255, 255, 0.9);
+  --cat-card-border: rgba(99, 102, 241, 0.28);
+  --cat-text: #1b1b42;
+  --cat-muted: #475569;
+  --cat-cta-bg: linear-gradient(135deg, #6366f1 0%, #2563eb 100%);
+  --cat-cta-text: #ffffff;
+  --cat-secondary-bg: rgba(238, 242, 255, 0.92);
+  --cat-secondary-border: rgba(99, 102, 241, 0.36);
+  --cat-secondary-text: #312e81;
 }
 
+/* Flebologia (Profil Mężczyźni) — Zielono-Turkusowo-Niebieska */
+[data-category='zylaki-naczynka'][data-subtheme='male'] {
+  --cat-accent: #2dd4bf;
+  --cat-accent-dark: #0e7490;
+  --cat-accent-light: rgba(45, 212, 191, 0.18);
+  --cat-bg:
+    radial-gradient(960px 600px at 85% 4%, rgba(20, 184, 166, 0.28), transparent 62%),
+    radial-gradient(780px 520px at 10% 88%, rgba(14, 165, 233, 0.24), transparent 60%),
+    linear-gradient(180deg, #041820 0%, #07262e 55%, #071e2b 100%);
+  --cat-card-bg: rgba(9, 38, 46, 0.9);
+  --cat-card-border: rgba(45, 212, 191, 0.28);
+  --cat-text: #ecfeff;
+  --cat-muted: #9ad1db;
+  --cat-cta-bg: linear-gradient(135deg, #0d9488 0%, #0284c7 100%);
+  --cat-cta-text: #ffffff;
+  --cat-secondary-bg: rgba(11, 52, 62, 0.88);
+  --cat-secondary-border: rgba(56, 189, 248, 0.34);
+  --cat-secondary-text: #cffafe;
+}
+
+/* Chirurgia Ogólna — Jasna Pastelowa Biel z Elementami Stali, Srebra i Tytanu */
 [data-category='chirurgia-ogolna'] {
-  --cat-accent: #d4c4a8;
-  --cat-accent-dark: #8b7355;
-  --cat-accent-light: rgba(212, 196, 168, 0.14);
-  --cat-bg: #100e0b;
-  --cat-card-bg: #1d1b16;
-  --cat-text: #f1f0ed;
+  --cat-accent: #334155;
+  --cat-accent-dark: #1e293b;
+  --cat-accent-light: rgba(148, 163, 184, 0.22);
+  --cat-bg:
+    radial-gradient(960px 600px at 82% 4%, rgba(203, 213, 225, 0.45), transparent 62%),
+    radial-gradient(800px 520px at 14% 90%, rgba(226, 232, 240, 0.55), transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #f5f7fa 55%, #edf1f5 100%);
+  --cat-card-bg: rgba(255, 255, 255, 0.94);
+  --cat-card-border: rgba(148, 163, 184, 0.46);
+  --cat-text: #0f172a;
+  --cat-muted: #475569;
+  --cat-cta-bg: linear-gradient(135deg, #334155 0%, #475569 52%, #64748b 100%);
+  --cat-cta-text: #ffffff;
+  --cat-secondary-bg: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+  --cat-secondary-border: rgba(100, 116, 139, 0.42);
+  --cat-secondary-text: #1e293b;
+}
+
+.category-shell .glass-card {
+  border-color: var(--cat-card-border, rgba(142, 148, 156, 0.35));
 }
 
 @theme inline {

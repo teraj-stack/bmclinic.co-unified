@@ -12,7 +12,8 @@
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
     "cli": "node scripts/bmclinics-cli.mjs",
-    "build:offline": "node scripts/build-offline.mjs"
+    "build:offline": "node scripts/build-offline.mjs",
+    "verify:security": "node scripts/verify-all-security.mjs"
   },
   "bin": {
     "bmclinics-cli": "./scripts/bmclinics-cli.mjs"

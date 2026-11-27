@@ -1025,14 +1025,27 @@
     return structuredClone(window.INITIAL_TASKS || []);
   }
 
+  let _pendingLocalSave = false;
+
   function saveTasks() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
     if (location.protocol.startsWith("http")) {
+      _pendingLocalSave = true;
       fetch(API_TASKS_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tasks),
-      }).catch(() => {});
+      })
+        .then(async (res) => {
+          _pendingLocalSave = false;
+          if (!res.ok) {
+            showToast(`⚠️ Błąd zapisu na serwer (HTTP ${res.status}) — dane zachowane lokalnie`);
+          }
+        })
+        .catch(() => {
+          _pendingLocalSave = false;
+          showToast("⚠️ Brak połączenia z serwerem — zmiany zapisane tymczasowo lokalnie");
+        });
     }
   }
 
@@ -1048,12 +1061,15 @@
   }
 
   async function syncFromDiskIfAvailable(opts = {}) {
-    if (!location.protocol.startsWith("http")) return;
+    if (!location.protocol.startsWith("http") || _pendingLocalSave) return;
     try {
       const res = await fetch(API_TASKS_URL, { cache: "no-store" });
       if (res.status === 200) {
         const diskTasks = await res.json();
         if (Array.isArray(diskTasks)) {
+          if (diskTasks.length === 0 && Array.isArray(tasks) && tasks.length > 0) {
+            return;
+          }
           const nextJson = JSON.stringify(diskTasks);
           const prevJson = JSON.stringify(tasks);
           if (nextJson === prevJson) {
@@ -3725,6 +3741,16 @@
     } catch (_) {}
   }
   syncLayoutFromServer();
+
+  // Płynna synchronizacja między komputerami co 15 sekund (tylko gdy modal zamknięty i użytkownik nie pisze)
+  setInterval(() => {
+    if (document.visibilityState !== "visible") return;
+    if (document.querySelector("input:focus, textarea:focus, select:focus, [contenteditable='true']:focus")) return;
+    const modalOpen = document.querySelector(".modal-backdrop:not(.hidden)");
+    if (modalOpen) return;
+    syncFromDiskIfAvailable({ silent: true });
+    syncLayoutFromServer();
+  }, 15000);
 
   // Łagodna synchronizacja co 5 minut bez przerywania pracy użytkownika i bez skoków obrazu
   window.addEventListener("taskkill:soft-sync", () => {

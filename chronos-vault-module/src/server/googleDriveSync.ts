@@ -173,6 +173,60 @@ export function syncNowToGoogleDrive(
     fs.mkdirSync(liveDir, { recursive: true });
     syncMindmapsBidirectional(projectRoot, liveDir, pushed, pulled, conflicts);
 
+    // Sync default TaskKill tasks.json and layout.json bidirectionally too
+    for (const rootAsset of ['tasks.json', 'layout.json']) {
+      const localAsset = path.join(projectRoot, 'taskkill-assets', rootAsset);
+      const driveAsset = path.join(liveDir, rootAsset);
+      const hasLocal = fs.existsSync(localAsset);
+      const hasDrive = fs.existsSync(driveAsset);
+
+      if (hasLocal && !hasDrive) {
+        fs.copyFileSync(localAsset, driveAsset);
+        pushed.push(rootAsset);
+      } else if (!hasLocal && hasDrive) {
+        fs.copyFileSync(driveAsset, localAsset);
+        pulled.push(rootAsset);
+      } else if (hasLocal && hasDrive) {
+        const localBuf = fs.readFileSync(localAsset);
+        const driveBuf = fs.readFileSync(driveAsset);
+        if (Buffer.compare(localBuf, driveBuf) !== 0) {
+          const lStat = fs.statSync(localAsset);
+          const dStat = fs.statSync(driveAsset);
+          const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+          const backupDir = path.join(projectRoot, 'taskkill-assets', 'mindmaps-backups');
+          fs.mkdirSync(backupDir, { recursive: true });
+
+          // Never overwrite non-empty tasks.json with empty array []
+          let driveEmpty = false;
+          if (rootAsset === 'tasks.json') {
+            try {
+              const parsed = JSON.parse(driveBuf.toString('utf8'));
+              if (Array.isArray(parsed) && parsed.length === 0) driveEmpty = true;
+            } catch {
+              driveEmpty = true;
+            }
+          }
+
+          if (!driveEmpty && dStat.mtimeMs > lStat.mtimeMs + 1500) {
+            const bakPath = path.join(backupDir, `${rootAsset}.${stamp}.local.bak`);
+            fs.copyFileSync(localAsset, bakPath);
+            fs.copyFileSync(driveAsset, localAsset);
+            pulled.push(rootAsset);
+            conflicts.push({
+              file: rootAsset,
+              driveMtime: dStat.mtime.toISOString(),
+              localMtime: lStat.mtime.toISOString(),
+              backupPath: bakPath,
+              resolution: 'pulled-drive-with-local-backup',
+            });
+          } else {
+            fs.copyFileSync(localAsset, driveAsset);
+            pushed.push(rootAsset);
+          }
+        }
+      }
+    }
+
     const localSnapPath = getLocalSnapshotPath(projectRoot);
     const driveSnapPath = path.join(liveDir, 'client-state-snapshot.json');
 

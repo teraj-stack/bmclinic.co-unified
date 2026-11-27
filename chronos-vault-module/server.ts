@@ -1778,11 +1778,29 @@ app.post('/api/tasks', (req, res) => {
         // Proceed with write if existing file is unreadable
       }
     }
+    if (fs.existsSync(files.tasksFile)) {
+      try {
+        const prevRaw = fs.readFileSync(files.tasksFile, 'utf-8');
+        const nextRaw = JSON.stringify(req.body, null, 2);
+        if (prevRaw !== nextRaw) {
+          const backupDir = path.join(MASTER_ROOT_DIR, 'taskkill-assets', 'mindmaps-backups');
+          fs.mkdirSync(backupDir, { recursive: true });
+          const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+          fs.writeFileSync(
+            path.join(backupDir, `${path.basename(files.tasksFile)}.${stamp}.server.bak`),
+            prevRaw,
+            'utf-8'
+          );
+        }
+      } catch {
+        // Ignore backup read errors
+      }
+    }
     const tmpFile = `${files.tasksFile}.tmp`;
     fs.writeFileSync(tmpFile, JSON.stringify(req.body, null, 2), 'utf-8');
     fs.renameSync(tmpFile, files.tasksFile);
     syncNowToGoogleDrive(MASTER_ROOT_DIR);
-    res.json({ ok: true, map: files.id, count: req.body.length });
+    res.json({ ok: true, map: files.id, count: req.body.length, savedAt: new Date().toISOString() });
   } catch (err) {
     res.status(500).json({ error: String(err) });
   }

@@ -1,0 +1,1842 @@
+{
+  "generatedAt": "2026-11-27T12:38:14.258Z",
+  "totalFiles": 367,
+  "algorithm": "sha256",
+  "files": {
+    "app/(panel)/admin/bezpieczenstwo/page.tsx": {
+      "sha256": "83293391b975c90a6f69b8525c89efd274f83086e9fd2a326ba9c2b0888efa6e",
+      "bytes": 9071,
+      "mode": "644"
+    },
+    "app/(panel)/admin/chronos/page.tsx": {
+      "sha256": "332347e3e04d33769d2c86a852e3de0929ea4862296b00fa9a62148476fc77ef",
+      "bytes": 254,
+      "mode": "644"
+    },
+    "app/(panel)/admin/layout.tsx": {
+      "sha256": "b0835e123718e51d03577c729fd4a0f6db502251eacdfe33f0dea4332f67618e",
+      "bytes": 1021,
+      "mode": "644"
+    },
+    "app/(panel)/admin/lekarze/page.tsx": {
+      "sha256": "3f7617be47ade3fe540d8dfce0866b70e4d09d2b479ff0994654b02af08befeb",
+      "bytes": 2045,
+      "mode": "644"
+    },
+    "app/(panel)/admin/magazyn/page.tsx": {
+      "sha256": "a06e70be0e1cccce287e1c0c09032e389c2220e5564821affb7696c8957615cc",
+      "bytes": 429,
+      "mode": "644"
+    },
+    "app/(panel)/admin/page.tsx": {
+      "sha256": "161275fe369cd3bca9aa6d50deed1a8af13d86dad80e3ab4d4c04f0627cc2a07",
+      "bytes": 5461,
+      "mode": "644"
+    },
+    "app/(panel)/admin/uslugi/actions.ts": {
+      "sha256": "cb97e3c07341ddfae3d2f7730e485a4b985b5c8a00735becd80534dd2064eb61",
+      "bytes": 1710,
+      "mode": "644"
+    },
+    "app/(panel)/admin/uslugi/page.tsx": {
+      "sha256": "41916e140b35128247adc57cf8cec52774d7829a46c31e74c27b3d6de602c35c",
+      "bytes": 3165,
+      "mode": "644"
+    },
+    "app/(panel)/admin/zamowienia/page.tsx": {
+      "sha256": "d4fd2516590e0a902d11a41105e0e7fa38a766873c93b7c1c227467c7d1facb4",
+      "bytes": 2265,
+      "mode": "644"
+    },
+    "app/(panel)/lekarz/actions.ts": {
+      "sha256": "4bf045d4c05582db0be2df82eb8200119544f83b20acf34382ff76b34189d358",
+      "bytes": 2118,
+      "mode": "644"
+    },
+    "app/(panel)/lekarz/chronos/page.tsx": {
+      "sha256": "af2e1a119f1fad590229aeb246248ce2ec0bdf61b83752b1790a807b13cb78c3",
+      "bytes": 248,
+      "mode": "644"
+    },
+    "app/(panel)/lekarz/kalendarz/page.tsx": {
+      "sha256": "db96a4a44c4bb13fa76439790d3bacc3652fdbd497a225bb38fd68a9c9928f2b",
+      "bytes": 2756,
+      "mode": "644"
+    },
+    "app/(panel)/lekarz/layout.tsx": {
+      "sha256": "9b7c4befed773b8ed3cef0ebad9e128054101b79eca688b00dde49dd3e135472",
+      "bytes": 839,
+      "mode": "644"
+    },
+    "app/(panel)/lekarz/page.tsx": {
+      "sha256": "d11a2e0fda3bb06c8ab6add9705401ab64efd6ddce83691125ef51a8be491c4b",
+      "bytes": 3144,
+      "mode": "644"
+    },
+    "app/(panel)/lekarz/protokoly/page.tsx": {
+      "sha256": "37f53074b1895d2588483ce31c23ae43cd5928f5901dd9319a5c13fc4b1e8855",
+      "bytes": 2612,
+      "mode": "644"
+    },
+    "app/(panel)/pacjent/actions.ts": {
+      "sha256": "ca1fb88898180fd828d8cf0aca60f95ef5de70de8c6edd51cb9445e84cff645b",
+      "bytes": 1724,
+      "mode": "644"
+    },
+    "app/(panel)/pacjent/layout.tsx": {
+      "sha256": "4792b7b5f05144cca7ce2bc98d653593908655bfeae6a33e6e44a2a354ba06ca",
+      "bytes": 776,
+      "mode": "644"
+    },
+    "app/(panel)/pacjent/page.tsx": {
+      "sha256": "d704de601d78ee1e6af49424930c82878dd7ad65c71904083f142eb38569f787",
+      "bytes": 3121,
+      "mode": "644"
+    },
+    "app/(panel)/pacjent/profil/page.tsx": {
+      "sha256": "6e0299ba5c72ce6c5405363f9cd3fb1fb34b9869af5132ec14b938e4d851da97",
+      "bytes": 1606,
+      "mode": "644"
+    },
+    "app/(public)/agent-llm/page.tsx": {
+      "sha256": "e143141e16d11581eee23802355a0b7508f013f9275afcc24497e3683501da0e",
+      "bytes": 26611,
+      "mode": "644"
+    },
+    "app/(public)/akceleracja-gojenia/page.tsx": {
+      "sha256": "149a8a67ff39800ed7e8548cd10c0fbba033f8487dcfaeadce247d33a4da81fd",
+      "bytes": 3050,
+      "mode": "644"
+    },
+    "app/(public)/bezpieczenstwo-zabiegow-laserowych/page.tsx": {
+      "sha256": "30172dc2c15f907e9f5066913344df89192274cb6d94a3e3ea05076ca9b7f61a",
+      "bytes": 322,
+      "mode": "644"
+    },
+    "app/(public)/blog/[slug]/page.tsx": {
+      "sha256": "d608acc628aea8f0e241664985d5944041bc551fc7765d0ed5bb8041757e0400",
+      "bytes": 1945,
+      "mode": "644"
+    },
+    "app/(public)/blog/page.tsx": {
+      "sha256": "f7e7ccbb93cec3b88be65aecf11bcfdaf604dc067dd605d680bab3b2e3c0ebd9",
+      "bytes": 3957,
+      "mode": "644"
+    },
+    "app/(public)/bmclinics-ai/page.tsx": {
+      "sha256": "6c7a01f3de87710bf2732e0173b3e4865bf29290004940b238adac0190cf3be9",
+      "bytes": 606,
+      "mode": "644"
+    },
+    "app/(public)/bmclinics/page.tsx": {
+      "sha256": "d56993548c1bc2e3ec59668738c35879f46744a62c64f3ce72d5c6a966bc9eee",
+      "bytes": 321,
+      "mode": "644"
+    },
+    "app/(public)/bmsolutions/page.tsx": {
+      "sha256": "d21fc9f6ed0545ffa2e79be5ca1880afdbc3abe9e2923b3d52bcc4866ecb9b04",
+      "bytes": 316,
+      "mode": "644"
+    },
+    "app/(public)/cennik/page.tsx": {
+      "sha256": "6ab504edb5e8f2c371b9ea5a75fab22a0ce711306fa6d710290a8bed6ccb9457",
+      "bytes": 6991,
+      "mode": "644"
+    },
+    "app/(public)/cml/layout.tsx": {
+      "sha256": "c72d9aaff0d0a984a01e4208cb0409a68f911f4afa80ea147270c28343343529",
+      "bytes": 705,
+      "mode": "644"
+    },
+    "app/(public)/cml/route.ts": {
+      "sha256": "be626ef9517b26eeb687dc125c3c2c70a2ff5ca58e39c43b68eb64f1c3062c54",
+      "bytes": 1456,
+      "mode": "644"
+    },
+    "app/(public)/design-studio/page.tsx": {
+      "sha256": "946bde7a2f8305a74d114f81c28b19b19236983baf5959b354fb04ab01cb05bf",
+      "bytes": 619,
+      "mode": "644"
+    },
+    "app/(public)/desingstudio/page.tsx": {
+      "sha256": "74e8d8c2aacb40174dbc0411a5541fb191cc9d8b38118cbe08a0645981d05329",
+      "bytes": 59,
+      "mode": "644"
+    },
+    "app/(public)/diagnostyka-skory-warszawa/page.tsx": {
+      "sha256": "6d52cd83a8dfa398626d8ab63a851f4086c425670382d5fee536cde71413779e",
+      "bytes": 303,
+      "mode": "644"
+    },
+    "app/(public)/faq/page.tsx": {
+      "sha256": "8d280934f3fe98490a6cc9de6df55fc93df8fe32d81776b2ba6678e8a2f38953",
+      "bytes": 4204,
+      "mode": "644"
+    },
+    "app/(public)/funkcje-offline/page.tsx": {
+      "sha256": "8c74b942c4284f4afb5e50208816609fc8431c9231eba66666a5fcb184a3161d",
+      "bytes": 293,
+      "mode": "644"
+    },
+    "app/(public)/klinika/page.tsx": {
+      "sha256": "b7354948ae9af7156cd95b3b993e63b9b9d7c9d2c34541cb936334931dd252d5",
+      "bytes": 64,
+      "mode": "644"
+    },
+    "app/(public)/konsultacja/page.tsx": {
+      "sha256": "90d8b0b443a82e7a066cc8add05cd0b9ecb0e1c366361deba1d0a1f1eec64f46",
+      "bytes": 275,
+      "mode": "644"
+    },
+    "app/(public)/kontakt/page.tsx": {
+      "sha256": "920d0d6af9d86b3201100ea8b365e2674ac4e8f71a77e6aac86d757007200181",
+      "bytes": 5237,
+      "mode": "644"
+    },
+    "app/(public)/laurka/page.tsx": {
+      "sha256": "ea6b20d26af710aea9dc75b73098d170a7a1e2ef1c8afd7e42ae3509c2e731fa",
+      "bytes": 347,
+      "mode": "644"
+    },
+    "app/(public)/lekarze/[slug]/page.tsx": {
+      "sha256": "eb0b870f5c4839fe02c5e9075ce3f6e8b4b0058791834d1664e08dc09f0a5c5f",
+      "bytes": 298,
+      "mode": "644"
+    },
+    "app/(public)/lekarze/page.tsx": {
+      "sha256": "96b2613206d8adc1210962671c3f8a095faea9cf8f1ab96a72d591f26a7397fa",
+      "bytes": 307,
+      "mode": "644"
+    },
+    "app/(public)/logowanie/page.tsx": {
+      "sha256": "dd530b2153aa5cd141ec6baa953b576c1a152adc0a5e2f9ca74d1b11bfb55c64",
+      "bytes": 9570,
+      "mode": "644"
+    },
+    "app/(public)/magazyn/page.tsx": {
+      "sha256": "863aed6c12d0405b4d1962d88c8819ec3b1ed850b0d7e12023027a507a453f4a",
+      "bytes": 714,
+      "mode": "644"
+    },
+    "app/(public)/mapa-strony/page.tsx": {
+      "sha256": "6480d07a421687a0a63c706eaf41d14fae13e84685084e6c3b4945863a2ea64d",
+      "bytes": 508,
+      "mode": "644"
+    },
+    "app/(public)/medycyna-estetyczna/page.tsx": {
+      "sha256": "f29ab6badf9da90629952ed593bb2c581429e48ab7a785005a4603c7a9e6174b",
+      "bytes": 5716,
+      "mode": "644"
+    },
+    "app/(public)/o-nas/page.tsx": {
+      "sha256": "5b78bc9395314e605e3a3f03a1105e72146d89d1b9eac3053e1b5598282d41fc",
+      "bytes": 6446,
+      "mode": "644"
+    },
+    "app/(public)/polityka/page.tsx": {
+      "sha256": "fcf307984eedb157b0e0352b2d0205c6a0b7aec24740e26764ecae08ddb8dc73",
+      "bytes": 1487,
+      "mode": "644"
+    },
+    "app/(public)/potrzeby/page.tsx": {
+      "sha256": "72c0ba1921bd3f04b9f66793da86d9a3c2c48a8066f14b146a1014f95643afda",
+      "bytes": 275,
+      "mode": "644"
+    },
+    "app/(public)/promedion/page.tsx": {
+      "sha256": "15854c9ea33ddc838a3781c952eed203896d2825a3a0041014c911dac69cd9ca",
+      "bytes": 329,
+      "mode": "644"
+    },
+    "app/(public)/regulamin/page.tsx": {
+      "sha256": "291d4da20ad26f92972d406a5722590b8ed6002949bffcf31fd92ce7416526b9",
+      "bytes": 1441,
+      "mode": "644"
+    },
+    "app/(public)/renasculpt/page.tsx": {
+      "sha256": "0ddad1155308bace5c8e257f177cf4b3e98631cb5a377efc692cda46caa7309c",
+      "bytes": 286,
+      "mode": "644"
+    },
+    "app/(public)/rezerwacja/page.tsx": {
+      "sha256": "ec2eb2a224c47c91bf44283de68e7b0b0e7e4964fb77d92ed93f2c243a0201cc",
+      "bytes": 4506,
+      "mode": "644"
+    },
+    "app/(public)/rozwiazania/page.tsx": {
+      "sha256": "7610b8c7fd2a204737f3f62b746c49ab28f666b912cbf4be7d9f3635bc96ce9d",
+      "bytes": 276,
+      "mode": "644"
+    },
+    "app/(public)/sklep/koszyk/page.tsx": {
+      "sha256": "18d9be66f99d87c9a8cb233bf1070d87cf86942a548ab7548261915313496617",
+      "bytes": 10217,
+      "mode": "644"
+    },
+    "app/(public)/sklep/layout.tsx": {
+      "sha256": "fa6e82dcf7b079e404e425e2d9bf498d6fded48b5db1cde948d866f60fe64cba",
+      "bytes": 674,
+      "mode": "644"
+    },
+    "app/(public)/sklep/page.tsx": {
+      "sha256": "7881a6f6de586503dd5b818d02b97189a7b96cbddf67f0740085519ec74c16ac",
+      "bytes": 6245,
+      "mode": "644"
+    },
+    "app/(public)/sklep/podsumowanie/page.tsx": {
+      "sha256": "f7c3504e30eb40687600ebf4bb4d1f55b2f72c75cd574a37b396fcb962b55c0f",
+      "bytes": 3808,
+      "mode": "644"
+    },
+    "app/(public)/superagent/page.tsx": {
+      "sha256": "bd8e3bf29171b9f794707deb1808c747d1d963c39dbcb06b44af7f30567dd705",
+      "bytes": 20710,
+      "mode": "644"
+    },
+    "app/(public)/technologie/[slug]/page.tsx": {
+      "sha256": "3bb28453a8a6d790628094cebda649dfc3488b9a2ceb4d7a1dca31fffcb296ed",
+      "bytes": 306,
+      "mode": "644"
+    },
+    "app/(public)/technologie/page.tsx": {
+      "sha256": "73f262f32dcc078db443cb003d13383fed3c6926b6793fbd6010e84167f7fb01",
+      "bytes": 291,
+      "mode": "644"
+    },
+    "app/(public)/twoj-problem/page.tsx": {
+      "sha256": "ea3342a40b221c31d4225757a45e0ec1f2fc60e8dd685078c960cd8a5be71236",
+      "bytes": 393,
+      "mode": "644"
+    },
+    "app/(public)/uslugi/[kategoria]/[uslugaSlug]/page.tsx": {
+      "sha256": "a2bccae3912ebedff74d5bfa3843f853603510311ccae04bc1945ecffbb61827",
+      "bytes": 4250,
+      "mode": "644"
+    },
+    "app/(public)/uslugi/[kategoria]/layout.tsx": {
+      "sha256": "3855bb72f7e74b61f906d833ee8f46a63649b3ac6ca6b5b0c3cb18258448387c",
+      "bytes": 1488,
+      "mode": "644"
+    },
+    "app/(public)/uslugi/[kategoria]/page.tsx": {
+      "sha256": "6cfab976e411251f56da7c438290f5cb8bee8b7f7b6b58826ee8c4533ffd5e81",
+      "bytes": 27780,
+      "mode": "644"
+    },
+    "app/(public)/voice-builder/page.tsx": {
+      "sha256": "1f39b69886094a7641b8e54096807a09bb03f3802598f068c22869e98b0dcca5",
+      "bytes": 22829,
+      "mode": "644"
+    },
+    "app/(public)/wskazania/[slug]/page.tsx": {
+      "sha256": "5a0625aa5785e921149788a77efc8b1c51d892cc1e33f8f7f20d0a6170b13c66",
+      "bytes": 302,
+      "mode": "644"
+    },
+    "app/(public)/wskazania/page.tsx": {
+      "sha256": "ebd3243662a49dfa2f6f0ed1a58cf42e58609b1feb8f65fc5edafb61a89bfbfd",
+      "bytes": 284,
+      "mode": "644"
+    },
+    "app/api/agent-llm/chat/route.ts": {
+      "sha256": "b2966dc2f1f5a4ccbea435b0ad8287cc9fe4d047678d42b034bc02c0936db982",
+      "bytes": 5986,
+      "mode": "644"
+    },
+    "app/api/agent-llm/status/route.ts": {
+      "sha256": "d7e8c95d9521ba6c8c499143f79abba38afd05206255de18f350e061257e28f8",
+      "bytes": 390,
+      "mode": "644"
+    },
+    "app/api/agent-llm/tts/route.ts": {
+      "sha256": "dbaa79c95c1062facebbc776393aeabeeee664802274d59b4dc5c42133357b23",
+      "bytes": 2471,
+      "mode": "644"
+    },
+    "app/api/agent-llm/warmup/route.ts": {
+      "sha256": "9492c2e3c05aad8de1c6077fdb2443eb1b70409f697bf83f0691ea215341d550",
+      "bytes": 392,
+      "mode": "644"
+    },
+    "app/api/auth/[...nextauth]/route.ts": {
+      "sha256": "d92d2268ceabb52505010bcb7622d6fa4fea6dd2a9994e758037635e6442a7db",
+      "bytes": 167,
+      "mode": "644"
+    },
+    "app/api/auth/google/callback/route.ts": {
+      "sha256": "f8e1c3ecd135130d60d6cfd149956ece4f848650ea7c7ecd969715b3db8ab9dd",
+      "bytes": 762,
+      "mode": "644"
+    },
+    "app/api/auth/google/route.ts": {
+      "sha256": "8f6ca55269a5041965368186d8b7e7b9e05520d82b39fcd3f95833a013f9df57",
+      "bytes": 361,
+      "mode": "644"
+    },
+    "app/api/booking/availability/route.ts": {
+      "sha256": "7025da86a96264e86f03b299026c9ae867c4b90af93f10c20a7fbcee7ae21eaa",
+      "bytes": 2415,
+      "mode": "644"
+    },
+    "app/api/booking/route.ts": {
+      "sha256": "9aaf83b37b879a7db98af4d7641945bf3668b1f03355a8e3f626e7d69ea3ba10",
+      "bytes": 4874,
+      "mode": "644"
+    },
+    "app/api/cms/route.ts": {
+      "sha256": "e42b3d8d9764f2d31d979652b88ef21512c30e95c66c893929928f94b50fa1bc",
+      "bytes": 3770,
+      "mode": "644"
+    },
+    "app/api/code-analyze/route.ts": {
+      "sha256": "da32a540b061866adc119efdaa015b5e54dec12d04a5c96eab356b4323f4c2a3",
+      "bytes": 234,
+      "mode": "644"
+    },
+    "app/api/config-scan/route.ts": {
+      "sha256": "141a2a8f0acfecf86531418972951ed9acd6e98e1d083bd7868e9cc1d3dad3e1",
+      "bytes": 232,
+      "mode": "644"
+    },
+    "app/api/design-studio/drivers/route.ts": {
+      "sha256": "def2fd697e41c4399c6bc34f88f5204154875e6002748b9a870ffd4937c8d3d2",
+      "bytes": 3683,
+      "mode": "644"
+    },
+    "app/api/design-studio/projects/route.ts": {
+      "sha256": "14de72d103d9da9437e83daa4f0b2c123f25bea709856f7c6c53198edbe3b88b",
+      "bytes": 5433,
+      "mode": "644"
+    },
+    "app/api/github/accounts/route.ts": {
+      "sha256": "8216bfb0f1c3441db47b6da1350ddc55b6d953cccb7a8e363dad3e30aa1794a9",
+      "bytes": 203,
+      "mode": "644"
+    },
+    "app/api/github/auth/url/route.ts": {
+      "sha256": "dbfbb8a6a3efa048359bd28e0de20b96a9936e7b88d076dcae43b86d796f4f8f",
+      "bytes": 697,
+      "mode": "644"
+    },
+    "app/api/github/status/route.ts": {
+      "sha256": "d771a9169bd31ac3f5690d3b74aff1fa84cc1f3c5d67d1633daac0329b5dc2c2",
+      "bytes": 368,
+      "mode": "644"
+    },
+    "app/api/holding/telemetry/route.ts": {
+      "sha256": "86e32a0ae14d8429b90dc7e438b07db3b3587902175351648fae3f3f410cb5f0",
+      "bytes": 690,
+      "mode": "644"
+    },
+    "app/api/kontakt/route.ts": {
+      "sha256": "35294088a066776425c7d43d7dd0f712ecaa10a15596e644456969a429f8644c",
+      "bytes": 2563,
+      "mode": "644"
+    },
+    "app/api/payments/checkout/route.ts": {
+      "sha256": "771e596118cf4c7d70b449854c7b3fe25caac86dd1d4b443d9bd60766074e370",
+      "bytes": 1567,
+      "mode": "644"
+    },
+    "app/api/payments/webhook/route.ts": {
+      "sha256": "489c71f362df933d62cba3c001fb56bb69be684a6e8a92d9fc7cf220168fa556",
+      "bytes": 714,
+      "mode": "644"
+    },
+    "app/api/security/connector-manifest/route.ts": {
+      "sha256": "1dcab536bb6574d0d93649578c754416abdb6d640454a881a2ea27283fcccd96",
+      "bytes": 246,
+      "mode": "644"
+    },
+    "app/api/security/recent-scans/route.ts": {
+      "sha256": "19306b827830ddedff7ac9e4f7b467657a58ecd3c332c4129ef8f0b1f752b87c",
+      "bytes": 234,
+      "mode": "644"
+    },
+    "app/api/security/scan-url/route.ts": {
+      "sha256": "b21434641eff1736852d33a3ff8ecd67d8790576dea1dce65a8de047d2fa2890",
+      "bytes": 2209,
+      "mode": "644"
+    },
+    "app/api/security/test-bridge/route.ts": {
+      "sha256": "a793cf7ff0075bf7d19726b44b39181de3842a82a0ce5fa5cdfecdb9a2676a7c",
+      "bytes": 429,
+      "mode": "644"
+    },
+    "app/api/security/webhook/scan-result/route.ts": {
+      "sha256": "3638799aba4165b5b4af7545de67d75ace1eb221dc09e0ae54cb9cdb476be654",
+      "bytes": 602,
+      "mode": "644"
+    },
+    "app/api/seo-aeo-config/route.ts": {
+      "sha256": "2fb4434786b46f24888816e4bb0632aef08c1a7c04bf28b09c362ee01b9bcc52",
+      "bytes": 782,
+      "mode": "644"
+    },
+    "app/api/shop/inventory/route.ts": {
+      "sha256": "12f3447af0a5fc4532070912873f70deb0bbd8f2ee1119b15006c69cdab0fcc9",
+      "bytes": 3350,
+      "mode": "644"
+    },
+    "app/api/superagent/guard/route.ts": {
+      "sha256": "09a9e5598632acc08dd881dcee7545903a9f1a7ecbaaba76972deca9c2c0db01",
+      "bytes": 658,
+      "mode": "644"
+    },
+    "app/api/superagent/redact/route.ts": {
+      "sha256": "50809a5ce1cade25af2888c2a6100a3baecd28e4a8756ef30fa5096889437e9c",
+      "bytes": 669,
+      "mode": "644"
+    },
+    "app/api/superagent/status/route.ts": {
+      "sha256": "af5e588c0b7f3f76bc673131f195d9ef2849b4bc92fd27effe98546c28c0fd32",
+      "bytes": 196,
+      "mode": "644"
+    },
+    "app/api/voice-builder/command/route.ts": {
+      "sha256": "b6d5b027458dc2fb475997e27b3c9a6ef2e299ba5d3e4b8c053fda5ac0fe01e8",
+      "bytes": 804,
+      "mode": "644"
+    },
+    "app/api/voice-builder/status/route.ts": {
+      "sha256": "ee68eaf261155789d9bcd9c50f35779f3b83345861b617fa6bf5836de400727e",
+      "bytes": 406,
+      "mode": "644"
+    },
+    "app/demo/cab-booking/layout.tsx": {
+      "sha256": "87f6cfb50dd74009f8b66a685c97aa6a2bff746ba9de09c24a27ac0745555b7a",
+      "bytes": 789,
+      "mode": "644"
+    },
+    "app/demo/cab-booking/page.tsx": {
+      "sha256": "c37d52e4aa63667554078a1d83ff91832a9a0efda7641926ac821372077f7f70",
+      "bytes": 381,
+      "mode": "644"
+    },
+    "app/demo/raycast-element/layout.tsx": {
+      "sha256": "5196b9421788874e6f306b93943b90afde79be96e91ddc4f7ba926902a5e5701",
+      "bytes": 548,
+      "mode": "644"
+    },
+    "app/demo/raycast-element/page.tsx": {
+      "sha256": "443089e3f158817b592841f1f13284e1bdb594f241a6efd0aebafb41a54a67ae",
+      "bytes": 377,
+      "mode": "644"
+    },
+    "app/globals.css": {
+      "sha256": "2c513f2f25f8d2112049d215cb33637fd364bc0639548d873bc898799b6fa0a6",
+      "bytes": 41472,
+      "mode": "644"
+    },
+    "app/layout.tsx": {
+      "sha256": "7aafcbf2d161c526fa190566128e1df371adbdf5dc4072496130d65cae3d90d7",
+      "bytes": 1393,
+      "mode": "644"
+    },
+    "app/page.tsx": {
+      "sha256": "78044aabf2522412efd5a826efc94d6c9e0124287221f8e22b4851bfed6b4d28",
+      "bytes": 7390,
+      "mode": "644"
+    },
+    "app/sitemap.ts": {
+      "sha256": "d84b29a6be6e5087753a82c4d39bb7cf5f557844aa81dea2829c4b302f9605ac",
+      "bytes": 2062,
+      "mode": "644"
+    },
+    "chronos-vault-module/data/shop-inventory.json": {
+      "sha256": "888575924f23e7b53f74dba90f5fd9724089d67d35d1a88abe9b73f0dee4fa0b",
+      "bytes": 4971,
+      "mode": "644"
+    },
+    "chronos-vault-module/data/voice-notes/index.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2,
+      "mode": "644"
+    },
+    "chronos-vault-module/eslint.config.mjs": {
+      "sha256": "7f75e098304327a9cbb52ec3459944d37d1ef03ca951560179dc20c9b38491bf",
+      "bytes": 202,
+      "mode": "664"
+    },
+    "chronos-vault-module/firebase-applet-config.json": {
+      "sha256": "d697e555ba625c801542735bf08227a989c6ad8326f6594e0c7818d38e75dbe8",
+      "bytes": 547,
+      "mode": "664"
+    },
+    "chronos-vault-module/firebase-blueprint.json": {
+      "sha256": "ecf5a85dafbf8465c7dbf5232a8e698ed696684b9abc9dcc95f669273c7128b7",
+      "bytes": 23412,
+      "mode": "664"
+    },
+    "chronos-vault-module/firestore.rules.test.ts": {
+      "sha256": "f98388b37763991207718a227c083f0c41db11e7e9e13556d750fb43600f56e2",
+      "bytes": 3307,
+      "mode": "664"
+    },
+    "chronos-vault-module/metadata.json": {
+      "sha256": "edf8405cdbb4d81469804fa65bcaea767e191f8f171e95422e20d108f2a1f656",
+      "bytes": 436,
+      "mode": "664"
+    },
+    "chronos-vault-module/package-lock.json": {
+      "sha256": "30a731ac1d8e704822ce6af182996d179be8ad3aa04efdfff8d67bff80d85bb0",
+      "bytes": 422180,
+      "mode": "644"
+    },
+    "chronos-vault-module/package.json": {
+      "sha256": "ecde99f3294290dc896ec203a1217d51cd17b0c3c5216e206316e782e653e3f3",
+      "bytes": 1155,
+      "mode": "664"
+    },
+    "chronos-vault-module/public/sentinel-pack/8_SENTINEL_NEUTRALIZED_THREATS_AND_GNIDA_SIGNATURES.json": {
+      "sha256": "b8b9f017eacd9a4edd033624073b70d1f17886d6297024bbe5aacb2e46dad14d",
+      "bytes": 71861,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-pack/9_ODCZYTY_CZUJNIKOW_I_PARAMETRY_PCI.json": {
+      "sha256": "619cbaa50f1a5a220791fa76ff89fa8c9203f62d4af810fb38e1ba385e91eb79",
+      "bytes": 4282,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/_aistudio-iframe.js": {
+      "sha256": "d22be5dc147bd8a5b430b05b0885d87ef15cead551eb9398138df4289c59cc55",
+      "bytes": 41698,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/App.tsx": {
+      "sha256": "de5955de2d18ade0b64723085eb6421fd8fa847b84176540c99fae454b099b59",
+      "bytes": 70916,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/AIAssistant.tsx": {
+      "sha256": "610c6f7c380af67a005b3da7c7f69524aa675a815dc820e7bb904dc856f38c06",
+      "bytes": 39324,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/AcousticAlertMonitor.tsx": {
+      "sha256": "28d285ce860196bc5d54580fb775b0a6001a9c5f3aa0f3ee16c13dbd444c1498",
+      "bytes": 79882,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/AttackFrequencyTimeSeriesChart.tsx": {
+      "sha256": "9564ce9ace5fd621fd6191d9429e2ac7a107b11b3185c97499821a8c69aa88b6",
+      "bytes": 101863,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/BaseRedAlertOverlay.tsx": {
+      "sha256": "116a530d00baaa886673b4174b35c2a545b4a70e44ca77d001bc05fc557c7a5e",
+      "bytes": 124,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/BrowserViewportLaserShield.tsx": {
+      "sha256": "683eda1f24889ed31a0c7fc2c4ff38ee3b1d5be0b551b033bb3602ffe148a256",
+      "bytes": 131,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/CerebellumWaveWellbeingChart.tsx": {
+      "sha256": "cc07ed9eb2acfeed6159d2e9ffabc96886923d9760985eb05d7a560120f13e09",
+      "bytes": 78078,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/CodeBlock.tsx": {
+      "sha256": "50085568dd3dbcbe14eccb84c59310cf0ca1aa118f5d71492930eb66d99e48c8",
+      "bytes": 14871,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/ComprehensiveWaveEnergyReport.tsx": {
+      "sha256": "9bccaba2ead07cba0db50a60ca94e17575161486b91ef132a41a22b1a6f91028",
+      "bytes": 106123,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/CpuThermalGovernorPanel.tsx": {
+      "sha256": "eb0c849d1a453243cb2a2ec4708288a60d2f68869ccbac94ec910de769b506fa",
+      "bytes": 65872,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/DashboardDimensionAnalyzerPlugin.tsx": {
+      "sha256": "98377c69c01c30318b0d8532efbe285fba99648e74cf10a0851e32322d6d0e76",
+      "bytes": 93258,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/DecapitationReportModal.tsx": {
+      "sha256": "06906f657d51452868e6d4e948ebc2e6b1b10a8ffe7a4df0fa2e0cdc80d84e76",
+      "bytes": 57682,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/DesktopSweepWaveBackground.tsx": {
+      "sha256": "a29f9eaa96a0688b7d5b247992dd3bdeb38e5f2f6a9ee82d7d573abebfaed0ef",
+      "bytes": 131,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/DroneInterAppPatrolOverlay.tsx": {
+      "sha256": "e800f4527afbe0c2eda75c2cfb746ecf36e4553797528b04043630cbf5923160",
+      "bytes": 131,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/EmWaveResonanceSuperpositionSystem.tsx": {
+      "sha256": "70f69cfd5849c75dc616f52d6ee03a6b662d10807229eb134ed2d9da6c578e5a",
+      "bytes": 89494,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/EmergencyBanner.tsx": {
+      "sha256": "bc1a2ac59ddd5a5cfb7ef99739d973584a828a42aaea3bca2f0f411da9c28fe7",
+      "bytes": 46222,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/ErrorBoundary.tsx": {
+      "sha256": "74382dc2bba588aa964b7f821f0a899273265fc01c2c16cdff604a4101b941b2",
+      "bytes": 21865,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/ForensicsGuide.tsx": {
+      "sha256": "fc4cbcd57a342fd97571be9ef1ca0a46f382c8a871af1aed76a4c0c56efe6f51",
+      "bytes": 47327,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/ForensicsPdfExportModal.tsx": {
+      "sha256": "113203d7115797b931fe32faca5664b99a73b029b1751f10e5c65e4cf6a653a6",
+      "bytes": 74557,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/FreezeAllPluginModule.tsx": {
+      "sha256": "2a89d265e6e81e95053284de4fc149fe38cfe4033f7174d38aa161ddbf37baff",
+      "bytes": 98103,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/GeminiHunter.tsx": {
+      "sha256": "f3e62d7cde12cae5cc46a2fe8758830d148088b98a37e75a668ef3f85023f631",
+      "bytes": 77695,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/HexagonalLaserBarrierMatrix.tsx": {
+      "sha256": "c80fbd52d665603a4a248ff88dfbf35c0894f91a0fe6af8513ccb3d8413099c0",
+      "bytes": 132,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/InteractiveDataFlowConnectionsMap.tsx": {
+      "sha256": "a22bc3c9824ad7e2ae85bdc3d0569ffee4281088c8a903f17ea6b0407e583aee",
+      "bytes": 141371,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/InteractiveSimulator.tsx": {
+      "sha256": "31fcafd1bad1646e0cd8b8d14400b925210a4225a425393275ca26059489075b",
+      "bytes": 167873,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/KittenDronesOverlay.tsx": {
+      "sha256": "e60c5ea815355a6afdf30ef50f92db7f7de5acbf23812392120a8c91edb68822",
+      "bytes": 88987,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/LiveThreatPulseSidebar.tsx": {
+      "sha256": "8c84157ea0024b02325e7910db2a9697b0528b28c4c28ed72f5eec370465f18e",
+      "bytes": 64282,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/LoadingPage.tsx": {
+      "sha256": "91aac512fc1d78f0fc97162908e4e90da3189203b2f69439fe11d9ace56a14f7",
+      "bytes": 49164,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/MilitaryRadarScanner.tsx": {
+      "sha256": "dc3a0f19f9ea8f3b798ee14c488352708332eeea32f5589078d2f704f9dcbd2b",
+      "bytes": 484493,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/MobileTacticalDesantArea.tsx": {
+      "sha256": "4350aedb6c24405b4f897474a87f0078f994327d9fd0d3eaabcafbb2c513a53d",
+      "bytes": 253759,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/MotherCatMemorialView.tsx": {
+      "sha256": "9bf2d50c885336f6f338cfbdba481f1fe1152c286c9fdc5094ef309129292f14",
+      "bytes": 49353,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/Navbar.tsx": {
+      "sha256": "72163c82f4e355cb618e7a7c3139c02481b4bb11f239e5d81f6d3796c04bf62a",
+      "bytes": 33579,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/NeutralizedThreatsLedger.tsx": {
+      "sha256": "6add6d0de899a131478907f1d4e3ec44d3d748f96cc54be571a684702d772113",
+      "bytes": 288619,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/OfflineDeploymentCenter.tsx": {
+      "sha256": "ab9882c782591c1812c43328d38e6cb4bb1d5b35ec0505dd1f45dacbd1da6bfe",
+      "bytes": 226758,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/PanicButton.tsx": {
+      "sha256": "5262831e0d3a526bce71367a55f90674576f7125d15a217cafd930dbbf172881",
+      "bytes": 118982,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/PanicCenterView.tsx": {
+      "sha256": "fe1b682e4b592eee03dece82e4cded9d306f12b14429e7eb5a9ac1f8a2599030",
+      "bytes": 97605,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/PciHardwareTelemetryMonitor.tsx": {
+      "sha256": "00a8df9733a63c5a0dbc64f3dfe219c990afcdda4d48088c1418bbcdaafd5a97",
+      "bytes": 158916,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/PhoneRearScreenShield.tsx": {
+      "sha256": "45a3636eb74a373250648bf55d48d401f05ca1c0123216ef4cb06cd728d47f06",
+      "bytes": 100553,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/PostEmpReportModal.tsx": {
+      "sha256": "c81a159510202c8fd96aa4246d491ff226548ec9bd1508639f6bd7090b712775",
+      "bytes": 115512,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/ProcessTreeView.tsx": {
+      "sha256": "0dbf9bb590f33c1321854ca11c391f43c9f456365a5662c22b67124754d798e7",
+      "bytes": 100975,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/ProcessWatchdog.tsx": {
+      "sha256": "e572bdd9f9a2008d60fe977b75bb741d019d4433829a73fcbd056be23b9e0e64",
+      "bytes": 203540,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/Retro100CopiesPurgeModal.tsx": {
+      "sha256": "3facc8ae7b8e88eb7574f1b84c70afc6360a55c14ea7f0a86b67e8dbb1df4219",
+      "bytes": 78138,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/RotaryPotentiometer.tsx": {
+      "sha256": "fbf60079ffa276a0984ea7a4d0a0b766539736403ff146c0e1d0300c401fb20e",
+      "bytes": 83926,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/ScreenOneDefensePrevention.tsx": {
+      "sha256": "59105ba5d356164e3b5c96a29dd246d21244277ec23aedf2f0ce9dbebb9f78f9",
+      "bytes": 72518,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/ScreenThreeWeaponsTelemetry.tsx": {
+      "sha256": "2c3d8c9573b5477c8e7515ba15d7c4bc0c667b0cb490b4d3f75faf3497e1c220",
+      "bytes": 152433,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/ScreenTwoCombatPanic.tsx": {
+      "sha256": "9572d995257a60bb9ad3ffcb1e2d32b2cdcfe3a107fead485c6d583e69da7e52",
+      "bytes": 54225,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/ScriptGenerator.tsx": {
+      "sha256": "0381e1b56899d6ed141f990d31aaf5c8315a27d80a08dc4c5093c1e910fa94db",
+      "bytes": 117422,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/ScriptsLibrary.tsx": {
+      "sha256": "d68c8812b82f319abcbfb1a77cd6d74d136bf10034c52476de20fb2a723d0fc8",
+      "bytes": 65919,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/SelfHealingCenter.tsx": {
+      "sha256": "543300ff33f14d796d80df450368b70c824a5e064ea63d8f8e7864e971dd7439",
+      "bytes": 68238,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/SentinelWatchdogBotPanel.tsx": {
+      "sha256": "621b9d298aff55ffc493837e782c32d688365bf7a320553658f81d4c7c3a60ab",
+      "bytes": 187261,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/StressTestHarness.tsx": {
+      "sha256": "c9c2aa7eade4de49175905dca9df3b6de29d6b2739aafe9e23d161892fe31b12",
+      "bytes": 149852,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/SystemImmunizationPanel.tsx": {
+      "sha256": "272c6110f996a0f3f99db0f3c6bd0e8ace06fde2ba6f49f9146ef5abc1a22da0",
+      "bytes": 134047,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/TacticalWarRoomHoloTable.tsx": {
+      "sha256": "67ac460e5afecba8c047cd88e7fe116228ec32936c3f7c82589d38a6a0eb67ad",
+      "bytes": 122798,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/ThreatDatabaseExportModal.tsx": {
+      "sha256": "30510d82fa3ea097d41b4bc3410a2b47986cbc3023cf01d885883a3efd5f3287",
+      "bytes": 96228,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/TitaniumMilitarySwitch.tsx": {
+      "sha256": "3accb595422128fa43341d0ed29aea766e0f024b67b821c1675d0a65042ee7ee",
+      "bytes": 23033,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/UbojGnidNetworkPropagationModal.tsx": {
+      "sha256": "7a324b847203e10fd0cb9cc3e0f435d74c722aa8c3d48abc52d0e3a229787c95",
+      "bytes": 91733,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/components/UltraShortFreezeModal.tsx": {
+      "sha256": "f2861a4efc2844ddc06656799db837962a066bcbfe2256ed0117a64f0f792db3",
+      "bytes": 80201,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/data/forensicsGuide.ts": {
+      "sha256": "f1c6f4ae7d950342b56f020bbdaa315f759bef08c2ea4ebe72926def00551ca9",
+      "bytes": 24636,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/data/neutralizedViruses.ts": {
+      "sha256": "7f40a994daa61e50549b8383d4cdde646ad467fa507bb5b977fe3528c6351976",
+      "bytes": 106332,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/data/pythonScripts.ts": {
+      "sha256": "2ed6bbea13a11c8c0909dcfc51398d68f88202f2d174e69eff2dd973c8d2a26a",
+      "bytes": 361179,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/index.css": {
+      "sha256": "1fe55e76b7f7b0f4b7b5642e8e37a42049435460d04dc785cd3cdc2e312e19f9",
+      "bytes": 348368,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/main.tsx": {
+      "sha256": "11e29daee770ad3b24bd539f9749367742daaa3d1d229756a3bdb8606fc1ec67",
+      "bytes": 1736,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/acousticAlertSystem.ts": {
+      "sha256": "17f167781306a2e399ddaa139afd931cbf1b2a0b113f7bd5c47e67b501195356",
+      "bytes": 32035,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/adwarePopupDestroyer.ts": {
+      "sha256": "acd2ff1376f84f3c4a4d15b1d2ce7d3a9a5b728d0e191d2f7558974d55e4c074",
+      "bytes": 47679,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/browserMalwareAutoScanner.ts": {
+      "sha256": "76cf5639598ff1d4e1a554412104ec770bc06bc2035b1dca1ae7b861cec536f9",
+      "bytes": 43485,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/combatAudioEngine.ts": {
+      "sha256": "352a2f48bb9e6885ac16846d1f804cffd527cdc767c4bff2fd0f5dfe6c59e005",
+      "bytes": 18795,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/cpuThermalGovernorEngine.ts": {
+      "sha256": "f9d59bb1eff50a7676ce3111b5934cfa79b4b4157b2439cbfbb8a036c998f6bd",
+      "bytes": 34900,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/customScriptBuilder.ts": {
+      "sha256": "bbed5c3647b5303acb7b7762c4c3981c1534c99069fd07ab8949dd84828bfb14",
+      "bytes": 64662,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/dataFlowMatrixEngine.ts": {
+      "sha256": "f86e18a5d2bba4d9b73bd84c91cbbded2cecc202dab650eb445dabeee4b94acf",
+      "bytes": 42151,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/droneSquadronEngine.ts": {
+      "sha256": "5206f66e060050e66671272d7af90c13cf199477d5780edad3e082195ed17c10",
+      "bytes": 46523,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/emWaveResonanceEngine.ts": {
+      "sha256": "703b430624392fb1bf2f640120c654b683e01421c970c793c492f2fcb0b56886",
+      "bytes": 101792,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/focusHijackTracker.ts": {
+      "sha256": "ba4f113cf19c6458769973a61775e76328a9bbd621e464ea8d292f57508435b7",
+      "bytes": 25422,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/forensicsPdfExporter.ts": {
+      "sha256": "e3566d7dfca5140554f86ba150e8b990c6ef810ab3c094aa51d60f8b077a52cd",
+      "bytes": 82183,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/freezeAllPluginEngine.ts": {
+      "sha256": "a6790e5f67165aee5c50cbdfd5862c6e991bbce7d90bb51a18c304da327fe221",
+      "bytes": 32565,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/gnidaAutoFreezeSensor.ts": {
+      "sha256": "95828190ff064b3612c3355adb1eae6a3f8aabfd991ebebce5122db1ff73f139",
+      "bytes": 47827,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/gnidaSensorsMatrix.ts": {
+      "sha256": "eac6dbc27f765d56a0f2c3530b5b198f258ae1bddf201564cce119f6f113bbca",
+      "bytes": 39177,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/hexagonalLaserBarrierSystem.ts": {
+      "sha256": "a38460a10fe311237ed703711c494a6dab2683d1e35fc3bcdec50541abbad865",
+      "bytes": 176438,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/kittenDroneEngine.ts": {
+      "sha256": "3121484808353f667d12fc07622fc329e1a08a15fd2feb6762aa5fb8bc0a41e4",
+      "bytes": 50464,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/mobileAreaConquestEngine.ts": {
+      "sha256": "2d397e2654fa842983f335f48467c92b290e8a8bde2096f773b485aed7de7275",
+      "bytes": 132303,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/offlinePackageExporter.ts": {
+      "sha256": "5ceb70cee5b8d20167e834738a8aa49249b0599c80d02714b349a3d2d0673e90",
+      "bytes": 32218,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/offlineStandaloneEnvironment.ts": {
+      "sha256": "adf3fde4d6f1d9fd59eb71c095f12da718fbc7109b2c9503ebab8a79d75436c1",
+      "bytes": 168077,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/pciTelemetryEngine.ts": {
+      "sha256": "7c6f8d06ae2e73112fb48fc7d10b8291959dc030b09e584d0861b95023fdf9c0",
+      "bytes": 52848,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/phoneRearShieldEngine.ts": {
+      "sha256": "8309cc357f20bbe59d4eeae25fd4e5f536e220d9eb56e8602c37e0b0fd711a83",
+      "bytes": 38687,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/retro100CopiesPurgeEngine.ts": {
+      "sha256": "94090c0469b2fcd2605b48136ae81515016b4d9aa387b75a6ef6538570be003c",
+      "bytes": 36127,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/selfRepairSystem.ts": {
+      "sha256": "50bb0990cc8f71e46021eed59cc494acbae7311fe14ed9e9404202ecb916c1ca",
+      "bytes": 32381,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/sentinelBotEngine.ts": {
+      "sha256": "d17bd805b615b9e86c26151eb60473c30529bb3ac2fb7d983ba5319d359f6506",
+      "bytes": 41978,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/slipperyButtonsEngine.ts": {
+      "sha256": "e46264c527611959e02a9bd46ae5b2b09441bb35813b77db4de1cd63fe1eb7d5",
+      "bytes": 7434,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/systemImmunizationEngine.ts": {
+      "sha256": "1862eb984c19909f7c9fb95760fe99ff39c7dd13a04cc27352fb4c6ca594b46b",
+      "bytes": 55185,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/threatDatabaseExporter.ts": {
+      "sha256": "098ef1703da2e71a79fbeea0da1ff0093a8bbfafd061df490a67e29075c0ca17",
+      "bytes": 33219,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/ubojGnidNetworkPropagation.ts": {
+      "sha256": "233effd3a3ff0c16a669a2b6e86f10958f820a572a7ede9b7eead8328dc9ba0a",
+      "bytes": 59282,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-shield/src/utils/ultraFreezeLinksEngine.ts": {
+      "sha256": "cde30830dd466422fa95d45162e921d4ad80372c093d671b2b88daab7da70020",
+      "bytes": 39374,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-telemetry-reference.json": {
+      "sha256": "619cbaa50f1a5a220791fa76ff89fa8c9203f62d4af810fb38e1ba385e91eb79",
+      "bytes": 4282,
+      "mode": "600"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/_aistudio-iframe.js": {
+      "sha256": "d22be5dc147bd8a5b430b05b0885d87ef15cead551eb9398138df4289c59cc55",
+      "bytes": 41698,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/App.tsx": {
+      "sha256": "d641040b31de474893e87e93ba22bb6c351c12996d203e5a60350429c32a2b7f",
+      "bytes": 74280,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/AIAssistant.tsx": {
+      "sha256": "2a2b2d633514d7390d4a4f1a62bded4f1d625ab69d61d74b3653c150e8a61a06",
+      "bytes": 39328,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/AIOptimizer.tsx": {
+      "sha256": "4cfe41ce26f5ce5a85e453b815e55b2720834d8a824e33b43dbe60577ebb4df2",
+      "bytes": 85373,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/ActiveRadarProcessRoster.tsx": {
+      "sha256": "571cec1edfba3a20a1ce043ac3f4a3dc98fce77ba96bed8dad28aca67031f8af",
+      "bytes": 60597,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/ActualizationGuardianBar.tsx": {
+      "sha256": "729fcf0e2ce3ae8ce79063e6dc513837c68cd9b3beedded39e732f9c7d0af0b1",
+      "bytes": 29011,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/AfricanHornetSwarmModal.tsx": {
+      "sha256": "d8031d0541187d4ba69a54c67dcf59a10407dd4eb1768437f0a36a6f316268ee",
+      "bytes": 126559,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/ArmoredGlassAquarium.tsx": {
+      "sha256": "7728ccee3519bec00d10532f6ef96658feafd807c6d8742673db3a487da440bd",
+      "bytes": 87237,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/CodeBlock.tsx": {
+      "sha256": "dd5163be3c0fe73a33983a7ffed21804877aca476a51dd44d6b04e95f1574b78",
+      "bytes": 14874,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/EmergencyBanner.tsx": {
+      "sha256": "da3a66cac2fd30654195169d42574f0d45f535e68233673d20e963a07c3f0c2f",
+      "bytes": 45020,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/ErrorBoundary.tsx": {
+      "sha256": "28d72d9e9e9007284a10a74ff74376c3262f18474cce2a311365dac2ac38a643",
+      "bytes": 21869,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/ForensicsGuide.tsx": {
+      "sha256": "398972f0fbbe5f35242f40b54891f7b1474ed6e24a9f59d8b9b6f85723674e80",
+      "bytes": 22525,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/GeminiHunter.tsx": {
+      "sha256": "22e29e8be28fb84d0eb235d4c5ff34bcf69ce041780a3c658519737122aefd57",
+      "bytes": 156195,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/HolographicPenthouseDeck.tsx": {
+      "sha256": "3ff89d7798d100c6d0eeacbc35d653140008bef923945ab960733ef72ca12849",
+      "bytes": 258934,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/InteractiveSimulator.tsx": {
+      "sha256": "d3a40efcd76418949a8fd4fa43e36ed1f41a0eb55bc7b311a87295b154a2b9ef",
+      "bytes": 166813,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/MilitaryRadarScanner.tsx": {
+      "sha256": "a85f3a2ee1c400f723fec42ff9497c856beb18a61b2f9416df5fe78c0a11ec9d",
+      "bytes": 418009,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/Navbar.tsx": {
+      "sha256": "e101545f6acd1aff07a781db296308ffcfe131dcb380467ca0050fedf69ea9ad",
+      "bytes": 33407,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/NeutralizedThreatsLedger.tsx": {
+      "sha256": "9f45be1bea59bd3c78fc57b2cd4f324a8c4788ceebc7f3fd54a050e9453256d6",
+      "bytes": 158177,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/PanicButton.tsx": {
+      "sha256": "d1277a21c92cf6f19d429bf0a9f07fab1fd36d1ce3d67d3a792fbbddc3b4ec43",
+      "bytes": 114953,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/PlasmaEnergyField.tsx": {
+      "sha256": "f23441be4675a2f97e69f6b8c1d92d001705223ac107ccd00a87fd918d097489",
+      "bytes": 68141,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/ProcessTreeView.tsx": {
+      "sha256": "4a3aa6075169d2606bcb5e08f6cdd979bfe3adcceb4908b9358217217621e076",
+      "bytes": 100978,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/ProcessWatchdog.tsx": {
+      "sha256": "9fe0932bdb2a50be5e5dbe6f16e567ba25cc6d5c2caf8b13d4359bcbcd192232",
+      "bytes": 274916,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/ScriptGenerator.tsx": {
+      "sha256": "a877b5d415a2953ac075ac8a2dd1eaa7eb2172c5c88d86d01f9a06638023da08",
+      "bytes": 122783,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/ScriptWritingStudio.tsx": {
+      "sha256": "c838d555a69f6a53462b7e5b83de155c6ec03287cf57185a64272c00b00ed87f",
+      "bytes": 72130,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/ScriptsLibrary.tsx": {
+      "sha256": "f0e11934c4d493de30676b789141c47ec0dd3b16a69892a6e732459ea9358dfa",
+      "bytes": 46582,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/SelfHealingCenter.tsx": {
+      "sha256": "de5f67d99074a40c1529afe9d85d5a283fe6f06a876b8823a52c5624abe80110",
+      "bytes": 63163,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/ThreatDistributionPieChart.tsx": {
+      "sha256": "744696197447395f3c39f644a67c21afffd36478ad97da68764eef47d9cf0cff",
+      "bytes": 80280,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/ThreeDDefenseCore.tsx": {
+      "sha256": "d4d8cf1ea17d08deaf99e4230ee9bd95574f913334b76ce4416660af6ddfe9f2",
+      "bytes": 150348,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/components/WatchdogRulesManager.tsx": {
+      "sha256": "4941dbdb65f5b2c40e804f5be2279e88a1af118bf9fc43249115a35f0f2a5fb4",
+      "bytes": 135982,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/data/forensicsGuide.ts": {
+      "sha256": "f1c6f4ae7d950342b56f020bbdaa315f759bef08c2ea4ebe72926def00551ca9",
+      "bytes": 24636,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/data/neutralizedViruses.ts": {
+      "sha256": "415c565654fd523eb92b18298f1f025991316498ce53973bf4f1be4c299727df",
+      "bytes": 93729,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/data/pythonScripts.ts": {
+      "sha256": "d88f22b47fcf0607a9483a002efd5a471c525c9dcc3022487d659d58f20d8556",
+      "bytes": 174956,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/index.css": {
+      "sha256": "d89f6209c42bcf09e2c29b71ef979c5392109b442589490b1975ca2ec91aa9ee",
+      "bytes": 221452,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/main.tsx": {
+      "sha256": "27860479b525b04268ef8ced8a7b5eec9a7aae56e8c2d063cc8b730d432963fe",
+      "bytes": 1741,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/utils/customScriptBuilder.ts": {
+      "sha256": "bbed5c3647b5303acb7b7762c4c3981c1534c99069fd07ab8949dd84828bfb14",
+      "bytes": 64662,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/utils/gnidaAutoFreezeSensor.ts": {
+      "sha256": "b3310054308b3d76a35c8adac35f779a94b3e4313ab9afb17116f4d020144c8c",
+      "bytes": 45115,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/utils/offlinePackageExporter.ts": {
+      "sha256": "2151cf9bd1417b150e6605038a59c61cc69b7aa56d116cdd9b7d11c88026a8c6",
+      "bytes": 23167,
+      "mode": "644"
+    },
+    "chronos-vault-module/public/sentinel-toolkit/src/utils/selfRepairSystem.ts": {
+      "sha256": "50bb0990cc8f71e46021eed59cc494acbae7311fe14ed9e9404202ecb916c1ca",
+      "bytes": 32381,
+      "mode": "644"
+    },
+    "chronos-vault-module/server.ts": {
+      "sha256": "4826d2d96e00232e4250ac20e75a59e53b47a011233ec1204315418faf8c108a",
+      "bytes": 80918,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/App.tsx": {
+      "sha256": "8be22b5b88b0a227553a5a4a63643eb1b067fdc3b1b5af818f390bf7f52cb7c1",
+      "bytes": 194843,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/components/AIWorkOptimizerAndMalwareView.tsx": {
+      "sha256": "061ca96b4c4f5f91eea56611cc94e444f7755b13f87d116b597dffbcec840a3e",
+      "bytes": 65482,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/components/AnalyticsAndReportsView.tsx": {
+      "sha256": "dccdd6203a787465059e0a21b4b89981ecf6bc6aa929fa24e841277adbc2848a",
+      "bytes": 40634,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/components/CalendarSyncView.tsx": {
+      "sha256": "e5c02be48004e6372d641c562102dccc16551de869ad69d289f606833e6fe763",
+      "bytes": 58059,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/components/CentralControlPanelView.tsx": {
+      "sha256": "bf9ea517a3f60561cd2855be5da4bb47cc89429320cebaf87053fcbd5d095efa",
+      "bytes": 117096,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/components/ClinicDeviceTwin3D.tsx": {
+      "sha256": "03f03f0be14c166da55077d291adab87f91c17c602c33a7ad9e934f84ed00575",
+      "bytes": 25485,
+      "mode": "644"
+    },
+    "chronos-vault-module/src/components/ClinicEquipmentView.tsx": {
+      "sha256": "71f2264d23826ced2af45d077ce4076a217511d2173c33901a3ca02ebd1f9030",
+      "bytes": 81903,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/components/HolographicSeo3DCharts.tsx": {
+      "sha256": "6185c81daa82f3a2c8d36c03ba3354a3717f6d20ad1441040e3d3788de790812",
+      "bytes": 46184,
+      "mode": "644"
+    },
+    "chronos-vault-module/src/components/NextJs3dArchitectureDocPanel.tsx": {
+      "sha256": "b85dc1aac06fc609dc63832e7a1e25e5a369bc3f06563d5d87a7da24694a1ef2",
+      "bytes": 21571,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/components/PDFReportSearchPanel.tsx": {
+      "sha256": "e9b634a3a98b09ea72686fef57b387b3874fbb297ed084b6bfc8e251fc05a7a9",
+      "bytes": 26554,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/components/PWAWidgets.tsx": {
+      "sha256": "9d970195947cd19d5793e4d4d47c2a0a373071c1f3eb86642f8b99dc9c813fb0",
+      "bytes": 2865,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/components/TeamAndSecurityModal.tsx": {
+      "sha256": "62a8c35dec5d55f0e2a939e0130cf1aa8410bcdd34e3677ca9ccebd9127a62e5",
+      "bytes": 12500,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/components/VoiceAndHandwritingModal.tsx": {
+      "sha256": "b12b4df6606c5073add17e02e9af38492b26c61bd8ebd3c9b64c84f1ff2a1f13",
+      "bytes": 37904,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/components/WorkspaceInviteOnboarding.tsx": {
+      "sha256": "8ab236420e749fae7ea34922fd530f688209f7e552b8245ebc0a8f7a4d3bb46d",
+      "bytes": 13789,
+      "mode": "644"
+    },
+    "chronos-vault-module/src/index.css": {
+      "sha256": "c4fe490178bad24144f71c4d48f0bedccd211f37480f263429eb818325132a7e",
+      "bytes": 2289,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/lib/calendarSync.ts": {
+      "sha256": "9c2e61dc5c07a70bfe9f2e0bffeb0e98c13b9079945071c59c6fd07f3e11844a",
+      "bytes": 10431,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/lib/clinicModels.ts": {
+      "sha256": "b70c9d7cfd8e920bab604a086a872dd9ace06ed7dfae243725186d704d512e08",
+      "bytes": 7237,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/lib/crypto.ts": {
+      "sha256": "579fc1d085a54aa32c5330b96e0cc13415353dc607e268a0c27ee742975257ba",
+      "bytes": 3611,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/lib/export.ts": {
+      "sha256": "4a0c07712d7837bacbd69d3d9f87cb818fc9c53d449deffc7b7d17394b3d6a96",
+      "bytes": 21813,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/lib/firebase.ts": {
+      "sha256": "637cc89adaac89acc7849e3cadacb8e115c80f08a3b8be85f67d2a4f7b155375",
+      "bytes": 8150,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/lib/pdfSearchIndex.ts": {
+      "sha256": "4e5ea1e1f6d7848c37575f8bb2577181e7bea80b591d72d9150aae6cf2c7d788",
+      "bytes": 19969,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/lib/pwa.ts": {
+      "sha256": "b4ccbacb372f66ec9f035610afcd256c3c656a643261a98885d54a87589c7b06",
+      "bytes": 3460,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/lib/seoPredictiveEngine.ts": {
+      "sha256": "2fdf7d1d7d577e5ae3b496c03ac7eeaf46d3e03a32ffc8a00e924bcf4a8f69be",
+      "bytes": 24918,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/main.tsx": {
+      "sha256": "60b9f5322f85293d8d65238a10320e89aaa3ef7209f1b8aeb601047c64c263be",
+      "bytes": 521,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/server/aetherBridge.ts": {
+      "sha256": "e2b3c35a2f9a9f51776826dbacf4aa528a1673b3ed3a4392667c4b7734c9571d",
+      "bytes": 3716,
+      "mode": "644"
+    },
+    "chronos-vault-module/src/server/batchCutoutProcessor.ts": {
+      "sha256": "267789afc8190e6b9e7e7d6d61610e85bf863ad7886e1eb661bfc4099dbec2e8",
+      "bytes": 10158,
+      "mode": "644"
+    },
+    "chronos-vault-module/src/server/cloudFunctionsEngine.ts": {
+      "sha256": "af2f9e01c0701f97c87287aad60c5ff76e64248561ebd20089f22dbb985aaee0",
+      "bytes": 17515,
+      "mode": "664"
+    },
+    "chronos-vault-module/src/server/googleDriveSync.ts": {
+      "sha256": "2c5aab7631e3332cdbfb7a939f058e17e4f7260b6176f47439a33326cabf5167",
+      "bytes": 12062,
+      "mode": "644"
+    },
+    "chronos-vault-module/src/server/securityHardening.ts": {
+      "sha256": "cb470e1d9b844e4167c08e198c74d8f85e1c205dd02265a6184078954e1c75ac",
+      "bytes": 4674,
+      "mode": "644"
+    },
+    "chronos-vault-module/tsconfig.json": {
+      "sha256": "01a54f95b49f1c648548c6981076e6d100a542bf420a5c08cd9244db91adddd6",
+      "bytes": 587,
+      "mode": "664"
+    },
+    "chronos-vault-module/vite.config.ts": {
+      "sha256": "091986399f805f3620800bd8701b00fa4a6d2e8ca9e0ec35caefc63ea083a3e2",
+      "bytes": 3325,
+      "mode": "664"
+    },
+    "components/admin/InventoryManagerClient.tsx": {
+      "sha256": "d0fdec092ab2f49f8b23759c08072a68e938d129f79b85c9e0136de14d0224f1",
+      "bytes": 17251,
+      "mode": "644"
+    },
+    "components/auth/AuthProvider.tsx": {
+      "sha256": "c72a055e8cfa621a823482270a03e854d818882deec9ab560716d3a0c2675260",
+      "bytes": 209,
+      "mode": "644"
+    },
+    "components/bmclinics-ai/BmClinicsAiHostClient.tsx": {
+      "sha256": "eb4e4c9a005dc74c7229767bd6ebaedb263cb807d702315ec80f9bc5ecd7f382",
+      "bytes": 5592,
+      "mode": "644"
+    },
+    "components/booking/BookingForm.tsx": {
+      "sha256": "6fc1fa7d551ebab62157d27eb0014790c409a9b1def8be6c81c5e8a6d412d468",
+      "bytes": 12301,
+      "mode": "644"
+    },
+    "components/cart/AddToCartButton.tsx": {
+      "sha256": "df29c673835218bbb1c263e71a4eccb35502ce762e7008847663e6e2680e67c5",
+      "bytes": 1051,
+      "mode": "644"
+    },
+    "components/cart/CartIndicator.tsx": {
+      "sha256": "eac5548fc08285ae3a4d303cd6e1c93c9fa7d4db755bfb4ecd1697fd08ddcf70",
+      "bytes": 1250,
+      "mode": "644"
+    },
+    "components/cart/CartProvider.tsx": {
+      "sha256": "8ec2d4a519e33e1a7369a86ba2eeca997c2a54810f429c7daf20f6c6a0194216",
+      "bytes": 3206,
+      "mode": "644"
+    },
+    "components/chronos/AIWorkOptimizerAndMalwareView.tsx": {
+      "sha256": "45c941dbdf4e528450ba8f2e45ffab912c861134bfc3a8f28cb2ffbf4bff442c",
+      "bytes": 65504,
+      "mode": "644"
+    },
+    "components/chronos/CalendarSyncView.tsx": {
+      "sha256": "a0f32809165b254caed38be91d045d239828d9a1809e10005721db11bc8dcca8",
+      "bytes": 58095,
+      "mode": "644"
+    },
+    "components/chronos/ChronosLiteHub.tsx": {
+      "sha256": "8fd49d62c44bf74fd408a53bc6c236c831f9168fd87c66a26e1cc97657ccd2c8",
+      "bytes": 20381,
+      "mode": "644"
+    },
+    "components/chronos/PDFReportSearchPanel.tsx": {
+      "sha256": "da9a7fd43ca40e99747fa3c35813e8e11cd1764bff632f61f671c192618df42e",
+      "bytes": 26583,
+      "mode": "644"
+    },
+    "components/chronos/VoiceAndHandwritingModal.tsx": {
+      "sha256": "b12b4df6606c5073add17e02e9af38492b26c61bd8ebd3c9b64c84f1ff2a1f13",
+      "bytes": 37904,
+      "mode": "644"
+    },
+    "components/cms/LiveEditorToolbar.tsx": {
+      "sha256": "7a66f0ac63cb2e015dba3918bcc3e7248711a1fc92fbd5cd787a312aadf78d42",
+      "bytes": 34996,
+      "mode": "644"
+    },
+    "components/contact/ContactForm.tsx": {
+      "sha256": "e6f987d839b07a60ed853984c5755a7038154045e7dd662e73df53adafb5112c",
+      "bytes": 3474,
+      "mode": "644"
+    },
+    "components/demo/CabBookingCover.tsx": {
+      "sha256": "cd4595aa50b942b93f26738a339f8917d11cda808f3c01e70126659487d78bfb",
+      "bytes": 22462,
+      "mode": "644"
+    },
+    "components/demo/RaycastPlayground.tsx": {
+      "sha256": "8221df61f0c92f8d252614eae6f9b33ff9311cb7d8cecc3a4ce2f7b646eb4825",
+      "bytes": 8934,
+      "mode": "644"
+    },
+    "components/design/DesignStudioAetherClient.tsx": {
+      "sha256": "dd3061794eaf3724ce5fadfcb93fddec43559a81f237cf6cefc774c08d78c6c8",
+      "bytes": 77901,
+      "mode": "644"
+    },
+    "components/design/MobileDesignStudioClient.tsx": {
+      "sha256": "21f69694fa095e0c3bc2b2c24fa15f90c77932e170ea62627e0db16d39af1360",
+      "bytes": 23748,
+      "mode": "644"
+    },
+    "components/dev/KillNextPortal.tsx": {
+      "sha256": "5d44a2a6814a92c0e1054d8d8e494964c5b26e2d3184801eb8495fe8891d6ece",
+      "bytes": 721,
+      "mode": "644"
+    },
+    "components/home/HeroClinicBackdrop.tsx": {
+      "sha256": "1ca7f632d86f7512193df77a7706e047c8bfdb9f9c5a0c7b90fd5bcf4bff6bf8",
+      "bytes": 261,
+      "mode": "644"
+    },
+    "components/home/ZakresCareSection.tsx": {
+      "sha256": "9268c9a6c4104f4ca758db8d5d6982f589c6b1a64d1c07ef1cd41059be7db8ff",
+      "bytes": 9860,
+      "mode": "644"
+    },
+    "components/landing/LandingFrame.tsx": {
+      "sha256": "6baf3565e471ec9ff448208f46f341fc9f9d87ed266ae651b1341e5086d19911",
+      "bytes": 1447,
+      "mode": "644"
+    },
+    "components/layout/SiteFooter.tsx": {
+      "sha256": "0c518a24a0af7806f558936078ef2415558b9a81a4a420a20ac21afc1f24602c",
+      "bytes": 10612,
+      "mode": "644"
+    },
+    "components/layout/SiteHeader.tsx": {
+      "sha256": "9156773756c8d619d1139ff5f203cac53f2284405174537ab20a4438a13aa9e0",
+      "bytes": 7715,
+      "mode": "644"
+    },
+    "components/lovable/AestheticTechnologiesClient.tsx": {
+      "sha256": "15274367d300b7c54bebc1e727d99763429bc25047688369e6e323176b4a2a7a",
+      "bytes": 5050,
+      "mode": "644"
+    },
+    "components/lovable/HealingChecklistClient.tsx": {
+      "sha256": "af182bcf2c57abf8fe218a9102dbe1111b070b0439ac117f85a9dc8fae3238dc",
+      "bytes": 4875,
+      "mode": "644"
+    },
+    "components/lovable/LaserProtocolsViewer.tsx": {
+      "sha256": "58094876a05e84a1c6753757ff13a71fa0c391067592e3ea6b1aea4bc17773a4",
+      "bytes": 2215,
+      "mode": "644"
+    },
+    "components/shop/ShopCmlCatalogClient.tsx": {
+      "sha256": "318c5e1d2ed083c733f2ca0efbf7b8e7b60918ea1a225e555175f7ef1f835048",
+      "bytes": 7508,
+      "mode": "644"
+    },
+    "components/sitemap/InteractiveSitemapClient.tsx": {
+      "sha256": "2af78d4d59e3304a2cc1558fe865f9d9c6dd672828d3cad525ec6caf4202a49c",
+      "bytes": 39151,
+      "mode": "644"
+    },
+    "components/theme/CategoryBackground.tsx": {
+      "sha256": "daf2fbb7f4a378dc83c2f40fc1b92b4b35a8a6d860ecdec4d9bdd63dd01325cb",
+      "bytes": 733,
+      "mode": "644"
+    },
+    "components/theme/CategoryBackgroundMotion.tsx": {
+      "sha256": "ab63db7a4ea71657dd86e72bbea79cc844a03532fd5e36d655711c91b4e9faa6",
+      "bytes": 1404,
+      "mode": "644"
+    },
+    "components/theme/CategorySubthemeShell.tsx": {
+      "sha256": "bbba8d46c1f8de387d61dcf7a93f4ac8602c418cf994934767aef11ce5926ecf",
+      "bytes": 4043,
+      "mode": "644"
+    },
+    "lib/agentLlmEngine.ts": {
+      "sha256": "5438ceda04d2c873486cbd59eebc0ff480f56272a7e78e2ee3ff5a052f8bb8be",
+      "bytes": 6807,
+      "mode": "644"
+    },
+    "lib/authGuard.ts": {
+      "sha256": "aed34a532c989dd5a0a3ac2334a0dbc945ad8905bcb44c2fb8f97995e1838ab2",
+      "bytes": 476,
+      "mode": "644"
+    },
+    "lib/authOptions.ts": {
+      "sha256": "c9be7c0a8e53ce0cf800a3d2baa09a2a17c807fa7f5c56b5c905cc60640b02e9",
+      "bytes": 3635,
+      "mode": "644"
+    },
+    "lib/categoryThemes.ts": {
+      "sha256": "5ca683455feeced95326720a7303c098f6b2ac4e88bd394bf5f4fa9430d65a97",
+      "bytes": 2285,
+      "mode": "644"
+    },
+    "lib/chronos/calendarSync.ts": {
+      "sha256": "e1a5d33c21f7d5b279ec5f441d9bfe51221ba70a27f736cfa31b02a124ed08e3",
+      "bytes": 10684,
+      "mode": "644"
+    },
+    "lib/chronos/clinicModels.ts": {
+      "sha256": "b70c9d7cfd8e920bab604a086a872dd9ace06ed7dfae243725186d704d512e08",
+      "bytes": 7237,
+      "mode": "644"
+    },
+    "lib/chronos/export.ts": {
+      "sha256": "4a0c07712d7837bacbd69d3d9f87cb818fc9c53d449deffc7b7d17394b3d6a96",
+      "bytes": 21813,
+      "mode": "644"
+    },
+    "lib/chronos/pdfSearchIndex.ts": {
+      "sha256": "4e5ea1e1f6d7848c37575f8bb2577181e7bea80b591d72d9150aae6cf2c7d788",
+      "bytes": 19969,
+      "mode": "644"
+    },
+    "lib/clientSpeech.ts": {
+      "sha256": "51eac25486d9ccbf5b3f3adc6307819f081380bcc2deadabeeec173590f2275e",
+      "bytes": 10519,
+      "mode": "644"
+    },
+    "lib/cmsStore.ts": {
+      "sha256": "962dff52b5050f2d65505b381ed5c392bb486246f1f24cbde1dab2e20d090180",
+      "bytes": 9532,
+      "mode": "644"
+    },
+    "lib/content.ts": {
+      "sha256": "620dad204693124c10faf0a2d115257edf475ebf20f76d452e2c6c9401466f29",
+      "bytes": 1907,
+      "mode": "644"
+    },
+    "lib/designLibraryData.ts": {
+      "sha256": "48c08fb532ec701c03837523434b2ba7cb89d953c6f4edc2e9f9f67106e79776",
+      "bytes": 25053,
+      "mode": "644"
+    },
+    "lib/designStudioPresets.ts": {
+      "sha256": "6076526e8d56f3156c4a4e4a8d9b7743c7ea89730a06649d182df76f894cee25",
+      "bytes": 15634,
+      "mode": "644"
+    },
+    "lib/designStudioStore.ts": {
+      "sha256": "af8fd21f6bad9eb95c0d536b0f56133b88d93f3ff6d91800412fe6f605596b91",
+      "bytes": 21802,
+      "mode": "644"
+    },
+    "lib/doctors.ts": {
+      "sha256": "543471a9c50ed0fa247372d5ae4a7fae7e420bc26afabb74a82bf28983b02bd0",
+      "bytes": 1046,
+      "mode": "644"
+    },
+    "lib/googleCalendar.ts": {
+      "sha256": "18066edb0b218c2a08692cc4821f517c4ec1f83720749f93d39fb5bb766ffccc",
+      "bytes": 2091,
+      "mode": "644"
+    },
+    "lib/holdingSecurity.ts": {
+      "sha256": "1590de74d3bf96293b86c371c0fb67db88d183b72a0381ca40d83c4a6fbd1f4c",
+      "bytes": 13957,
+      "mode": "644"
+    },
+    "lib/kms.ts": {
+      "sha256": "af78811e97d5550eda45df85846589e299a24a77bb7862924dd6f6df2f521447",
+      "bytes": 1512,
+      "mode": "644"
+    },
+    "lib/lovable/aestheticTechnologies.json": {
+      "sha256": "8ce7d58a3407818d3036485171785cda111e389cac25933d4d18c44cb4e52872",
+      "bytes": 34487,
+      "mode": "644"
+    },
+    "lib/lovable/healingSchedule.json": {
+      "sha256": "1ccbb5e33197a750c4fa722ffe7e192b88a191af22d12cc99b71e517ae4096cb",
+      "bytes": 6854,
+      "mode": "644"
+    },
+    "lib/lovable/knowledge-base/device_catalog.json": {
+      "sha256": "5cab059c38182b598413c980ccf0b2cfa8750770b38ceb38c2363108f5786557",
+      "bytes": 15061,
+      "mode": "644"
+    },
+    "lib/lovable/knowledge-base/gut_prehab.json": {
+      "sha256": "c50ddd202e9f53fb1db297fd983e91b75b20b98cd33f98acba1f4c18b4d0df4d",
+      "bytes": 3115,
+      "mode": "644"
+    },
+    "lib/lovable/knowledge-base/protocol_rules.json": {
+      "sha256": "431dfc4ccd57c56910d241737823c52a02cd92667277f602ffaebc5cd741d0c3",
+      "bytes": 7898,
+      "mode": "644"
+    },
+    "lib/lovable/knowledge-base/protocol_rules_cl300.json": {
+      "sha256": "7535387a3f5e427c1e0ed5c42b085ae0b7cd920e3d0d20f633addecb54b53a06",
+      "bytes": 10336,
+      "mode": "644"
+    },
+    "lib/lovable/knowledge-base/protocol_rules_el950.json": {
+      "sha256": "8a93c153f5444e1b90dd286e9ac9589a1eacf569a63a13b0c6f6f141e69bbe0a",
+      "bytes": 11831,
+      "mode": "644"
+    },
+    "lib/lovable/knowledge-base/protocol_rules_ps30.json": {
+      "sha256": "51d23ddacce1070fb4a9858c12f5a10b0ea41a873bc572f1e30cc7547e92eda5",
+      "bytes": 8691,
+      "mode": "644"
+    },
+    "lib/lovable/knowledge-base/skin_phenotypes.json": {
+      "sha256": "59a95c13e6db64e3cf493b41790657315f39754c4fb39a5ac213d9d9911ba4c0",
+      "bytes": 14498,
+      "mode": "644"
+    },
+    "lib/orders.ts": {
+      "sha256": "dc3f9aa0b7cd1b54e98c3c3d85d7a6d7259c4b65c8bddaa6b908450900f3fbde",
+      "bytes": 1283,
+      "mode": "644"
+    },
+    "lib/patients.ts": {
+      "sha256": "cbb6b491671c431df97f114564d4f8ff9b586e1caa67621fd8b2f07a64cb9e86",
+      "bytes": 616,
+      "mode": "644"
+    },
+    "lib/payments.ts": {
+      "sha256": "34a8a65475aa56a75d25acdd942f7e3a12f4f1cc3acc171f6f1932d133d5fa6a",
+      "bytes": 3489,
+      "mode": "644"
+    },
+    "lib/prisma.ts": {
+      "sha256": "8fff91875b6be6c8f1f4a38cd9285dfe8fdc3ba889e89037287d24dc1c73ce45",
+      "bytes": 270,
+      "mode": "644"
+    },
+    "lib/servicesCatalog.ts": {
+      "sha256": "1e3e5d5016a28e167185e8a0893847032e5c6f7bf050aea29276bfc82c6e4417",
+      "bytes": 15753,
+      "mode": "644"
+    },
+    "lib/shopInventoryStore.ts": {
+      "sha256": "4d1ca34549a3e31e2450567ea41159b2e9e37d670ac2c3095113a5f0e876d531",
+      "bytes": 9417,
+      "mode": "644"
+    },
+    "lib/superagentEdgeGuard.ts": {
+      "sha256": "0e4b94c0df626f049c20d2cc4ced123b1678ac96e6186d898b149fc69bef0da3",
+      "bytes": 3289,
+      "mode": "644"
+    },
+    "lib/superagentEngine.ts": {
+      "sha256": "9ebc6dbdba05ff05bf39738fbba04426c17faf46b9329e10c9c37504f8c512da",
+      "bytes": 9688,
+      "mode": "644"
+    },
+    "lib/usePerformanceTier.ts": {
+      "sha256": "8e54c845cbaf03a71a482ba3fef0848dd3c0f6e112415b3294f7ac6b59ea61ea",
+      "bytes": 1104,
+      "mode": "644"
+    },
+    "lib/visits.ts": {
+      "sha256": "7e5e4a24a9f8fad3c420f2fcf18ea1732b62a4cbf8a95956cebed681b7fa2a80",
+      "bytes": 728,
+      "mode": "644"
+    },
+    "lib/voiceBuilderEngine.ts": {
+      "sha256": "9d573f17baedf6e5fe6fe72a940dfd2db0f1c71dc11924dc513d60e1bcaf9133",
+      "bytes": 20758,
+      "mode": "644"
+    },
+    "next.config.ts": {
+      "sha256": "0f5fce9391d4a46e1cefff092e3678a0ae6f465a926b568fb1d0eab2c0cb28c3",
+      "bytes": 2447,
+      "mode": "644"
+    },
+    "package.json": {
+      "sha256": "ef6eed4af8b350313969de6f5732fff6561778621d79567dd32b85b9c242dba6",
+      "bytes": 1526,
+      "mode": "644"
+    },
+    "public/bm-unified-shell.js": {
+      "sha256": "7148fa16bf0bda9f8134f9930bd24706f7c8fe8192a8f13233e781e032cd8b4b",
+      "bytes": 14143,
+      "mode": "644"
+    },
+    "scripts/bm-vision-cutout.swift": {
+      "sha256": "3c6da6fd99aadbf3747b010660b0398ab0eee91fd75ae78a19943421d1ddb4bd",
+      "bytes": 7463,
+      "mode": "644"
+    },
+    "scripts/bmclinics-cli.mjs": {
+      "sha256": "57c2bea39ecb03874f5147ee36bff938efd82766bc2ef9e156f6916f9943aea8",
+      "bytes": 5725,
+      "mode": "755"
+    },
+    "scripts/build-offline.mjs": {
+      "sha256": "25ff5aba25f263f2f22ed27cf090118eb8c08acacf80d459e03b5330ff17228c",
+      "bytes": 24198,
+      "mode": "644"
+    },
+    "scripts/verify-all-security.mjs": {
+      "sha256": "7bf95862f8e50c7a6c8198d6ae2cfb32da9e7e1aad3adde941289e785b78fa6c",
+      "bytes": 5839,
+      "mode": "755"
+    },
+    "server-master.ts": {
+      "sha256": "ceeff337c805d9ac310b632332b5d259a146a6f482427ff4869d515cebd676f0",
+      "bytes": 993,
+      "mode": "644"
+    },
+    "taskkill-assets/app.js": {
+      "sha256": "13eb837adad9a62e386414245d0dd51438a83bb86df2aa2d1d68e2fe4d7bde1b",
+      "bytes": 159898,
+      "mode": "644"
+    },
+    "taskkill-assets/index.html": {
+      "sha256": "68e665f63a6912c6c39d3ed06193712949768491cd28986bc1bcdf4de5ed2c16",
+      "bytes": 11008,
+      "mode": "644"
+    },
+    "taskkill-assets/mindmaps/invites.json": {
+      "sha256": "a7d92a8a618499bf116c61dc6c0d1e075178dde311641e3c60bb1a776b2152ba",
+      "bytes": 183,
+      "mode": "644"
+    },
+    "taskkill-assets/mindmaps/registry.json": {
+      "sha256": "b469688f9fea4a84d758141684288375bf942d329a8d78efd2d2e47b8630bd1f",
+      "bytes": 250,
+      "mode": "644"
+    },
+    "taskkill-assets/mindmaps/scalenie-3016.layout.json": {
+      "sha256": "a001b99badbb00b6644baa5ea21b47301da8b0be54b3c5edcdecd26521ad9d4b",
+      "bytes": 2211,
+      "mode": "644"
+    },
+    "taskkill-assets/mindmaps/scalenie-3016.tasks.json": {
+      "sha256": "83e8cbbd73e29ddb31bf28fc08fe16e42f15e44cd99a43e13cd834547645c736",
+      "bytes": 19157,
+      "mode": "644"
+    },
+    "taskkill-assets/mindmaps/voice-builder-log.json": {
+      "sha256": "a1b151e6c8814f910d137d9026a76c99934e9b7911bf9fd13ced7518cbcd480f",
+      "bytes": 1565,
+      "mode": "644"
+    },
+    "taskkill-assets/tasks.json": {
+      "sha256": "229e456c6b64a1016b24d3cf3e349a73da1e4498681c7f70c4e0ce2249698d7c",
+      "bytes": 26473,
+      "mode": "644"
+    }
+  }
+}

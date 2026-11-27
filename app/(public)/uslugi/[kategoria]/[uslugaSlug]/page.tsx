@@ -46,7 +46,11 @@ export default async function UslugaPage({ params }: Props) {
   return (
     <article
       className="glass-card mx-auto max-w-2xl p-6 md:p-10 space-y-6"
-      style={{ background: 'var(--cat-card-bg)', color: 'var(--cat-text)' }}
+      style={{
+        background: 'var(--cat-card-bg)',
+        borderColor: 'var(--cat-card-border)',
+        color: 'var(--cat-text)',
+      }}
     >
       <script
         type="application/ld+json"
@@ -55,7 +59,8 @@ export default async function UslugaPage({ params }: Props) {
 
       <Link
         href={`/uslugi/${kategoria}`}
-        className="inline-flex items-center gap-1.5 text-xs font-semibold opacity-75 hover:opacity-100 transition"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold hover:underline transition"
+        style={{ color: 'var(--cat-accent)' }}
       >
         <ArrowLeft className="h-3.5 w-3.5" />
         Wróć do kategorii: {theme.label}
@@ -65,7 +70,7 @@ export default async function UslugaPage({ params }: Props) {
         <h1 className="font-[family-name:var(--font-fraunces)] text-2xl sm:text-3xl font-semibold">
           {service.name}
         </h1>
-        <div className="mt-3 flex flex-wrap items-center gap-4 text-xs opacity-80">
+        <div className="mt-3 flex flex-wrap items-center gap-4 text-xs" style={{ color: 'var(--cat-muted)' }}>
           <span className="inline-flex items-center gap-1.5 font-semibold" style={{ color: 'var(--cat-accent)' }}>
             Cena: od {(service.priceGrosze / 100).toFixed(2)} zł
           </span>
@@ -80,15 +85,19 @@ export default async function UslugaPage({ params }: Props) {
         </div>
       </div>
 
-      <div className="space-y-3 text-sm leading-relaxed opacity-90">
+      <div className="space-y-3 text-sm leading-relaxed" style={{ color: 'var(--cat-text)' }}>
         <p className="font-medium">{service.seoSummary}</p>
-        <p>{service.fullDescription}</p>
+        <p style={{ color: 'var(--cat-muted)' }}>{service.fullDescription}</p>
       </div>
 
-      <div className="pt-4 border-t border-white/10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div
+        className="pt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+        style={{ borderTop: '1px solid var(--cat-card-border)' }}
+      >
         <Link
           href={`/rezerwacja?serviceId=${service.id}`}
-          className="btn-gold inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-center text-xs sm:text-sm font-semibold"
+          className="inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-center text-xs sm:text-sm font-semibold transition hover:opacity-95"
+          style={{ background: 'var(--cat-cta-bg)', color: 'var(--cat-cta-text)' }}
         >
           <Calendar className="h-4 w-4" />
           <span>Zarezerwuj wizytę online</span>
