@@ -1,9 +1,312 @@
 {
-  "savedAt": "2026-11-27T12:06:03.796Z",
+  "savedAt": "2026-11-27T12:06:12.155Z",
+  "lists": [
+    {
+      "id": "list_taskkill_studio",
+      "name": "TaskKill Studio (bmclinic.co)",
+      "description": "Zintegrowana baza zadań z Mapy Myśli TaskKill Studio (dwukierunkowa synchronizacja tasks.json)",
+      "ownerId": "local_owner",
+      "ownerEmail": "architekt@chronosvault.pl",
+      "memberEmails": [
+        "bmclinic@bmclinic.co"
+      ],
+      "isEncrypted": false,
+      "color": "indigo"
+    },
+    {
+      "id": "default",
+      "name": "Główny Sprint Produktowy",
+      "description": "Zespół inżynieryjny i wdrożeniowy — bezpieczna tablica zadań z synchronizacją w chmurze",
+      "ownerId": "local_owner",
+      "ownerEmail": "architekt@chronosvault.pl",
+      "memberEmails": [
+        "anna.kowalska@zespol.pl",
+        "piotr.nowak@zespol.pl"
+      ],
+      "isEncrypted": true,
+      "color": "blue"
+    },
+    {
+      "id": "list_marketing_q4",
+      "name": "Kampania Wdrożeniowa i Analityka",
+      "description": "Planowanie publikacji, raporty PDF/CSV oraz kalendarz wydarzeń",
+      "ownerId": "local_owner",
+      "ownerEmail": "architekt@chronosvault.pl",
+      "memberEmails": [
+        "marta.wisniewska@zespol.pl"
+      ],
+      "isEncrypted": false,
+      "color": "emerald"
+    }
+  ],
   "rawTasks": [
     {
       "id": "test",
       "title": "Check GEMINI_API_KEY"
     }
-  ]
+  ],
+  "clinicDevices": [
+    {
+      "id": "dev_demo_1",
+      "name": "Platforma Laserowa Er:YAG / Nd:YAG",
+      "modelOrSerial": "ML-PRO-2940-01",
+      "clinicLocation": "Klinika Warszawa — Śródmieście",
+      "roomName": "Gabinet Laseroterapii 1",
+      "status": "operational",
+      "usedHours": 318.5,
+      "maxServiceHours": 500,
+      "usedPulses": 164200,
+      "maxPulses": 250000,
+      "lastServiceDate": "2026-10-29",
+      "nextServiceDate": "2027-01-10",
+      "wearNotes": "Optyka głowicy frakcyjnej czysta, układ chłodzenia w normie. Kontrola lampy za ~180 godz.",
+      "ownerId": "local_owner",
+      "collaboratorEmails": [
+        "anna.kowalska@zespol.pl",
+        "piotr.nowak@zespol.pl"
+      ]
+    },
+    {
+      "id": "dev_demo_2",
+      "name": "System Ultradźwiękowy HIFU 3D",
+      "modelOrSerial": "UF-HIFU-702",
+      "clinicLocation": "Klinika Kraków — Podgórze",
+      "roomName": "Gabinet Hi-Tech B",
+      "status": "in_use",
+      "usedHours": 412,
+      "maxServiceHours": 500,
+      "usedPulses": 18900,
+      "maxPulses": 20000,
+      "lastServiceDate": "2026-10-29",
+      "nextServiceDate": "2026-12-10",
+      "wearNotes": "Przetwornik 4.5 mm osiągnął 94.5% resursu linii — zamówić wymienny kartridż przed kolejnym tygodniem.",
+      "ownerId": "local_owner",
+      "collaboratorEmails": [
+        "anna.kowalska@zespol.pl"
+      ]
+    },
+    {
+      "id": "dev_demo_3",
+      "name": "Radiofrekwencja Mikroigłowa RF Vacuum",
+      "modelOrSerial": "RF-MED-440",
+      "clinicLocation": "",
+      "roomName": "Gabinet Zabiegowy 3",
+      "status": "operational",
+      "usedHours": 96,
+      "maxServiceHours": 400,
+      "usedPulses": 41000,
+      "maxPulses": 200000,
+      "lastServiceDate": "2026-11-16",
+      "nextServiceDate": "2027-02-14",
+      "wearNotes": "Nowe urządzenie mobilne oczekujące na przypisanie docelowej lokalizacji kliniki.",
+      "ownerId": "local_owner",
+      "collaboratorEmails": [
+        "piotr.nowak@zespol.pl"
+      ]
+    }
+  ],
+  "clinicTreatments": [
+    {
+      "id": "trt_demo_1",
+      "deviceId": "dev_demo_1",
+      "deviceName": "Platforma Laserowa Er:YAG / Nd:YAG",
+      "clinicLocation": "Klinika Warszawa — Śródmieście",
+      "procedureName": "Resurfacing frakcyjny + przebudowa kolagenu",
+      "patientRef": "Karta #WAW-408",
+      "operatorName": "dr Anna Kowalska",
+      "scheduledDate": "2026-11-26",
+      "startTime": "10:00",
+      "endTime": "11:00",
+      "plannedPulses": 1850,
+      "durationMinutes": 60,
+      "status": "confirmed",
+      "usageLogged": false,
+      "notes": "Głowica frakcyjna 2940 nm, 2 przejścia, chłodzenie powietrzne poziom 4.",
+      "ownerId": "local_owner",
+      "collaboratorEmails": [
+        "anna.kowalska@zespol.pl",
+        "piotr.nowak@zespol.pl"
+      ]
+    },
+    {
+      "id": "trt_demo_2",
+      "deviceId": "dev_demo_2",
+      "deviceName": "System Ultradźwiękowy HIFU 3D",
+      "clinicLocation": "Klinika Kraków — Podgórze",
+      "procedureName": "Lifting bezinwazyjny owalu twarzy HIFU",
+      "patientRef": "Karta #KRK-119",
+      "operatorName": "mgr Piotr Nowak",
+      "scheduledDate": "2026-11-27",
+      "startTime": "12:00",
+      "endTime": "13:30",
+      "plannedPulses": 420,
+      "durationMinutes": 90,
+      "status": "planned",
+      "usageLogged": false,
+      "notes": "Kartridże 3.0 mm oraz 4.5 mm — zweryfikować stan licznika przed zabiegiem.",
+      "ownerId": "local_owner",
+      "collaboratorEmails": [
+        "anna.kowalska@zespol.pl"
+      ]
+    },
+    {
+      "id": "trt_demo_3",
+      "deviceId": "dev_demo_3",
+      "deviceName": "Radiofrekwencja Mikroigłowa RF Vacuum",
+      "clinicLocation": "",
+      "procedureName": "Termolifting mikroigłowy blizn potrądzikowych",
+      "patientRef": "Karta #MOB-052",
+      "operatorName": "dr Marta Wiśniewska",
+      "scheduledDate": "2026-11-28",
+      "startTime": "14:00",
+      "endTime": "15:00",
+      "plannedPulses": 900,
+      "durationMinutes": 60,
+      "status": "planned",
+      "usageLogged": false,
+      "notes": "Uzupełnić docelową lokalizację kliniki wyjazdowej po potwierdzeniu grafiku.",
+      "ownerId": "local_owner",
+      "collaboratorEmails": [
+        "piotr.nowak@zespol.pl"
+      ]
+    }
+  ],
+  "seoAssets": [
+    {
+      "id": "seo_demo_1",
+      "title": "Przewodnik po architekturze Zero-Trust i szyfrowaniu E2EE w chmurze",
+      "channel": "web_page",
+      "urlOrSlug": "/architektura/bezpieczenstwo-zero-trust-e2ee",
+      "contentExcerpt": "Jak działa szyfrowanie end-to-end AES-256-GCM w aplikacjach zespołowych? Bezpośrednia odpowiedź: dane są szyfrowane po stronie przeglądarki przed zapisem w bazie chmurowej, co eliminuje ryzyko wycieku kluczy.",
+      "primaryKeyword": "szyfrowanie end-to-end aplikacja zespołowa 2026",
+      "previousKeyword": "bezpieczeństwo danych w chmurze",
+      "keywordHistory": [
+        "bezpieczeństwo w chmurze",
+        "bezpieczeństwo danych w chmurze",
+        "szyfrowanie end-to-end aplikacja zespołowa 2026"
+      ],
+      "seoScore": 91,
+      "aeoScore": 94,
+      "predictiveStrength": 92,
+      "organicReach": 48200,
+      "socialReach": 14900,
+      "engagementRate": 6.8,
+      "anomalyType": "none",
+      "aiRecommendation": "Wysoka gotowość cytowania w AI Overviews dzięki blokowi definicyjnemu 42 słów na początku sekcji H2.",
+      "ownerId": "local_owner",
+      "collaboratorEmails": [],
+      "daysSinceLastRefresh": 2
+    },
+    {
+      "id": "seo_demo_2",
+      "title": "Jak zoptymalizować treści pod silniki odpowiedzi AEO i wyszukiwarki AI",
+      "channel": "blog_post",
+      "urlOrSlug": "/blog/optymalizacja-aeo-i-frazy-kluczowe-w-czasie",
+      "contentExcerpt": "Tradycyjne upychanie słów kluczowych traci skuteczność. Poznaj strukturę pytań i zwięzłych odpowiedzi, dane JSON-LD FAQPage oraz dynamiczną rotację fraz długiego ogona.",
+      "primaryKeyword": "optymalizacja treści AEO pod wyszukiwarki AI",
+      "previousKeyword": "pozycjonowanie bloga firmowego",
+      "keywordHistory": [
+        "pozycjonowanie bloga",
+        "pozycjonowanie bloga firmowego",
+        "optymalizacja treści AEO pod wyszukiwarki AI"
+      ],
+      "seoScore": 86,
+      "aeoScore": 63,
+      "predictiveStrength": 74,
+      "organicReach": 29400,
+      "socialReach": 8300,
+      "engagementRate": 4.9,
+      "anomalyType": "aeo_gap",
+      "aiRecommendation": "Wykryto lukę AEO: dodaj zwięzłą odpowiedź Q&A (45-55 słów) bezpośrednio pod nagłówkiem H2, aby zwiększyć cytowania o ~28%.",
+      "ownerId": "local_owner",
+      "collaboratorEmails": [],
+      "daysSinceLastRefresh": 9
+    },
+    {
+      "id": "seo_demo_3",
+      "title": "Case Study LinkedIn: Automatyzacja grafików klinicznych i redukcja przestojów o 37%",
+      "channel": "linkedin",
+      "urlOrSlug": "linkedin.com/posts/chronos-kliniki-automatyzacja",
+      "contentExcerpt": "Wdrożenie tygodniowego harmonogramu aparatury zabiegowej oraz licznika impulsów pozwoliło 4 placówkom wyeliminować kolizje rezerwacji i zaplanować serwis głowic z wyprzedzeniem.",
+      "primaryKeyword": "zarządzanie grafikami urządzeń medycznych",
+      "previousKeyword": "oprogramowanie dla kliniki",
+      "keywordHistory": [
+        "oprogramowanie dla kliniki",
+        "zarządzanie grafikami urządzeń medycznych"
+      ],
+      "seoScore": 82,
+      "aeoScore": 79,
+      "predictiveStrength": 89,
+      "organicReach": 11200,
+      "socialReach": 64500,
+      "engagementRate": 9.4,
+      "anomalyType": "viral_spike",
+      "aiRecommendation": "Skok zasięgu organicznego na LinkedIn (+142% tydz./tydz.). Przekształć wątek w stronę docelową z sekcją FAQ Schema.",
+      "ownerId": "local_owner",
+      "collaboratorEmails": [],
+      "daysSinceLastRefresh": 1
+    },
+    {
+      "id": "seo_demo_4",
+      "title": "Porównanie narzędzi raportowania produktywności PDF i CSV dla zespołów hybrydowych",
+      "channel": "blog_post",
+      "urlOrSlug": "/blog/raporty-produktywnosci-zespolu-pdf",
+      "contentExcerpt": "Zestawienie metod pomiaru czasu pracy i eksportu danych projektowych z ubiegłego roku. Wymaga aktualizacji pod aktualne zapytania o indeksowane raporty i automatyzację.",
+      "primaryKeyword": "program do raportów czasu pracy 2024",
+      "previousKeyword": "raporty czasu pracy",
+      "keywordHistory": [
+        "raporty czasu pracy",
+        "program do raportów czasu pracy 2024"
+      ],
+      "seoScore": 64,
+      "aeoScore": 52,
+      "predictiveStrength": 46,
+      "organicReach": 9100,
+      "socialReach": 2400,
+      "engagementRate": 2.1,
+      "anomalyType": "keyword_decay",
+      "aiRecommendation": "Fraza zawiera nieaktualny rocznik i traci zasięg (-31%). Uruchom optymalizację AI, aby zaktualizować frazę i strukturę odpowiedzi.",
+      "ownerId": "local_owner",
+      "collaboratorEmails": [],
+      "daysSinceLastRefresh": 44
+    },
+    {
+      "id": "seo_demo_5",
+      "title": "Karuzela Instagram & Reels: 5 zasad higieny cyfrowej i skanowania zależności OSV",
+      "channel": "instagram",
+      "urlOrSlug": "instagram.com/p/bezpieczny-kod-osv",
+      "contentExcerpt": "Zanim zainstalujesz nową paczkę npm lub PyPI, sprawdź sumę SHA-256 i rejestr złośliwych pakietów. Krótka checklista dla zespołów produktowych.",
+      "primaryKeyword": "skanowanie złośliwych paczek npm bezpieczeństwo",
+      "previousKeyword": "bezpieczeństwo kodu js",
+      "keywordHistory": [
+        "bezpieczeństwo kodu js",
+        "skanowanie złośliwych paczek npm bezpieczeństwo"
+      ],
+      "seoScore": 77,
+      "aeoScore": 75,
+      "predictiveStrength": 78,
+      "organicReach": 6800,
+      "socialReach": 31800,
+      "engagementRate": 7.2,
+      "anomalyType": "reach_drop",
+      "aiRecommendation": "Zasięg poza obserwującymi spadł o 19% w ostatnich 72h — dodaj frazę pytającą na pierwszej planszy i w opisie alternatywnym.",
+      "ownerId": "local_owner",
+      "collaboratorEmails": [],
+      "daysSinceLastRefresh": 16
+    }
+  ],
+  "reportSchedule": {
+    "id": "sched_default_1",
+    "reportName": "Cykliczne Podsumowanie SEO, AEO i Zasięgu Kanałów",
+    "recipientEmails": [
+      "zarzad@chronosvault.pl"
+    ],
+    "cadence": "weekly",
+    "channelScope": "all",
+    "includeAnomalyAlerts": true,
+    "isActive": true,
+    "lastDispatchedAt": "",
+    "nextRunAt": "2026-12-03T16:24",
+    "ownerId": "local_owner"
+  }
 }

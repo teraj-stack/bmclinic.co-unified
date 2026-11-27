@@ -159,33 +159,32 @@
             var dsLink = document.createElement('a');
             dsLink.id = 'bm-design-studio-shortcut';
             dsLink.href = '/design-studio';
-            dsLink.textContent = '🎨 Motywy & Skórki (/design-studio) ↗';
-            dsLink.title = 'Otwórz Design Studio z bibliotekami motywów UI, wycinaniem bez klucza i wariantami';
+            dsLink.textContent = '🎨 Motywy & Studio ↗';
+            dsLink.title = 'Otwórz Design Studio (/design-studio) z motywami UI, wycinaniem bez klucza i wariantami';
             dsLink.style.cssText =
-              'display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;font:700 12px/1.2 -apple-system,BlinkMacSystemFont,"Plus Jakarta Sans",sans-serif;text-decoration:none;background:linear-gradient(135deg,#34d399,#dfc6a7);color:#061210;border:1px solid rgba(255,255,255,0.45);box-shadow:0 8px 24px rgba(16,185,129,0.28);';
+              'display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;font:700 12px/1.2 -apple-system,BlinkMacSystemFont,"Plus Jakarta Sans",sans-serif;text-decoration:none;background:linear-gradient(135deg,#34d399,#dfc6a7);color:#061210;border:1px solid rgba(255,255,255,0.45);box-shadow:0 8px 24px rgba(16,185,129,0.28);';
             topNav.appendChild(dsLink);
           }
 
           document.body.appendChild(topNav);
 
-          // Push top headers cleanly to the right if needed so top-left button never covers brand/title
-          var firstHeader = document.querySelector('header, .topbar');
-          if (firstHeader && !firstHeader.dataset.bmTopOffset) {
-            var hdrRect = firstHeader.getBoundingClientRect();
-            if (hdrRect.top < 54 && hdrRect.left < 120) {
-              var extraPad = showDesignStudioLink ? 360 : 120;
-              var curPad = parseInt(window.getComputedStyle(firstHeader).paddingLeft || '0', 10) || 0;
-              if (curPad < extraPad) {
-                firstHeader.style.paddingLeft = extraPad + 'px';
-              }
-              firstHeader.dataset.bmTopOffset = '1';
-            }
+          if (!document.getElementById('bm-top-left-nav-style')) {
+            var navStyle = document.createElement('style');
+            navStyle.id = 'bm-top-left-nav-style';
+            var padLeft = showDesignStudioLink ? '265px' : '104px';
+            navStyle.textContent =
+              '@media (min-width: 768px) { ' +
+              '  body header:first-of-type, body .topbar:first-of-type { padding-left: ' + padLeft + ' !important; }' +
+              '}';
+            document.head.appendChild(navStyle);
           }
         }
       }
     }
 
-    if (!document.getElementById('bm-unified-dock')) {
+    var isInsideIframe = false;
+    try { isInsideIframe = window.self !== window.top; } catch (e) { isInsideIframe = true; }
+    if (!isInsideIframe && !document.getElementById('bm-unified-dock')) {
       var dock = document.createElement('div');
       dock.id = 'bm-unified-dock';
       // Keep bottom-right dock clear of Chronos 5s badge & Next LiveEditorToolbar pill
