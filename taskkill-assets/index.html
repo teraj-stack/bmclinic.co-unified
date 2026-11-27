@@ -32,8 +32,8 @@
       <span class="love-motto-pill" title="Dedykacja">
         <span class="love-heart">❤️</span> Kocham Cię, Twoja Milenka
       </span>
-      <span class="offline-pill" title="Synchronizacja na żywo co 4s + automatyczny zapis na GitHub co 2 min">
-        <span class="dot"></span> Live Sync · 4s
+      <span class="offline-pill" title="Łagodna synchronizacja drzewa co 5 minut bez przeładowania strony (zapis na GitHub co 2 min)">
+        <span class="dot"></span> Live Sync · 5 min
       </span>
     </div>
 
@@ -204,15 +204,14 @@
   <script src="app.js?v=taskkill-v18"></script>
   <script>
     (function () {
-      var link = document.querySelector('link[href*="styles.css"]');
-      if (link) link.href = 'styles.css?v=' + Date.now();
-      if (window.self === window.top) {
-        setInterval(function () {
-          if (!document.querySelector('input:focus, textarea:focus')) {
-            location.reload();
-          }
-        }, 10000);
-      }
+      // Łagodne odświeżanie danych drzewa co 5 minut (300 000 ms) bez gwałtownego przeładowania strony
+      setInterval(function () {
+        if (document.visibilityState !== 'visible') return;
+        if (document.querySelector('input:focus, textarea:focus, select:focus, [contenteditable="true"]:focus')) return;
+        var modalOpen = document.querySelector('.modal-backdrop:not(.hidden)');
+        if (modalOpen) return;
+        window.dispatchEvent(new CustomEvent('taskkill:soft-sync', { detail: { ts: Date.now() } }));
+      }, 300000);
     })();
   </script>
 </body>

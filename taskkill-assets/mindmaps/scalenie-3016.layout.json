@@ -2,8 +2,8 @@
   "positions": {
     "label:balanced": {
       "root": {
-        "x": -139,
-        "y": 498
+        "x": 77,
+        "y": 107
       },
       "branch-label-Grupa 1: Kompletne — Rdzeń BM Clinic (/)": {
         "x": 1586,
@@ -117,5 +117,5 @@
   },
   "media": {},
   "bg": "dark",
-  "updatedAt": 1795762308599
+  "updatedAt": 1795775487940
 }

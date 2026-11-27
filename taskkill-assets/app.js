@@ -1047,21 +1047,26 @@
     return t.id % 3 === 0 ? 5 : t.id % 3 === 1 ? 10 : 15;
   }
 
-  async function syncFromDiskIfAvailable() {
+  async function syncFromDiskIfAvailable(opts = {}) {
     if (!location.protocol.startsWith("http")) return;
     try {
       const res = await fetch(API_TASKS_URL, { cache: "no-store" });
       if (res.status === 200) {
         const diskTasks = await res.json();
         if (Array.isArray(diskTasks)) {
+          const nextJson = JSON.stringify(diskTasks);
+          const prevJson = JSON.stringify(tasks);
+          if (nextJson === prevJson) {
+            return;
+          }
           tasks = diskTasks;
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-          render();
+          localStorage.setItem(STORAGE_KEY, nextJson);
+          render({ preserveScroll: true, gentle: Boolean(opts && opts.silent) });
           return;
         }
       }
       // First run: persist initial tasks to tasks.json on local disk
-      saveTasks();
+      if (!opts || !opts.silent) saveTasks();
     } catch (_) {}
   }
 
@@ -3446,13 +3451,43 @@
     shell.querySelector("#mm-export-svg").addEventListener("click", () => exportMindMapSvg(layout));
   }
 
-  function render() {
+  function render(opts = {}) {
+    const winX = window.scrollX || 0;
+    const winY = window.scrollY || 0;
+    const prevCanvas = appContent.querySelector(".mindmap-canvas");
+    const prevCanvasScroll = prevCanvas
+      ? { left: prevCanvas.scrollLeft, top: prevCanvas.scrollTop }
+      : null;
+
+    if (opts && opts.gentle) {
+      appContent.style.transition = "opacity 280ms ease-out";
+      appContent.style.opacity = "0.94";
+    }
+
     const list = getFilteredTasks();
     renderStats(list);
     if (currentView === "board") renderBoard(list);
     else if (currentView === "table") renderTable(list);
     else if (currentView === "roadmap") renderRoadmap(list);
     else renderMindMap(list);
+
+    if (opts && opts.preserveScroll) {
+      requestAnimationFrame(() => {
+        const nextCanvas = appContent.querySelector(".mindmap-canvas");
+        if (nextCanvas && prevCanvasScroll) {
+          nextCanvas.scrollLeft = prevCanvasScroll.left;
+          nextCanvas.scrollTop = prevCanvasScroll.top;
+        }
+        window.scrollTo(winX, winY);
+        if (opts.gentle) {
+          appContent.style.opacity = "1";
+        }
+      });
+    } else if (opts && opts.gentle) {
+      requestAnimationFrame(() => {
+        appContent.style.opacity = "1";
+      });
+    }
   }
 
   function openModal(id = null) {
@@ -3691,7 +3726,11 @@
   }
   syncLayoutFromServer();
 
-  // Auto-polling co 4s wyłączony — drzewo odświeża się wyłącznie po akcji użytkownika na aktywnym segmencie.
+  // Łagodna synchronizacja co 5 minut bez przerywania pracy użytkownika i bez skoków obrazu
+  window.addEventListener("taskkill:soft-sync", () => {
+    syncFromDiskIfAvailable({ silent: true });
+    syncLayoutFromServer();
+  });
 
   // ===== Google Account & Google Calendar Sync (TaskKill Studio) =====
   const GOOGLE_CID_KEY = "taskkill_google_client_id";

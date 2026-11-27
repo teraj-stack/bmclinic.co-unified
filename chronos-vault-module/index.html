@@ -207,26 +207,27 @@
         var badge = document.createElement('div');
         badge.id = 'chronos-live-4s-badge';
         badge.style.cssText =
-          'position:fixed;right:12px;bottom:12px;z-index:9999;padding:4px 10px;border-radius:999px;font:600 11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(15,23,42,0.82);color:#e2e8f0;border:1px solid rgba(56,189,248,0.45);backdrop-filter:blur(6px);pointer-events:none;transition:transform 0.2s ease,border-color 0.2s ease;';
+          'position:fixed;right:12px;bottom:12px;z-index:9999;padding:4px 10px;border-radius:999px;font:600 11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(15,23,42,0.82);color:#e2e8f0;border:1px solid rgba(56,189,248,0.45);backdrop-filter:blur(6px);pointer-events:none;transition:border-color 0.35s ease,opacity 0.35s ease;';
         function fmtTime() {
           return new Date().toLocaleTimeString('pl-PL', { hour12: false });
         }
-        badge.textContent = '● Live 4s · ' + fmtTime();
+        badge.textContent = '● Live 5 min · ' + fmtTime();
         document.body.appendChild(badge);
 
         setInterval(function () {
           if (document.visibilityState !== 'visible') return;
+          if (document.querySelector('input:focus, textarea:focus, select:focus, [contenteditable="true"]:focus')) {
+            return;
+          }
           saveCurrentScrollState();
           var beforeY = window.scrollY || document.documentElement.scrollTop || 0;
           var beforeX = window.scrollX || document.documentElement.scrollLeft || 0;
 
-          badge.textContent = '● Live 4s · ' + fmtTime();
+          badge.textContent = '● Live 5 min · ' + fmtTime();
           badge.style.borderColor = '#22c55e';
-          badge.style.transform = 'scale(1.04)';
           setTimeout(function () {
             badge.style.borderColor = 'rgba(56,189,248,0.45)';
-            badge.style.transform = 'scale(1)';
-          }, 350);
+          }, 500);
 
           window.dispatchEvent(new CustomEvent('chronos:soft-refresh', { detail: { ts: Date.now() } }));
           requestAnimationFrame(function () {
@@ -237,22 +238,7 @@
               }
             }
           });
-
-          if (document.querySelector('input:focus, textarea:focus, select:focus, [contenteditable="true"]:focus')) {
-            return;
-          }
-          fetch(window.location.pathname, { method: 'HEAD', cache: 'no-store' })
-            .then(function (res) {
-              var ver = res.headers.get('etag') || res.headers.get('last-modified') || '';
-              if (!initialVersion) {
-                initialVersion = ver;
-              } else if (ver && ver !== initialVersion) {
-                saveCurrentScrollState();
-                window.location.reload();
-              }
-            })
-            .catch(function () {});
-        }, 4000);
+        }, 300000);
       })();
     </script>
   </body>
