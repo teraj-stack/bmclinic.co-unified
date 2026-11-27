@@ -1766,6 +1766,18 @@ app.post('/api/tasks', (req, res) => {
       return;
     }
     const files = getMapFiles(String(req.query.map || ''));
+    const forceClear = String(req.query.forceClear || '') === '1';
+    if (req.body.length === 0 && !forceClear && fs.existsSync(files.tasksFile)) {
+      try {
+        const existing = JSON.parse(fs.readFileSync(files.tasksFile, 'utf-8'));
+        if (Array.isArray(existing) && existing.length > 0) {
+          res.json({ ok: true, map: files.id, count: existing.length, preserved: true });
+          return;
+        }
+      } catch {
+        // Proceed with write if existing file is unreadable
+      }
+    }
     const tmpFile = `${files.tasksFile}.tmp`;
     fs.writeFileSync(tmpFile, JSON.stringify(req.body, null, 2), 'utf-8');
     fs.renameSync(tmpFile, files.tasksFile);
@@ -2096,6 +2108,21 @@ self.addEventListener('activate', (event) => {
       });
     }
   });
+
+  // Specialization friendly route aliases (avoid any 404 from /proktologia, /flebologia, /chirurgia)
+  const SPECIALIZATION_REDIRECTS: Record<string, string> = {
+    '/proktologia': '/uslugi/proktologia',
+    '/flebologia': '/uslugi/zylaki-naczynka',
+    '/uslugi/flebologia': '/uslugi/zylaki-naczynka',
+    '/chirurgia': '/uslugi/chirurgia-ogolna',
+    '/chirurgia-ogolna': '/uslugi/chirurgia-ogolna',
+    '/uslugi/chirurgia': '/uslugi/chirurgia-ogolna',
+  };
+  for (const [alias, target] of Object.entries(SPECIALIZATION_REDIRECTS)) {
+    app.get([alias, `${alias}/`], (_req, res) => {
+      res.redirect(302, target);
+    });
+  }
 
   // Google Drive 1-minute auto-sync API (kontakt@bmclinic.co) — registered BEFORE SPA fallback
   app.get('/api/gdrive-sync/status', (_req, res) => {
