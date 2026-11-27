@@ -60,9 +60,11 @@
         ]
       }
     </script>
-    <script type="module" crossorigin src="/vault/assets/index-D4zRHrlC.js"></script>
+    <link rel="stylesheet" href="/bm-unified-theme.css" />
+    <script src="/bm-unified-shell.js" defer></script>
+    <script type="module" crossorigin src="/vault/assets/index-IGWiDv3h.js"></script>
     <link rel="stylesheet" crossorigin href="/vault/assets/index-C3Xojy0L.css">
-  <link rel="manifest" href="/vault/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/vault/registerSW.js"></script><link rel="stylesheet" href="/bm-unified-theme.css" /><script src="/bm-unified-shell.js" defer></script></head>
+  <link rel="manifest" href="/vault/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/vault/registerSW.js"></script></head>
   <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-blue-600 selection:text-white">
     <div id="root"></div>
     <script>
@@ -130,7 +132,6 @@
         window.addEventListener('beforeunload', saveCurrentScrollState);
         window.addEventListener('pagehide', saveCurrentScrollState);
 
-        // Wait for async React mount in #root before restoring exact scroll position
         var savedState = readSavedScrollState();
         if (savedState && (savedState.y > 0 || (savedState.containers && savedState.containers.length > 0))) {
           var applyRestore = function () {
@@ -152,8 +153,7 @@
             return Math.abs(currentY - savedState.y) < 12;
           };
 
-          var restoreTimers = [0, 80, 220, 480, 900, 1500];
-          restoreTimers.forEach(function (delay) {
+          [0, 80, 220, 480, 900, 1500].forEach(function (delay) {
             setTimeout(applyRestore, delay);
           });
 
@@ -173,8 +173,6 @@
           }
         }
 
-        // Anti-window-lock safeguard: prevents accidental/malicious pointer-lock,
-        // fullscreen traps, or frozen scroll/pointer-events inside the web app.
         function unlockWindowState() {
           try {
             if (document.pointerLockElement && document.exitPointerLock) {
@@ -201,14 +199,12 @@
             unlockWindowState();
           }
         }, true);
-        // Periodic check: never allow the root document to stay stuck with pointerEvents: none
         setInterval(function () {
           if (document.body && document.body.style.pointerEvents === 'none') {
             document.body.style.pointerEvents = '';
           }
         }, 2000);
 
-        // Subtle live 4s refresh indicator pill (bottom-right) preserving exact scroll position & open view
         var badge = document.createElement('div');
         badge.id = 'chronos-live-4s-badge';
         badge.style.cssText =
@@ -219,8 +215,6 @@
         badge.textContent = '● Live 4s · ' + fmtTime();
         document.body.appendChild(badge);
 
-        // Every 4s: preserve exact scroll position and soft-refresh live data in-place.
-        // Only perform a full page reload when a new server build (ETag/Last-Modified) is detected.
         setInterval(function () {
           if (document.visibilityState !== 'visible') return;
           saveCurrentScrollState();
@@ -236,7 +230,6 @@
           }, 350);
 
           window.dispatchEvent(new CustomEvent('chronos:soft-refresh', { detail: { ts: Date.now() } }));
-          // Keep user's exact scroll offset intact after soft-refresh DOM updates
           requestAnimationFrame(function () {
             if (!userInteractedSinceLoad || Math.abs((window.scrollY || 0) - beforeY) > 8) {
               var currentY = window.scrollY || document.documentElement.scrollTop || 0;

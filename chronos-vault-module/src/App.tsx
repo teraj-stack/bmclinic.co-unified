@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   collection,
   doc,
@@ -867,6 +867,103 @@ export default function App() {
       // ignore storage quota errors
     }
   }, [reportSchedule]);
+
+  // Bidirectional live sync with Google Drive mount (pull on 4s refresh + push on state mutation)
+  const gdriveLastPulledAtRef = useRef<string>('');
+  const gdriveHydratedRef = useRef<boolean>(false);
+  const gdriveLastPushedJsonRef = useRef<string>('');
+
+  const pullGoogleDriveSnapshot = useCallback(async () => {
+    try {
+      const res = await fetch('/api/gdrive-sync/pull', { cache: 'no-store' });
+      if (!res.ok) return;
+      const data = (await res.json()) as {
+        status?: { conflicts?: Array<{ file?: string; resolution?: string }> };
+        snapshot?: {
+          savedAt?: string;
+          lists?: WorkspaceListModel[];
+          rawTasks?: StoredTaskRecord[];
+          clinicDevices?: ClinicDeviceRecord[];
+          clinicTreatments?: ClinicTreatmentRecord[];
+          seoAssets?: SeoContentAssetRecord[];
+          reportSchedule?: SeoReportScheduleRecord;
+        } | null;
+      };
+      if (data?.status?.conflicts && data.status.conflicts.length > 0) {
+        const lastC = data.status.conflicts[data.status.conflicts.length - 1];
+        setInAppBanner(
+          `Wykryto równoczesną zmianę w ${lastC.file || 'Chronos-Vault'} (${lastC.resolution}) — utworzono automatyczną kopię zapasową .bak.`
+        );
+      }
+      const snap = data?.snapshot;
+      if (!snap || !snap.savedAt) {
+        gdriveHydratedRef.current = true;
+        return;
+      }
+      if (snap.savedAt === gdriveLastPulledAtRef.current) {
+        gdriveHydratedRef.current = true;
+        return;
+      }
+      gdriveLastPulledAtRef.current = snap.savedAt;
+      if (Array.isArray(snap.lists) && snap.lists.length > 0) setLists(snap.lists);
+      if (Array.isArray(snap.rawTasks) && snap.rawTasks.length > 0) setRawTasks(snap.rawTasks);
+      if (Array.isArray(snap.clinicDevices) && snap.clinicDevices.length > 0)
+        setClinicDevices(snap.clinicDevices);
+      if (Array.isArray(snap.clinicTreatments) && snap.clinicTreatments.length > 0)
+        setClinicTreatments(snap.clinicTreatments);
+      if (Array.isArray(snap.seoAssets) && snap.seoAssets.length > 0) setSeoAssets(snap.seoAssets);
+      if (snap.reportSchedule) setReportSchedule(snap.reportSchedule);
+      gdriveLastPushedJsonRef.current = JSON.stringify({
+        lists: snap.lists,
+        rawTasks: snap.rawTasks,
+        clinicDevices: snap.clinicDevices,
+        clinicTreatments: snap.clinicTreatments,
+        seoAssets: snap.seoAssets,
+        reportSchedule: snap.reportSchedule,
+      });
+      gdriveHydratedRef.current = true;
+    } catch {
+      gdriveHydratedRef.current = true;
+    }
+  }, []);
+
+  useEffect(() => {
+    pullGoogleDriveSnapshot();
+    const onSoftRefresh = () => {
+      pullTaskKillTasks();
+      pullGoogleDriveSnapshot();
+    };
+    window.addEventListener('chronos:soft-refresh', onSoftRefresh);
+    return () => window.removeEventListener('chronos:soft-refresh', onSoftRefresh);
+  }, [pullTaskKillTasks, pullGoogleDriveSnapshot]);
+
+  useEffect(() => {
+    if (!gdriveHydratedRef.current) return;
+    const bodyObj = {
+      lists,
+      rawTasks,
+      clinicDevices,
+      clinicTreatments,
+      seoAssets,
+      reportSchedule,
+    };
+    const serialized = JSON.stringify(bodyObj);
+    if (serialized === gdriveLastPushedJsonRef.current) return;
+    gdriveLastPushedJsonRef.current = serialized;
+    const t = window.setTimeout(() => {
+      fetch('/api/gdrive-sync/now', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: serialized,
+      })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => {
+          if (d?.lastSyncAt) gdriveLastPulledAtRef.current = d.lastSyncAt;
+        })
+        .catch(() => {});
+    }, 1200);
+    return () => window.clearTimeout(t);
+  }, [lists, rawTasks, clinicDevices, clinicTreatments, seoAssets, reportSchedule]);
 
   // Decrypt E2EE tasks whenever rawTasks or passphrase changes
   useEffect(() => {

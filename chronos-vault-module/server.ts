@@ -28,6 +28,7 @@ import {
   startGoogleDriveAutoSync,
   syncNowToGoogleDrive,
   getGoogleDriveSyncStatus,
+  getGoogleDrivePullSnapshot,
 } from './src/server/googleDriveSync';
 import { registerAetherBridge } from './src/server/aetherBridge';
 
@@ -1729,6 +1730,7 @@ app.post('/api/mindmaps/:id/notes', (req, res) => {
     const tmpFile = `${files.notesFile}.tmp`;
     fs.writeFileSync(tmpFile, notes, 'utf-8');
     fs.renameSync(tmpFile, files.notesFile);
+    syncNowToGoogleDrive(MASTER_ROOT_DIR);
     res.json({ ok: true, id: files.id, updatedAt: new Date().toISOString() });
   } catch (err) {
     res.status(500).json({ error: String(err) });
@@ -1761,6 +1763,7 @@ app.post('/api/tasks', (req, res) => {
     const tmpFile = `${files.tasksFile}.tmp`;
     fs.writeFileSync(tmpFile, JSON.stringify(req.body, null, 2), 'utf-8');
     fs.renameSync(tmpFile, files.tasksFile);
+    syncNowToGoogleDrive(MASTER_ROOT_DIR);
     res.json({ ok: true, map: files.id, count: req.body.length });
   } catch (err) {
     res.status(500).json({ error: String(err) });
@@ -1994,6 +1997,9 @@ self.addEventListener('activate', (event) => {
   // Google Drive 1-minute auto-sync API (kontakt@bmclinic.co) — registered BEFORE SPA fallback
   app.get('/api/gdrive-sync/status', (_req, res) => {
     res.json(getGoogleDriveSyncStatus());
+  });
+  app.get('/api/gdrive-sync/pull', (_req, res) => {
+    res.json(getGoogleDrivePullSnapshot(MASTER_ROOT_DIR));
   });
   app.post('/api/gdrive-sync/now', (req, res) => {
     const payload = req.body && typeof req.body === 'object' ? req.body : undefined;
