@@ -3157,6 +3157,13 @@ export default function App() {
           >
             Drzewo (:3016) ↗
           </a>
+          <a
+            href="/chomik/"
+            className="hidden xl:inline-flex items-center px-2.5 py-2 text-xs font-semibold text-emerald-700 dark:text-emerald-300 border border-emerald-300/60 dark:border-emerald-700/60 rounded-lg bg-emerald-50/70 dark:bg-emerald-950/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 whitespace-nowrap shrink-0"
+            title="Otwórz Chomik × MediaPipe 3D Camera Studio w głównym projekcie"
+          >
+            Chomik × 3D ↗
+          </a>
           <button
             type="button"
             onClick={() => setMobileSidebarOpen((v) => !v)}

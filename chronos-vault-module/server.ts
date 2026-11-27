@@ -1940,7 +1940,7 @@ self.addEventListener('activate', (event) => {
 `);
   });
 
-  // Mount Sentinel Shield, Process Killer Toolkit, MySkinCode AI, Parallax 3D, Spatial 3D, CML Wilanow & AI Studio App
+  // Mount Sentinel Shield, Process Killer Toolkit, MySkinCode AI, Parallax 3D, Spatial 3D, CML Wilanow, AI Studio App, Ruta & Chomik MediaPipe 3D
   for (const mountName of [
     'sentinel-shield',
     'sentinel-toolkit',
@@ -1950,6 +1950,7 @@ self.addEventListener('activate', (event) => {
     'cml-wilanow',
     'ai-studio-app',
     'ruta',
+    'chomik',
   ]) {
     const mountDir = fs.existsSync(path.join(MASTER_ROOT_DIR, 'public', mountName))
       ? path.join(MASTER_ROOT_DIR, 'public', mountName)
@@ -1993,6 +1994,42 @@ self.addEventListener('activate', (event) => {
       );
     }
   }
+
+  // Proxy Chomik × MediaPipe 3D API routes (/api/health, /api/unified-scans, AI Lab) to standalone :3018 host
+  app.all(
+    [
+      '/api/health',
+      '/api/unified-scans',
+      '/api/chat',
+      '/api/grounding',
+      '/api/generate-image',
+      '/api/generate-video',
+      '/api/generate-music',
+      '/api/analyze-image',
+      '/api/transcribe-audio',
+    ],
+    async (req, res) => {
+      try {
+        const upstreamUrl = `http://127.0.0.1:${process.env.CHOMIK_PORT || 3018}${req.originalUrl}`;
+        const hasBody = !['GET', 'HEAD'].includes(req.method.toUpperCase());
+        const upstreamRes = await fetch(upstreamUrl, {
+          method: req.method,
+          headers: { 'Content-Type': 'application/json' },
+          body: hasBody ? JSON.stringify(req.body ?? {}) : undefined,
+        });
+        const text = await upstreamRes.text();
+        res.status(upstreamRes.status);
+        const ct = upstreamRes.headers.get('content-type');
+        if (ct) res.setHeader('Content-Type', ct);
+        res.send(text);
+      } catch (err) {
+        res.status(502).json({
+          ok: false,
+          error: err instanceof Error ? err.message : 'Chomik :3018 backend unavailable',
+        });
+      }
+    }
+  );
 
   // Google Drive 1-minute auto-sync API (kontakt@bmclinic.co) — registered BEFORE SPA fallback
   app.get('/api/gdrive-sync/status', (_req, res) => {

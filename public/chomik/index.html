@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pl" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Klub Smutnego Chomika × MediaPipe 3D Camera Studio</title>
+    <meta
+      name="description"
+      content="Zunifikowana platforma 3D MediaPipe Camera Controller, skanera LiDAR/Tissue 6-Plane oraz Klubu Smutnego Chomika (AI Lab, Dziennik, Quantum Scan)."
+    />
+    <script>
+      (function () {
+        try {
+          var originalFetch = typeof window !== 'undefined' ? window.fetch : undefined;
+          var customFetch = originalFetch;
+          if (typeof window !== 'undefined') {
+            Object.defineProperty(window, 'fetch', {
+              get: function () { return customFetch; },
+              set: function (fn) { customFetch = fn; },
+              configurable: true,
+              enumerable: true,
+            });
+          }
+          if (typeof globalThis !== 'undefined' && globalThis !== window) {
+            Object.defineProperty(globalThis, 'fetch', {
+              get: function () { return customFetch; },
+              set: function (fn) { customFetch = fn; },
+              configurable: true,
+              enumerable: true,
+            });
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/chomik/assets/index-DeyyWdSE.js"></script>
+    <link rel="stylesheet" crossorigin href="/chomik/assets/index-Dbhl4lwG.css">
+    <link rel="stylesheet" href="/bm-unified-theme.css?v=3" />
+  <script src="/bm-unified-shell.js" defer></script>
+</head>
+  <body class="bg-[#0b1218] text-[#f5f4f1] antialiased">
+    <div id="root"></div>
+  </body>
+</html>

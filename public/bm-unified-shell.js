@@ -118,6 +118,7 @@
         window.location.pathname.indexOf('/myskincode') === 0 ||
         window.location.pathname.indexOf('/sentinel') === 0 ||
         window.location.pathname.indexOf('/taskkill') === 0 ||
+        window.location.pathname.indexOf('/chomik') === 0 ||
         window.location.pathname.indexOf('/design-studio') === 0 ||
         window.location.pathname.indexOf('/desingstudio') === 0;
       if (isDarkModule && skinId !== 'ivory-stone') {
