@@ -31,6 +31,11 @@ import {
   getGoogleDrivePullSnapshot,
 } from './src/server/googleDriveSync';
 import { registerAetherBridge } from './src/server/aetherBridge';
+import {
+  getBatchJobStatus,
+  processDroppedImages,
+  startFolderBatchJob,
+} from './src/server/batchCutoutProcessor';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -57,6 +62,7 @@ const CHRONOS_JSON_PATHS = [
   '/api/layout',
   '/api/invites',
   '/api/gdrive-sync',
+  '/api/design-studio/batch-process',
 ];
 const chronosJsonParser = express.json({ limit: '25mb' });
 
@@ -2030,6 +2036,66 @@ self.addEventListener('activate', (event) => {
       }
     }
   );
+
+  // Zero-Key Vision Cutout + Multi-Variant Batch & Dropzone Processor (with optional Framous CLI framing)
+  app.use(
+    '/assets/batch-variants',
+    express.static(path.join(MASTER_ROOT_DIR, 'public', 'assets', 'batch-variants'), {
+      etag: false,
+      maxAge: 0,
+    })
+  );
+
+  app.get('/api/design-studio/batch-process/status', (_req, res) => {
+    res.json({ ok: true, status: getBatchJobStatus() });
+  });
+
+  app.post('/api/design-studio/batch-process', async (req, res) => {
+    try {
+      const body = (req.body || {}) as {
+        mode?: 'folder' | 'drop';
+        folderPath?: string;
+        outputDir?: string;
+        cutout?: boolean;
+        framous?: boolean;
+        variants?: string[];
+        files?: Array<{ name: string; dataUrl: string }>;
+      };
+
+      if (body.mode === 'drop' || Array.isArray(body.files)) {
+        const files = Array.isArray(body.files) ? body.files : [];
+        if (files.length === 0) {
+          return res.status(400).json({ ok: false, error: 'Brak plików do przetworzenia.' });
+        }
+        const status = await processDroppedImages(MASTER_ROOT_DIR, {
+          files,
+          outputDir: body.outputDir,
+          cutout: body.cutout,
+          framous: body.framous,
+          variants: body.variants,
+        });
+        return res.json({ ok: true, status });
+      }
+
+      const folderPath = String(body.folderPath || '').trim();
+      if (!folderPath) {
+        return res.status(400).json({ ok: false, error: 'Podaj ścieżkę katalogu źródłowego (folderPath).' });
+      }
+      const status = await startFolderBatchJob(MASTER_ROOT_DIR, {
+        folderPath,
+        outputDir: body.outputDir,
+        cutout: body.cutout,
+        framous: body.framous,
+        variants: body.variants,
+      });
+      return res.json({ ok: true, status });
+    } catch (err) {
+      return res.status(400).json({
+        ok: false,
+        error: err instanceof Error ? err.message : 'Błąd uruchamiania automatyzacji obrazów.',
+      });
+    }
+  });
 
   // Google Drive 1-minute auto-sync API (kontakt@bmclinic.co) — registered BEFORE SPA fallback
   app.get('/api/gdrive-sync/status', (_req, res) => {

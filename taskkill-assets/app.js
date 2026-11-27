@@ -3454,14 +3454,14 @@
   function render(opts = {}) {
     const winX = window.scrollX || 0;
     const winY = window.scrollY || 0;
-    const prevCanvas = appContent.querySelector(".mindmap-canvas");
+    const prevCanvas = contentEl ? contentEl.querySelector(".mindmap-canvas") : null;
     const prevCanvasScroll = prevCanvas
       ? { left: prevCanvas.scrollLeft, top: prevCanvas.scrollTop }
       : null;
 
-    if (opts && opts.gentle) {
-      appContent.style.transition = "opacity 280ms ease-out";
-      appContent.style.opacity = "0.94";
+    if (opts && opts.gentle && contentEl) {
+      contentEl.style.transition = "opacity 280ms ease-out";
+      contentEl.style.opacity = "0.94";
     }
 
     const list = getFilteredTasks();
@@ -3473,19 +3473,19 @@
 
     if (opts && opts.preserveScroll) {
       requestAnimationFrame(() => {
-        const nextCanvas = appContent.querySelector(".mindmap-canvas");
+        const nextCanvas = contentEl ? contentEl.querySelector(".mindmap-canvas") : null;
         if (nextCanvas && prevCanvasScroll) {
           nextCanvas.scrollLeft = prevCanvasScroll.left;
           nextCanvas.scrollTop = prevCanvasScroll.top;
         }
         window.scrollTo(winX, winY);
-        if (opts.gentle) {
-          appContent.style.opacity = "1";
+        if (opts.gentle && contentEl) {
+          contentEl.style.opacity = "1";
         }
       });
-    } else if (opts && opts.gentle) {
+    } else if (opts && opts.gentle && contentEl) {
       requestAnimationFrame(() => {
-        appContent.style.opacity = "1";
+        contentEl.style.opacity = "1";
       });
     }
   }

@@ -1,4 +1,9 @@
 {
-  "savedAt": "2026-11-26T13:28:37.410Z",
-  "event": "google_signin_local_sync"
+  "savedAt": "2026-11-27T12:06:03.796Z",
+  "rawTasks": [
+    {
+      "id": "test",
+      "title": "Check GEMINI_API_KEY"
+    }
+  ]
 }

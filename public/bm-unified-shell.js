@@ -125,16 +125,63 @@
         document.body.classList.add('bm-dark-surface');
       }
 
-      var isVaultSpa = window.location.pathname.indexOf('/vault') === 0;
-      if (!isVaultSpa && !document.getElementById('bm-back-to-menu')) {
-        var back = document.createElement('a');
-        back.id = 'bm-back-to-menu';
-        back.href = '/';
-        back.textContent = '← Wróć do menu';
-        back.title = 'Wróć do głównego menu BM Clinic';
-        back.style.cssText =
-          'position:fixed;bottom:16px;left:16px;z-index:99995;padding:8px 14px;font-size:12px;font-weight:600;text-decoration:none;';
-        document.body.appendChild(back);
+      var inIframe = false;
+      try { inIframe = window.self !== window.top; } catch (e) { inIframe = true; }
+
+      if (!inIframe) {
+        var rightBack = document.getElementById('bm-back-to-menu');
+        if (rightBack) {
+          rightBack.style.display = 'none';
+        }
+        if (!document.getElementById('bm-top-left-nav')) {
+          var topNav = document.createElement('div');
+          topNav.id = 'bm-top-left-nav';
+          topNav.style.cssText =
+            'position:fixed;top:12px;left:12px;z-index:99999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;';
+
+          var backFixed = document.createElement('a');
+          backFixed.id = 'bm-back-to-menu-fixed';
+          backFixed.href = '/';
+          backFixed.textContent = '← Wróć';
+          backFixed.title = 'Wróć do głównego menu BM Clinic';
+          backFixed.style.cssText =
+            'display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;font:700 12px/1.2 -apple-system,BlinkMacSystemFont,"Plus Jakarta Sans",sans-serif;text-decoration:none;background:rgba(10,16,24,0.88);color:#f5ebd6;border:1px solid rgba(223,198,167,0.55);backdrop-filter:blur(10px);box-shadow:0 8px 24px rgba(0,0,0,0.35);';
+          topNav.appendChild(backFixed);
+
+          var pathLower = (window.location.pathname || '').toLowerCase();
+          var showDesignStudioLink =
+            pathLower.indexOf('/aether') === 0 ||
+            pathLower.indexOf('/parallax-3d') === 0 ||
+            pathLower.indexOf('/spatial-3d') === 0 ||
+            pathLower.indexOf('/chomik') === 0 ||
+            pathLower.indexOf('/taskkill') === 0;
+          if (showDesignStudioLink) {
+            var dsLink = document.createElement('a');
+            dsLink.id = 'bm-design-studio-shortcut';
+            dsLink.href = '/design-studio';
+            dsLink.textContent = '🎨 Motywy & Skórki (/design-studio) ↗';
+            dsLink.title = 'Otwórz Design Studio z bibliotekami motywów UI, wycinaniem bez klucza i wariantami';
+            dsLink.style.cssText =
+              'display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;font:700 12px/1.2 -apple-system,BlinkMacSystemFont,"Plus Jakarta Sans",sans-serif;text-decoration:none;background:linear-gradient(135deg,#34d399,#dfc6a7);color:#061210;border:1px solid rgba(255,255,255,0.45);box-shadow:0 8px 24px rgba(16,185,129,0.28);';
+            topNav.appendChild(dsLink);
+          }
+
+          document.body.appendChild(topNav);
+
+          // Push top headers cleanly to the right if needed so top-left button never covers brand/title
+          var firstHeader = document.querySelector('header, .topbar');
+          if (firstHeader && !firstHeader.dataset.bmTopOffset) {
+            var hdrRect = firstHeader.getBoundingClientRect();
+            if (hdrRect.top < 54 && hdrRect.left < 120) {
+              var extraPad = showDesignStudioLink ? 360 : 120;
+              var curPad = parseInt(window.getComputedStyle(firstHeader).paddingLeft || '0', 10) || 0;
+              if (curPad < extraPad) {
+                firstHeader.style.paddingLeft = extraPad + 'px';
+              }
+              firstHeader.dataset.bmTopOffset = '1';
+            }
+          }
+        }
       }
     }
 
@@ -178,6 +225,7 @@
         '    <button type="button" id="bm-wcag-motion-btn" class="bm-skin-option" style="justify-content:center;padding:5px;margin:0;font-size:10px;">Bez animacji</button>' +
         '  </div>' +
         '  <div class="bm-skin-footer">' +
+        '    <a href="/design-studio">Motywy &amp; Studio ↗</a>' +
         '    <a href="/sklep">Sklep ↗</a>' +
         '    <a href="/magazyn">Magazyn ↗</a>' +
         '    <a href="/spatial-3d/">Spatial 3D ↗</a>' +

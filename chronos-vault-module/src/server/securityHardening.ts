@@ -72,7 +72,12 @@ export function securityHardeningMiddleware(req: Request, res: Response, next: N
  * Superagent JSON payload guard executed after express.json() for Chronos Vault routes.
  */
 export function superagentBodyGuardMiddleware(req: Request, res: Response, next: NextFunction): void {
-  if (req.path.startsWith('/api/superagent/') || !req.body || typeof req.body !== 'object') {
+  if (
+    req.path.startsWith('/api/superagent/') ||
+    req.path.startsWith('/api/gdrive-sync/') ||
+    !req.body ||
+    typeof req.body !== 'object'
+  ) {
     next();
     return;
   }

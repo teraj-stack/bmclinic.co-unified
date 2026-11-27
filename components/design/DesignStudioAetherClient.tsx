@@ -52,6 +52,40 @@ interface TelemetryPayload {
   ollamaModels: string[];
 }
 
+interface BatchOutputEntry {
+  sourceName: string;
+  kind: 'cutout' | 'variant';
+  variantId: string;
+  publicUrl: string;
+  diskPath: string;
+  createdAt: string;
+}
+
+interface BatchJobStatus {
+  running: boolean;
+  mode: 'idle' | 'folder' | 'drop';
+  sourceDir: string;
+  outputDir: string;
+  total: number;
+  processed: number;
+  currentFile: string;
+  cutoutEnabled: boolean;
+  framousEnabled: boolean;
+  variants: string[];
+  startedAt: string | null;
+  finishedAt: string | null;
+  recentOutputs: BatchOutputEntry[];
+  errors: string[];
+}
+
+const ZERO_KEY_VARIANT_OPTIONS: Array<{ id: string; label: string; badge: string }> = [
+  { id: 'proktologia-emerald', label: 'Proktologia · Ciemna Zieleń & Grafit', badge: '#072522' },
+  { id: 'chirurgia-steel', label: 'Chirurgia · Pastelowa Biel & Stal', badge: '#d9e2ec' },
+  { id: 'flebologia-lavender', label: 'Flebologia (Kobiety) · Lawenda & Błękit', badge: '#d8d2f8' },
+  { id: 'flebologia-male-teal', label: 'Flebologia (Mężczyźni) · Turkus & Zieleń', badge: '#0c3a44' },
+  { id: 'obsidian-champagne', label: 'BM Holding · Obsydian & Szampan', badge: '#c5a276' },
+];
+
 const ANIMATION_MODES: Array<{
   id: AetherAnimationMode;
   label: string;
@@ -214,6 +248,23 @@ export default function DesignStudioAetherClient() {
   const [automationRunning, setAutomationRunning] = useState(false);
   const [automationStepIdx, setAutomationStepIdx] = useState<number>(-1);
 
+  // Zero-Key Cutout + Folder Batch + Framous CLI state
+  const [batchSourceDir, setBatchSourceDir] = useState(
+    '/Users/krzysztofjarzyna/Pictures/bmclinic.co/frontendy web'
+  );
+  const [batchOutputDir, setBatchOutputDir] = useState(
+    '/Users/krzysztofjarzyna/Pictures/bmclinic.co/_PRZETWORZONE_AI'
+  );
+  const [batchCutout, setBatchCutout] = useState(true);
+  const [batchFramous, setBatchFramous] = useState(true);
+  const [batchVariants, setBatchVariants] = useState<string[]>(
+    ZERO_KEY_VARIANT_OPTIONS.map((v) => v.id)
+  );
+  const [batchStatus, setBatchStatus] = useState<BatchJobStatus | null>(null);
+  const [batchDropActive, setBatchDropActive] = useState(false);
+  const [batchSubmitting, setBatchSubmitting] = useState(false);
+  const batchDropInputRef = useRef<HTMLInputElement | null>(null);
+
   // Drivers state
   const [drivers, setDrivers] = useState<DriverPackageEntry[]>([]);
   const [telemetry, setTelemetry] = useState<TelemetryPayload>({
@@ -257,6 +308,138 @@ export default function DesignStudioAetherClient() {
   useEffect(() => {
     void loadStudioData();
   }, [loadStudioData]);
+
+  const fetchBatchStatus = useCallback(async () => {
+    try {
+      const res = await fetch('/api/design-studio/batch-process/status', { cache: 'no-store' });
+      if (res.ok) {
+        const data = (await res.json()) as { status?: BatchJobStatus };
+        if (data.status) setBatchStatus(data.status);
+      }
+    } catch {
+      // ignore polling error
+    }
+  }, []);
+
+  useEffect(() => {
+    void fetchBatchStatus();
+    if (!batchStatus?.running) return undefined;
+    const id = window.setInterval(() => {
+      void fetchBatchStatus();
+    }, 2000);
+    return () => window.clearInterval(id);
+  }, [fetchBatchStatus, batchStatus?.running]);
+
+  const toggleBatchVariant = (variantId: string) => {
+    setBatchVariants((prev) =>
+      prev.includes(variantId) ? prev.filter((x) => x !== variantId) : [...prev, variantId]
+    );
+  };
+
+  const handleBatchDropFiles = async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    setBatchSubmitting(true);
+    setStatusMessage(`Przetwarzam ${files.length} upuszczonych grafik (wycinanie Vision + warianty, bez klucza API)...`);
+    try {
+      const encoded: Array<{ name: string; dataUrl: string }> = [];
+      for (let i = 0; i < Math.min(files.length, 15); i += 1) {
+        const file = files[i];
+        const dataUrl = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result || ''));
+          reader.onerror = () => reject(new Error('Błąd odczytu pliku'));
+          reader.readAsDataURL(file);
+        });
+        encoded.push({ name: file.name, dataUrl });
+      }
+
+      const res = await fetch('/api/design-studio/batch-process', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mode: 'drop',
+          files: encoded,
+          outputDir: batchOutputDir,
+          cutout: batchCutout,
+          framous: batchFramous,
+          variants: batchVariants,
+        }),
+      });
+      const data = (await res.json()) as { ok?: boolean; status?: BatchJobStatus; error?: string };
+      if (!res.ok || !data.ok) {
+        setStatusMessage(data.error || 'Błąd przetwarzania upuszczonych plików.');
+        return;
+      }
+      if (data.status) setBatchStatus(data.status);
+      setActiveTab('automation');
+      setStatusMessage(
+        `Gotowe! Wygenerowano ${data.status?.recentOutputs.length || 0} wycięć/wariantów i zapisano w ${data.status?.outputDir || batchOutputDir}.`
+      );
+    } catch {
+      setStatusMessage('Nie udało się przetworzyć upuszczonych grafik.');
+    } finally {
+      setBatchSubmitting(false);
+      setBatchDropActive(false);
+    }
+  };
+
+  const handleStartFolderBatch = async () => {
+    setBatchSubmitting(true);
+    setStatusMessage(`Uruchamiam automatyczne wycinanie i warianty dla katalogu ${batchSourceDir}...`);
+    try {
+      const res = await fetch('/api/design-studio/batch-process', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mode: 'folder',
+          folderPath: batchSourceDir,
+          outputDir: batchOutputDir,
+          cutout: batchCutout,
+          framous: batchFramous,
+          variants: batchVariants,
+        }),
+      });
+      const data = (await res.json()) as { ok?: boolean; status?: BatchJobStatus; error?: string };
+      if (!res.ok || !data.ok) {
+        setStatusMessage(data.error || 'Nie udało się uruchomić automatu katalogu.');
+        return;
+      }
+      if (data.status) setBatchStatus(data.status);
+      setStatusMessage(
+        `Automat uruchomiony w tle (${data.status?.total || 0} obrazów) → wyniki trafią do ${data.status?.outputDir}.`
+      );
+    } finally {
+      setBatchSubmitting(false);
+    }
+  };
+
+  const handleSendVariantToGallery = async (entry: BatchOutputEntry) => {
+    setUploading(true);
+    try {
+      const res = await fetch('/api/design-studio/projects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'create',
+          title: `${entry.sourceName.replace(/\.[^.]+$/, '')} · ${entry.variantId}`,
+          subtitle: `Wygenerowano automatycznie (Zero-Key Cutout + Warianty) z ${entry.sourceName}`,
+          imageUrl: entry.publicUrl,
+          animationMode: activeAnimation,
+          kitTarget: uploadKit,
+          buttonStyle: uploadBtnStyle,
+        }),
+      });
+      const data = (await res.json()) as { ok?: boolean; item?: DesignGalleryItem; projects?: DesignGalleryItem[] };
+      if (res.ok && data.ok && data.projects) {
+        setProjects(data.projects);
+        if (data.item) setSelectedProjectId(data.item.id);
+        setActiveTab('gallery');
+        setStatusMessage(`Dodano wariant ${entry.variantId} do Galerii Projektów i wygenerowano kod.`);
+      }
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const selectedProject = useMemo(
     () => projects.find((p) => p.id === selectedProjectId) || projects[0] || null,
@@ -719,7 +902,7 @@ export default function DesignStudioAetherClient() {
                   </div>
                 </div>
 
-                <div className="lg:col-span-3">
+                <div className="lg:col-span-3 space-y-2">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -731,10 +914,18 @@ export default function DesignStudioAetherClient() {
                     type="button"
                     disabled={uploading}
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full rounded-2xl bg-gradient-to-r from-amber-300 via-amber-200 to-emerald-300 px-4 py-4 text-xs font-extrabold text-slate-950 shadow-xl hover:brightness-105 transition cursor-pointer flex items-center justify-center gap-2"
+                    className="w-full rounded-2xl bg-gradient-to-r from-amber-300 via-amber-200 to-emerald-300 px-4 py-3 text-xs font-extrabold text-slate-950 shadow-xl hover:brightness-105 transition cursor-pointer flex items-center justify-center gap-2"
                   >
                     <ImagePlus className="h-4 w-4" />
                     {uploading ? 'Generuję projekt...' : 'Wybierz obraz i wygeneruj kod'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('automation')}
+                    className="w-full rounded-xl border border-emerald-400/40 bg-emerald-500/15 px-3 py-2 text-[11px] font-bold text-emerald-200 hover:bg-emerald-500/25 transition cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    <Wand2 className="h-3.5 w-3.5" />
+                    Upuść pliki → Wytnij tło &amp; Warianty (Bez klucza) ↗
                   </button>
                 </div>
               </div>
@@ -1017,6 +1208,231 @@ export default function DesignStudioAetherClient() {
                   <code className="text-emerald-200">data/design-studio/</code> na hoście 3016.
                 </p>
               </div>
+            </div>
+
+            {/* ZERO-KEY CUTOUT DROPZONE + FOLDER AUTOMATION + FRAMOUS CLI */}
+            <div className="rounded-3xl border border-amber-300/35 bg-black/55 p-6 space-y-5 aether-fresnel-top">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-emerald-300">
+                    Automatyzacja Bez Klucza API · Apple Vision Cutout + Warianty + Framous CLI
+                  </div>
+                  <h3 className="text-xl font-serif text-white mt-0.5">
+                    Upuść pliki lub wskaż katalog — wycinanie elementu i warianty trafiają w wskazane miejsce
+                  </h3>
+                </div>
+                {batchStatus?.running ? (
+                  <span className="rounded-full bg-emerald-400/20 border border-emerald-400/50 px-3 py-1 text-xs font-bold text-emerald-300">
+                    Przetwarzam: {batchStatus.processed}/{batchStatus.total} ({batchStatus.currentFile})
+                  </span>
+                ) : batchStatus?.finishedAt ? (
+                  <span className="rounded-full bg-amber-400/15 border border-amber-300/40 px-3 py-1 text-xs font-bold text-amber-200">
+                    Zakończono: {batchStatus.processed}/{batchStatus.total}
+                  </span>
+                ) : null}
+              </div>
+
+              {/* Options row */}
+              <div className="grid gap-4 lg:grid-cols-12">
+                <div className="lg:col-span-6 space-y-2">
+                  <label className="text-[11px] font-semibold text-slate-300 block">
+                    Katalog źródłowy (przetwarzanie w tle podczas przerwy)
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={batchSourceDir}
+                      onChange={(e) => setBatchSourceDir(e.target.value)}
+                      className="flex-1 rounded-xl border border-white/15 bg-black/70 px-3 py-2 text-xs font-mono text-white"
+                    />
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[
+                      { label: 'frontendy web', path: '/Users/krzysztofjarzyna/Pictures/bmclinic.co/frontendy web' },
+                      { label: 'wnętrza', path: '/Users/krzysztofjarzyna/Pictures/bmclinic.co/wnętrza' },
+                      { label: 'budynki', path: '/Users/krzysztofjarzyna/Pictures/bmclinic.co/budynki' },
+                      { label: 'za oknem', path: '/Users/krzysztofjarzyna/Pictures/bmclinic.co/za oknem' },
+                    ].map((preset) => (
+                      <button
+                        key={preset.label}
+                        type="button"
+                        onClick={() => setBatchSourceDir(preset.path)}
+                        className="rounded-lg border border-white/15 bg-white/5 px-2.5 py-1 text-[11px] text-slate-300 hover:bg-white/15 cursor-pointer"
+                      >
+                        {preset.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="lg:col-span-6 space-y-2">
+                  <label className="text-[11px] font-semibold text-slate-300 block">
+                    Katalog docelowy (&quot;pojawią się gdzie indziej&quot;) + galeria WWW
+                  </label>
+                  <input
+                    type="text"
+                    value={batchOutputDir}
+                    onChange={(e) => setBatchOutputDir(e.target.value)}
+                    className="w-full rounded-xl border border-white/15 bg-black/70 px-3 py-2 text-xs font-mono text-emerald-200"
+                  />
+                  <div className="flex flex-wrap items-center gap-4 pt-1 text-xs text-slate-200">
+                    <label className="inline-flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={batchCutout}
+                        onChange={(e) => setBatchCutout(e.target.checked)}
+                        className="accent-emerald-400"
+                      />
+                      Wytnij główny element (Alpha PNG, 0 kluczy)
+                    </label>
+                    <label className="inline-flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={batchFramous}
+                        onChange={(e) => setBatchFramous(e.target.checked)}
+                        className="accent-amber-300"
+                      />
+                      Opraw dodatkowo przez Framous CLI
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Variants selector */}
+              <div className="space-y-2">
+                <div className="text-[11px] font-semibold text-slate-300">
+                  Wybierz warianty kolorystyczne specjalizacji (generowane równocześnie):
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {ZERO_KEY_VARIANT_OPTIONS.map((v) => {
+                    const checked = batchVariants.includes(v.id);
+                    return (
+                      <button
+                        key={v.id}
+                        type="button"
+                        onClick={() => toggleBatchVariant(v.id)}
+                        className={`inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-semibold cursor-pointer transition ${
+                          checked
+                            ? 'border-emerald-400/70 bg-emerald-500/20 text-white'
+                            : 'border-white/15 bg-white/5 text-slate-400'
+                        }`}
+                      >
+                        <span
+                          className="h-3 w-3 rounded-full border border-white/30"
+                          style={{ background: v.badge }}
+                        />
+                        {v.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Dropzone + Background Folder Runner */}
+              <div className="grid gap-4 lg:grid-cols-12 items-stretch">
+                <div
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setBatchDropActive(true);
+                  }}
+                  onDragLeave={() => setBatchDropActive(false)}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    void handleBatchDropFiles(e.dataTransfer.files);
+                  }}
+                  onClick={() => batchDropInputRef.current?.click()}
+                  className={`lg:col-span-7 rounded-2xl border-2 border-dashed p-6 text-center cursor-pointer transition flex flex-col items-center justify-center gap-2 ${
+                    batchDropActive
+                      ? 'border-amber-300 bg-amber-400/15'
+                      : 'border-emerald-400/40 bg-emerald-950/20 hover:border-emerald-300'
+                  }`}
+                >
+                  <input
+                    ref={batchDropInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => void handleBatchDropFiles(e.target.files)}
+                  />
+                  <Upload className="h-6 w-6 text-amber-300" />
+                  <div className="text-sm font-bold text-white">
+                    {batchSubmitting
+                      ? 'Wycinam i generuję warianty...'
+                      : 'Przeciągnij i upuść obrazy tutaj (PNG / JPG / WEBP)'}
+                  </div>
+                  <div className="text-xs text-slate-400">
+                    Zostaną wycięte bez klucza API i automatycznie zapisane w katalogu docelowym + poniżej
+                  </div>
+                </div>
+
+                <div className="lg:col-span-5 rounded-2xl border border-white/15 bg-black/50 p-5 flex flex-col justify-between gap-3">
+                  <div className="space-y-1">
+                    <div className="text-xs font-bold uppercase tracking-wider text-amber-300">
+                      Automat na przerwę (Folder Batch)
+                    </div>
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      Przetworzy kolejno wszystkie zdjęcia ze wskazanego katalogu w tle — po powrocie będą czekać gotowe w{' '}
+                      <code className="text-emerald-300 break-all">{batchOutputDir}</code>.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    disabled={batchSubmitting || Boolean(batchStatus?.running)}
+                    onClick={() => void handleStartFolderBatch()}
+                    className="w-full rounded-xl bg-gradient-to-r from-amber-300 to-emerald-300 py-3 px-4 text-xs font-extrabold text-slate-950 hover:brightness-105 transition cursor-pointer disabled:opacity-50"
+                  >
+                    {batchStatus?.running
+                      ? `Przetwarzam (${batchStatus.processed}/${batchStatus.total})...`
+                      : 'Uruchom wsadowo na całym katalogu ↗'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Recent outputs grid ("pojawiają się gdzie indziej" -> live view + send to gallery) */}
+              {batchStatus && batchStatus.recentOutputs.length > 0 && (
+                <div className="space-y-3 pt-2">
+                  <div className="text-xs font-bold uppercase tracking-wider text-emerald-300">
+                    Wygenerowane wycięcia i warianty ({batchStatus.recentOutputs.length})
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    {batchStatus.recentOutputs.slice(0, 12).map((out, idx) => (
+                      <div
+                        key={`${out.publicUrl}-${idx}`}
+                        className="rounded-2xl border border-white/10 bg-black/60 p-3 space-y-2"
+                      >
+                        <div className="h-32 w-full overflow-hidden rounded-xl border border-white/10 bg-[#081210]">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={out.publicUrl}
+                            alt={`${out.sourceName} ${out.variantId}`}
+                            className="h-full w-full object-contain"
+                          />
+                        </div>
+                        <div className="text-[11px] font-bold text-white truncate">{out.variantId}</div>
+                        <div className="text-[10px] text-slate-400 truncate">{out.sourceName}</div>
+                        <div className="flex gap-1.5">
+                          <a
+                            href={out.publicUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 rounded-lg border border-white/15 bg-white/5 py-1.5 text-center text-[10px] font-semibold text-slate-200 hover:bg-white/15"
+                          >
+                            Podgląd ↗
+                          </a>
+                          <button
+                            type="button"
+                            onClick={() => void handleSendVariantToGallery(out)}
+                            className="flex-1 rounded-lg bg-emerald-400/20 border border-emerald-400/40 py-1.5 text-[10px] font-bold text-emerald-200 hover:bg-emerald-400/35 cursor-pointer"
+                          >
+                            Do Galerii + Kod
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </section>
         )}
