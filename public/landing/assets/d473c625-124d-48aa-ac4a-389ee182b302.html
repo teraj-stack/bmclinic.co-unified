@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&amp;family=Jost:wght@200;300;400;500&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { margin: 0; padding: 0; background: #060606; }
+    /* dopasowanie do ekranu telefonu (laurka) */
+    #top h1 span { font-size: 40px !important; }
+    #top h1 span span[style*="margin-left"] { margin-left: 24px !important; }
+    img[src$="logo-bujok.webp"], img[src$="sylwetka.webp"] { display: none !important; }
+    * { box-sizing: border-box; }
+    ::selection { background: #f4f4f1; color: #060606; }
+    @keyframes blScrollPulse {
+      0% { transform: scaleY(0); transform-origin: top; }
+      40% { transform: scaleY(1); transform-origin: top; }
+      60% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+    @keyframes blDressSway {
+      0%   { transform: translateX(-5px) rotate(-0.5deg); }
+      50%  { transform: translateX(5px) rotate(0.5deg); }
+      100% { transform: translateX(-5px) rotate(-0.5deg); }
+    }
+    /* pearl buttons */
+    @keyframes blPearlSheen {
+      0%   { transform: translateX(-130%) skewX(-18deg); opacity: 0; }
+      18%  { opacity: .9; }
+      52%  { opacity: .55; }
+      100% { transform: translateX(230%) skewX(-18deg); opacity: 0; }
+    }
+    @keyframes blPearlIris {
+      0%,100% { background-position: 0% 50%; }
+      50%     { background-position: 100% 50%; }
+    }
+    @keyframes blPearlFloat {
+      0%,100% { transform: translateY(0); }
+      50%     { transform: translateY(-7px); }
+    }
+    .bl-pearl { will-change: transform; }
+    .bl-pearl:hover { transform: translateY(-7px) scale(1.025) !important; }
+    .bl-pearl:hover .bl-pearl-glow { opacity: 1 !important; }
+    .bl-pearl:hover .bl-pearl-arrow { transform: translate(3px,-3px); color: #5a5550 !important; }
+    [data-hero] { opacity: 0; transition: opacity 1.6s cubic-bezier(.16,1,.3,1); }
+    [data-hero].bl-shown { opacity: 1; }
+    [data-hero-line] { transform: translateY(110%); transition: transform 1.5s cubic-bezier(.16,1,.3,1); }
+    [data-hero-line].bl-shown { transform: none; }
+    [data-reveal] { opacity: 0; transform: translateY(34px); transition: opacity 1.6s cubic-bezier(.16,1,.3,1), transform 1.6s cubic-bezier(.16,1,.3,1); }
+    [data-reveal].bl-shown { opacity: 1; transform: none; }
+    .bl-settled { transition: none !important; opacity: 1 !important; transform: none !important; }
+    @keyframes blDrift1 { 0% { transform: translate(-6%,-4%) scale(1); } 50% { transform: translate(8%,6%) scale(1.16); } 100% { transform: translate(-6%,-4%) scale(1); } }
+    @keyframes blDrift2 { 0% { transform: translate(6%,4%) scale(1.12); } 50% { transform: translate(-8%,-6%) scale(1); } 100% { transform: translate(6%,4%) scale(1.12); } }
+    @media (prefers-reduced-motion: reduce) {
+      [data-hero], [data-hero-line], [data-reveal] { transition: none !important; opacity: 1 !important; transform: none !important; }
+      .bl-pearl, .bl-pearl-sheen, .bl-pearl-iris { animation: none !important; }
+    }
+  </style>
+  <script src="./image-slot.js"></script>
+</helmet>
+<div ref="{{ rootRef }}" style="background: #060606; color: #e9e8e4; font-family: 'Jost', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; position: relative">
+
+  <!-- HEADER -->
+  <header style="position:sticky; top:0; left:0; right:0; z-index:50; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:20px clamp(20px,5vw,64px); mix-blend-mode:difference;">
+    <a href="#top" style="text-decoration:none; color:#f4f4f1; font-family:'Jost'; font-weight:300; font-size:14px; letter-spacing:0.42em; text-transform:uppercase;">BMclinics<span style="opacity: 0.45; color: #F6F6DC">.ai</span></a>
+    <nav style="display: flex; align-items: center; gap: clamp(16px,2.2vw,32px); color: #978654F0">
+      <a href="BLClinics%20Potrzeby.dc.html" style="text-decoration:none; color:#f4f4f1; font-weight:300; font-size:11px; letter-spacing:0.3em; text-transform:uppercase; opacity:0.7; transition:opacity 0.5s ease;" style-hover="opacity:1;">Potrzeby</a>
+      <a href="#rozwiazania" style="text-decoration:none; color:#f4f4f1; font-weight:300; font-size:11px; letter-spacing:0.3em; text-transform:uppercase; opacity:0.7; transition:opacity 0.5s ease;" style-hover="opacity:1;">Rozwiązania</a>
+      <a href="#hetech" style="text-decoration:none; color:#f4f4f1; font-weight:300; font-size:11px; letter-spacing:0.3em; text-transform:uppercase; opacity:0.7; transition:opacity 0.5s ease;" style-hover="opacity:1;">He-Tech</a>
+      <a href="BLClinics%20FAQ.dc.html" style="text-decoration:none; color:#f4f4f1; font-weight:300; font-size:11px; letter-spacing:0.3em; text-transform:uppercase; opacity:0.7; transition:opacity 0.5s ease;" style-hover="opacity:1;">FAQ</a>
+      <a href="#secret-shop" style="text-decoration:none; color:#f4f4f1; font-weight:300; font-size:11px; letter-spacing:0.3em; text-transform:uppercase; opacity:0.7; transition:opacity 0.5s ease;" style-hover="opacity:1;">Sklep</a>
+      <a href="#vip" style="text-decoration:none; color:#f4f4f1; font-weight:300; font-size:11px; letter-spacing:0.3em; text-transform:uppercase; padding:9px 20px; border:1px solid rgba(244,244,241,0.35); transition:all 0.7s cubic-bezier(.16,1,.3,1);" style-hover="background:#f4f4f1; color:#060606; border-color:#f4f4f1;">VIP</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section id="top" data-screen-label="Hero" style="position:relative; min-height:100vh; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; padding:120px clamp(24px,6vw,80px) 80px; text-align:left;">
+    <div style="position:absolute; inset:0; background:linear-gradient(90deg, #020202 0%, rgba(4,4,4,0.96) 30%, rgba(6,6,6,0.55) 55%, rgba(6,6,6,0.12) 78%, rgba(6,6,6,0) 100%); pointer-events:none;"></div>
+    <video src="./ekran2-overlay.mp4" autoPlay="{{ true }}" loop="{{ true }}" muted="{{ true }}" playsInline="{{ true }}" style="position:absolute; top:0; left:50%; transform:translateX(-50%); height:44%; z-index:1; object-fit:contain; pointer-events:none; mix-blend-mode:screen; filter:invert(1) hue-rotate(180deg) brightness(1.15) saturate(1.2); -webkit-mask-image:radial-gradient(ellipse 58% 60% at 50% 46%, #000 48%, transparent 82%); mask-image:radial-gradient(ellipse 58% 60% at 50% 46%, #000 48%, transparent 82%);"></video>
+
+    <!-- SCAN FIGURE + GEOMETRIC MESH -->
+    <div aria-hidden="true" style="position:absolute; top:0; right:-38px; bottom:0; width:min(54%,780px); z-index:1; pointer-events:none; display:flex; align-items:center; justify-content:center;">
+      <img src="assets/logo-bujok.webp" alt="Bujok Medical" style="position:absolute; top:clamp(86px,11vh,120px); right:clamp(24px,4vw,64px); width:clamp(72px,8vw,116px); height:auto; z-index:4; opacity:0.92;">
+      <svg ref="{{ meshRef }}" style="position:absolute; inset:0; width:100%; height:100%;" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <pattern id="blScanMesh" patternUnits="userSpaceOnUse" width="52" height="45">
+            <path d="M0,45 L26,0 L52,45 M0,0 L52,0" fill="none" stroke="rgba(176,208,234,0.2)" stroke-width="0.7"></path>
+            <circle cx="0" cy="0" r="1.05" fill="rgba(196,222,242,0.42)"></circle>
+            <circle cx="26" cy="0" r="1.05" fill="rgba(196,222,242,0.42)"></circle>
+          </pattern>
+          <radialGradient id="blMeshFade" cx="50%" cy="47%" r="60%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="1"></stop>
+            <stop offset="52%" stop-color="#ffffff" stop-opacity="0.5"></stop>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0"></stop>
+          </radialGradient>
+          <mask id="blMeshMask"><rect x="0" y="0" width="100%" height="100%" fill="url(#blMeshFade)"></rect></mask>
+        </defs>
+        <rect x="0" y="0" width="100%" height="100%" fill="url(#blScanMesh)" mask="url(#blMeshMask)"></rect>
+      </svg>
+
+      <!-- flowing-dress filter -->
+      <svg width="0" height="0" style="position:absolute;" aria-hidden="true">
+        <filter id="blDressFlow" x="-25%" y="-25%" width="150%" height="150%">
+          <feTurbulence ref="{{ turbRef }}" type="fractalNoise" baseFrequency="0.009 0.014" numOctaves="2" seed="6" stitchTiles="stitch" result="n"></feTurbulence>
+          <feDisplacementMap ref="{{ dispRef }}" in="SourceGraphic" in2="n" scale="13" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+        </filter>
+      </svg>
+
+      <div ref="{{ swayRef }}" style="position:relative; height:100%; display:flex; align-items:center; justify-content:center; transform-origin:50% 7%; will-change:transform; animation:blDressSway 7s ease-in-out infinite;">
+        <img ref="{{ imgRef }}" src="assets/sylwetka.webp" alt="" style="position:relative; height:86%; max-width:92%; object-fit:contain; filter:url(#blDressFlow); -webkit-mask-image:radial-gradient(ellipse 60% 72% at 50% 49%, #000 40%, transparent 82%); mask-image:radial-gradient(ellipse 60% 72% at 50% 49%, #000 40%, transparent 82%);">
+      </div>
+    </div>
+
+    <div style="position:relative; z-index:2; max-width:1100px;">
+      
+
+      <div data-hero="" style="margin-bottom: clamp(34px,5vh,60px); font-size: 11px; letter-spacing: 0.5em; text-transform: uppercase; color: #978654F0; font-weight: 300">Medycyna Estetyczna — Klinika Autorska</div><h1 style="margin:0; font-family:'Cormorant', serif; font-weight:300; line-height:1.04; letter-spacing:-0.01em; font-size:clamp(2.7rem,8vw,7.4rem); color:#f4f4f1;">
+        <span style="display: block; overflow: hidden; padding-bottom: 0.08em; font-size: 75px">
+          <span data-hero-line="" style="display: inline-block; transition-delay: 0.15s; font-size: 80px">Piękno nie</span>
+        </span>
+        <span style="display: block; overflow: hidden; padding-bottom: 0.08em; font-size: 75px">
+          <span data-hero-line="" style="display: inline-block; transition-delay: 0.3s; font-size: 80px">potrzebuje <span style="background:linear-gradient(100deg,#8b7448 0%,#c9a45c 22%,#f3e3ad 42%,#fbf3d3 50%,#d9bd76 60%,#a4823f 80%,#e6cd8d 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;">hałasu.</span></span>
+        </span>
+        <span style="display:block; overflow:hidden; padding-bottom:0.12em;">
+          <span data-hero-line="" style="display: inline-block; font-style: italic; color: rgb(157, 155, 148); transition-delay: 0.55s; font-size: 80px"><span style="display:inline-block; margin-left:68px;">Potrzebuje</span><br><span style="background:linear-gradient(100deg,#8b7448 0%,#c9a45c 22%,#f3e3ad 42%,#fbf3d3 50%,#d9bd76 60%,#a4823f 80%,#e6cd8d 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; display:inline-block; margin-left:113px;">zrozumienia..</span></span></span>
+      </h1>
+    </div>
+
+    <div data-hero="" style="position: absolute; bottom: 38px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 14px; z-index: 2; color: #978654F0">
+      <span style="font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase; color: #978654F0; font-weight: 300">Przewiń</span>
+      <span style="display:block; width:1px; height:54px; background:linear-gradient(#75736d,#75736d); animation:blScrollPulse 2.8s cubic-bezier(.16,1,.3,1) infinite;"></span>
+    </div>
+  </section>
+
+  <!-- NAVIGATION GRID -->
+
+  <!-- THE PROMISE -->
+  <section data-screen-label="Obietnica" style="position:relative; overflow:hidden; min-height:118vh; display:flex; flex-direction:row; align-items:flex-start; justify-content:flex-start; gap:clamp(48px,7vw,110px); padding:clamp(140px,18vh,240px) clamp(24px,6vw,80px); background:#080807; text-align:left;">
+
+    <!-- WEB + ACOUSTIC RIPPLE -->
+    <canvas ref="{{ web2Ref }}" aria-hidden="true" style="position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none;"></canvas>
+
+    <div style="position:relative; z-index:1; display:flex; flex-direction:column; align-items:flex-start; gap:clamp(22px,3.8vh,46px); max-width:760px;">
+    <div aria-hidden="true" style="position:absolute; left:-8%; top:-10%; width:116%; height:124%; z-index:0; pointer-events:none; background:radial-gradient(105% 82% at 32% 50%, rgba(6,7,8,0.9) 0%, rgba(6,7,8,0.62) 52%, rgba(6,7,8,0) 82%);"></div>
+    <p data-reveal="" style="position: relative; z-index: 1; margin: 0; max-width: 30ch; font-family: 'Cormorant', serif; font-weight: 300; line-height: 1.16; letter-spacing: -0.012em; font-size: clamp(2.8rem,5.6vw,4.8rem); color: #dcd9d0; text-shadow: 0 1px 22px rgba(5,5,4,0.98), 0 0 48px rgba(5,5,4,0.85);">Znamy Wasze oczekiwania,<br>uczymy się od najlepszych:</p>
+
+    <figure data-reveal="" style="position:relative; z-index:1; margin:0; display:flex; flex-direction:column; align-items:flex-end; gap:16px; width:100%; max-width:clamp(360px,50vw,640px);">
+      <span style="align-self:flex-start; display:block; width:38px; height:1px; background:rgba(203,187,131,0.5);"></span>
+      <blockquote style="margin: 0; font-family: 'Cormorant', serif; font-style: italic; font-weight: 300; line-height: 1.07; letter-spacing:-0.01em; font-size: clamp(2.1rem,4.2vw,3.6rem); color: #efeae0; text-shadow: 0 1px 26px rgba(5,5,4,0.98), 0 0 56px rgba(5,5,4,0.88);">„Wiem, czego pragną kobiety… Chcą być piękne.”</blockquote>
+      <figcaption style="font-family: 'Jost'; font-weight: 300; font-size: 12.5px; letter-spacing: 0.4em; text-transform: uppercase; color: #cbbb83; text-shadow: 0 1px 16px rgba(5,5,4,0.95);">— Rudolf Valentino</figcaption>
+    </figure>
+
+    <p data-reveal="" style="position: relative; z-index: 1; margin: 0; max-width: 32ch; font-family: 'Cormorant', serif; font-style: italic; font-weight: 300; line-height: 1.2; font-size: clamp(1.4rem,2.8vw,2.4rem); color: #cfccc3; text-shadow: 0 1px 22px rgba(5,5,4,0.96), 0 0 44px rgba(5,5,4,0.8);">Dlatego z pokorą i skupieniem podchodzimy do ich realizacji.</p>
+    </div>
+  </section>
+
+  <!-- POTRZEBY — INTERACTIVE NEEDS TILES (CSS GRID 5x1) -->
+  <section id="potrzeby" data-screen-label="Potrzeby" style="position:relative; overflow:hidden; background:#0b0d0f; padding:clamp(110px,15vh,190px) clamp(24px,6vw,80px);">
+    <!-- living, breathing graphite background -->
+    <div aria-hidden="true" style="position:absolute; inset:-20%; z-index:0; pointer-events:none; background:radial-gradient(38% 44% at 26% 34%, rgba(34,39,46,0.85) 0%, rgba(11,13,15,0) 70%); animation:blDrift1 26s ease-in-out infinite; will-change:transform;"></div>
+    <div aria-hidden="true" style="position:absolute; inset:-20%; z-index:0; pointer-events:none; background:radial-gradient(40% 42% at 78% 66%, rgba(28,32,38,0.8) 0%, rgba(11,13,15,0) 72%); animation:blDrift2 31s ease-in-out infinite; will-change:transform;"></div>
+
+    <div style="position:relative; z-index:1;">
+      <div data-reveal="" style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:24px; margin-bottom:clamp(38px,6vh,64px);">
+        <div style="display:flex; flex-direction:column; gap:16px; max-width:640px;">
+          <span style="font-family:'Jost'; font-weight:300; font-size:11px; letter-spacing:0.42em; text-transform:uppercase; color:#cbb878;">Potrzeby — Patient Needs</span>
+          <h2 style="margin:0; font-family:'Cormorant', serif; font-weight:300; line-height:1.06; letter-spacing:-0.01em; font-size:clamp(2.2rem,4.6vw,4rem); color:#f4f4f1;">Pięć obszarów, w których działamy z precyzją.</h2>
+        </div>
+        <p style="margin:0; max-width:34ch; font-family:'Jost'; font-weight:300; font-size:13.5px; line-height:1.7; color:#a7aaa4;">Wybierz to, co czujesz. Każdy obszar prowadzi do dedykowanego protokołu i technologii dobranej pod Twoją skórę.</p>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); gap:14px;">
+
+        <a href="BLClinics%20Rozwiazania%20Starzenie.dc.html" data-reveal="" style="position:relative; display:flex; flex-direction:column; justify-content:flex-end; aspect-ratio:3/4; min-height:340px; overflow:hidden; text-decoration:none; border:1px solid rgba(180,188,196,0.14); background:#0e1012; transition:transform .8s cubic-bezier(.16,1,.3,1), border-color .8s ease, box-shadow .8s ease; transition-delay:.05s;" style-hover="transform:translateY(-8px); border-color:rgba(203,184,120,0.55); box-shadow:0 28px 62px -30px rgba(0,0,0,0.92);">
+          <image-slot id="potrzeba-1" fit="cover" placeholder="Grafika — Rewitalizacja skóry" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></image-slot>
+          <div aria-hidden="true" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,9,11,0.12) 0%, rgba(8,9,11,0.5) 52%, rgba(8,9,11,0.93) 100%);"></div>
+          <span style="position:absolute; top:18px; left:18px; z-index:2; font-family:'Jost'; font-weight:300; font-size:11px; letter-spacing:0.3em; color:#cbb878;">01</span>
+          <div style="position:relative; z-index:2; padding:22px 20px 24px; display:flex; flex-direction:column; gap:8px;">
+            <span style="width:26px; height:1px; background:linear-gradient(110deg,#867848,#b3a067 38%,#cabb83 52%,#9b8b58 72%,#b0a164);"></span>
+            <h3 style="margin:0; font-family:'Cormorant', serif; font-weight:400; line-height:1.05; font-size:clamp(1.35rem,1.7vw,1.7rem); color:#f4f4f1;">Rewitalizacja skóry</h3>
+            <span style="font-family:'Jost'; font-weight:300; font-size:10.5px; letter-spacing:0.24em; text-transform:uppercase; color:#aab2b8;">Skin Revitalisation</span>
+            <p style="margin:4px 0 0; font-family:'Jost'; font-weight:300; font-size:12.5px; line-height:1.5; color:#c9ccc9;">Blask, nawilżenie, równy koloryt.</p>
+          </div>
+        </a>
+
+        <a href="BLClinics%20He-Tech.dc.html" data-reveal="" style="position:relative; display:flex; flex-direction:column; justify-content:flex-end; aspect-ratio:3/4; min-height:340px; overflow:hidden; text-decoration:none; border:1px solid rgba(180,188,196,0.14); background:#0e1012; transition:transform .8s cubic-bezier(.16,1,.3,1), border-color .8s ease, box-shadow .8s ease; transition-delay:.12s;" style-hover="transform:translateY(-8px); border-color:rgba(203,184,120,0.55); box-shadow:0 28px 62px -30px rgba(0,0,0,0.92);">
+          <image-slot id="potrzeba-2" fit="cover" placeholder="Grafika — Kontur i Struktura" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></image-slot>
+          <div aria-hidden="true" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,9,11,0.12) 0%, rgba(8,9,11,0.5) 52%, rgba(8,9,11,0.93) 100%);"></div>
+          <span style="position:absolute; top:18px; left:18px; z-index:2; font-family:'Jost'; font-weight:300; font-size:11px; letter-spacing:0.3em; color:#cbb878;">02</span>
+          <div style="position:relative; z-index:2; padding:22px 20px 24px; display:flex; flex-direction:column; gap:8px;">
+            <span style="width:26px; height:1px; background:linear-gradient(110deg,#867848,#b3a067 38%,#cabb83 52%,#9b8b58 72%,#b0a164);"></span>
+            <h3 style="margin:0; font-family:'Cormorant', serif; font-weight:400; line-height:1.05; font-size:clamp(1.35rem,1.7vw,1.7rem); color:#f4f4f1;">Kontur i Struktura</h3>
+            <span style="font-family:'Jost'; font-weight:300; font-size:10.5px; letter-spacing:0.24em; text-transform:uppercase; color:#aab2b8;">Contour &amp; Structure</span>
+            <p style="margin:4px 0 0; font-family:'Jost'; font-weight:300; font-size:12.5px; line-height:1.5; color:#c9ccc9;">Napięcie, lifting, definicja rysów.</p>
+          </div>
+        </a>
+
+        <a href="BLClinics%20FAQ.dc.html" data-reveal="" style="position:relative; display:flex; flex-direction:column; justify-content:flex-end; aspect-ratio:3/4; min-height:340px; overflow:hidden; text-decoration:none; border:1px solid rgba(180,188,196,0.14); background:#0e1012; transition:transform .8s cubic-bezier(.16,1,.3,1), border-color .8s ease, box-shadow .8s ease; transition-delay:.19s;" style-hover="transform:translateY(-8px); border-color:rgba(203,184,120,0.55); box-shadow:0 28px 62px -30px rgba(0,0,0,0.92);">
+          <image-slot id="potrzeba-3" fit="cover" placeholder="Grafika — Świadoma Opieka" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></image-slot>
+          <div aria-hidden="true" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,9,11,0.12) 0%, rgba(8,9,11,0.5) 52%, rgba(8,9,11,0.93) 100%);"></div>
+          <span style="position:absolute; top:18px; left:18px; z-index:2; font-family:'Jost'; font-weight:300; font-size:11px; letter-spacing:0.3em; color:#cbb878;">03</span>
+          <div style="position:relative; z-index:2; padding:22px 20px 24px; display:flex; flex-direction:column; gap:8px;">
+            <span style="width:26px; height:1px; background:linear-gradient(110deg,#867848,#b3a067 38%,#cabb83 52%,#9b8b58 72%,#b0a164);"></span>
+            <h3 style="margin:0; font-family:'Cormorant', serif; font-weight:400; line-height:1.05; font-size:clamp(1.35rem,1.7vw,1.7rem); color:#f4f4f1;">Świadoma Opieka</h3>
+            <span style="font-family:'Jost'; font-weight:300; font-size:10.5px; letter-spacing:0.24em; text-transform:uppercase; color:#aab2b8;">Mindful Care</span>
+            <p style="margin:4px 0 0; font-family:'Jost'; font-weight:300; font-size:12.5px; line-height:1.5; color:#c9ccc9;">Diagnoza, plan, spokój i czas.</p>
+          </div>
+        </a>
+
+        <a href="#" data-reveal="" style="position:relative; display:flex; flex-direction:column; justify-content:flex-end; aspect-ratio:3/4; min-height:340px; overflow:hidden; text-decoration:none; border:1px solid rgba(180,188,196,0.14); background:#0e1012; transition:transform .8s cubic-bezier(.16,1,.3,1), border-color .8s ease, box-shadow .8s ease; transition-delay:.26s;" style-hover="transform:translateY(-8px); border-color:rgba(203,184,120,0.55); box-shadow:0 28px 62px -30px rgba(0,0,0,0.92);">
+          <image-slot id="potrzeba-4" fit="cover" placeholder="Grafika — Talia · Brzuch · Pośladki" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></image-slot>
+          <div aria-hidden="true" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,9,11,0.12) 0%, rgba(8,9,11,0.5) 52%, rgba(8,9,11,0.93) 100%);"></div>
+          <span style="position:absolute; top:18px; left:18px; z-index:2; font-family:'Jost'; font-weight:300; font-size:11px; letter-spacing:0.3em; color:#cbb878;">04</span>
+          <div style="position:relative; z-index:2; padding:22px 20px 24px; display:flex; flex-direction:column; gap:8px;">
+            <span style="width:26px; height:1px; background:linear-gradient(110deg,#867848,#b3a067 38%,#cabb83 52%,#9b8b58 72%,#b0a164);"></span>
+            <h3 style="margin:0; font-family:'Cormorant', serif; font-weight:400; line-height:1.05; font-size:clamp(1.35rem,1.7vw,1.7rem); color:#f4f4f1;">Body Longevity</h3>
+            <span style="font-family:'Jost'; font-weight:300; font-size:10.5px; letter-spacing:0.24em; text-transform:uppercase; color:#aab2b8;">Talia · Brzuch · Pośladki</span>
+            <p style="margin:4px 0 0; font-family:'Jost'; font-weight:300; font-size:12.5px; line-height:1.5; color:#c9ccc9;">Jędrność ciała i długowieczność sylwetki.</p>
+          </div>
+        </a>
+
+        <a href="#" data-reveal="" style="position:relative; display:flex; flex-direction:column; justify-content:flex-end; aspect-ratio:3/4; min-height:340px; overflow:hidden; text-decoration:none; border:1px solid rgba(180,188,196,0.14); background:#0e1012; transition:transform .8s cubic-bezier(.16,1,.3,1), border-color .8s ease, box-shadow .8s ease; transition-delay:.33s;" style-hover="transform:translateY(-8px); border-color:rgba(203,184,120,0.55); box-shadow:0 28px 62px -30px rgba(0,0,0,0.92);">
+          <image-slot id="potrzeba-5" fit="cover" placeholder="Grafika — Naczynka · Sylwetka nóg" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></image-slot>
+          <div aria-hidden="true" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,9,11,0.12) 0%, rgba(8,9,11,0.5) 52%, rgba(8,9,11,0.93) 100%);"></div>
+          <span style="position:absolute; top:18px; left:18px; z-index:2; font-family:'Jost'; font-weight:300; font-size:11px; letter-spacing:0.3em; color:#cbb878;">05</span>
+          <div style="position:relative; z-index:2; padding:22px 20px 24px; display:flex; flex-direction:column; gap:8px;">
+            <span style="width:26px; height:1px; background:linear-gradient(110deg,#867848,#b3a067 38%,#cabb83 52%,#9b8b58 72%,#b0a164);"></span>
+            <h3 style="margin:0; font-family:'Cormorant', serif; font-weight:400; line-height:1.05; font-size:clamp(1.35rem,1.7vw,1.7rem); color:#f4f4f1;">Flebologia &amp; Nogi</h3>
+            <span style="font-family:'Jost'; font-weight:300; font-size:10.5px; letter-spacing:0.24em; text-transform:uppercase; color:#aab2b8;">Naczynka · Sylwetka nóg</span>
+            <p style="margin:4px 0 0; font-family:'Jost'; font-weight:300; font-size:12.5px; line-height:1.5; color:#c9ccc9;">Zdrowe, lekkie, piękne nogi.</p>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 — ANIMATED BACKGROUND -->
+  <section ref="{{ sec3Ref }}" data-screen-label="Sekcja 3" style="position:relative; overflow:hidden; min-height:100vh; display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-end; gap:24px; padding:clamp(80px,12vh,140px) clamp(24px,6vw,80px); background:#050504;">
+    <video ref="{{ vidRef }}" data-lazy-video="assets/sekcja3-tlo.mp4" data-lazy-poster="assets/sekcja3-poster.webp" muted loop playsinline webkit-playsinline="true" disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; pointer-events:none;"></video>
+    <canvas ref="{{ rippleRef }}" aria-hidden="true" style="position:absolute; inset:0; width:100%; height:100%; z-index:1; pointer-events:none;"></canvas>
+    <div aria-hidden="true" style="position:absolute; inset:0; z-index:2; pointer-events:none; background:linear-gradient(180deg, rgba(5,5,4,0.55) 0%, rgba(5,5,4,0.15) 40%, rgba(5,5,4,0.78) 100%);"></div>
+
+    <div data-reveal="" style="position:relative; z-index:3; display:flex; flex-direction:column; gap:18px; max-width:760px;">
+      <span style="font-family:'Jost'; font-weight:300; font-size:11px; letter-spacing:0.42em; text-transform:uppercase; color:#cbb878;">Struktura</span>
+      <h2 style="margin:0; font-family:'Cormorant', serif; font-weight:300; line-height:1.08; font-size:clamp(2.4rem,5vw,4.6rem); color:#f4f4f1;">Zbudowane na fundamencie kolagenu</h2>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section ref="{{ sec4Ref }}" data-screen-label="Sekcja 4" style="position:relative; overflow:hidden; background:#080807; display:flex; flex-direction:row; align-items:center; justify-content:center; gap:clamp(48px,7vw,110px); padding:clamp(120px,16vh,210px) clamp(24px,6vw,80px);">
+    <!-- SPIDERWEB VIDEO + INTERACTIVE RIPPLE -->
+    <video ref="{{ webVidRef }}" data-lazy-video="assets/sec2-video.mp4" muted loop playsinline webkit-playsinline="true" disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; pointer-events:none; filter:saturate(0.72) brightness(0.92);"></video>
+    <canvas ref="{{ rip4Ref }}" aria-hidden="true" style="position:absolute; inset:0; width:100%; height:100%; z-index:1; pointer-events:none;"></canvas>
+    <div aria-hidden="true" style="position:absolute; inset:0; z-index:2; pointer-events:none; background:radial-gradient(120% 90% at 30% 50%, rgba(6,7,8,0.72) 0%, rgba(6,7,8,0.35) 46%, rgba(6,7,8,0.12) 72%), linear-gradient(180deg, rgba(6,7,8,0.55) 0%, rgba(6,7,8,0.1) 42%, rgba(6,7,8,0.6) 100%);"></div>
+    <div data-reveal="" style="position:relative; z-index:3; display:flex; flex-direction:column; align-items:flex-start; gap:clamp(18px,3vh,30px); max-width:520px;">
+      <span style="font-family:'Jost'; font-weight:300; font-size:11px; letter-spacing:0.42em; text-transform:uppercase; color:#cbb878;">Przestrzeń</span>
+      <h2 style="margin:0; font-family:'Cormorant', serif; font-weight:300; line-height:1.08; font-size:clamp(2.2rem,4.4vw,4rem); color:#f4f4f1;">Klinika zaprojektowana wokół Ciebie</h2>
+    </div>
+
+    <figure data-reveal="" style="position:relative; z-index:3; margin:0; flex:0 0 auto; height:80vh; aspect-ratio:480/853; transform:translateX(20cm) scale(1.1); transform-origin:center;">
+      <video ref="{{ vid4Ref }}" data-lazy-video="assets/hala2.mp4" data-lazy-poster="assets/hala2-poster.webp" muted playsinline webkit-playsinline="true" disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1" style="display:block; width:100%; height:100%; object-fit:cover;"></video>
+      <span style="position:absolute; inset:0; pointer-events:none; box-shadow:inset 0 0 0 1px rgba(151,134,84,0.35); mix-blend-mode:screen;"></span>
+    </figure>
+  </section>
+
+  <!-- FIBRES / ACOUSTIC WAVE -->
+  <section id="wlokna" data-screen-label="Włókna" style="position:relative; overflow:hidden; background:#080807; min-height:100vh; display:flex; flex-direction:row; align-items:flex-end; justify-content:flex-start; gap:clamp(24px,5vw,80px); padding:0 clamp(24px,6vw,80px) 0 0;">
+    <!-- REACTIVE GEOMETRIC WEB + ACOUSTIC RIPPLE -->
+    <canvas ref="{{ web5Ref }}" aria-hidden="true" style="position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none;"></canvas>
+
+    <!-- RIGHT: intentionally empty (reserved) -->
+    <div aria-hidden="true" style="position:relative; z-index:1; flex:1 1 auto;"></div>
+  </section>
+
+  <!-- DZIENNIK PRZEMIAN — TIMELINE SLIDER D0-D7 -->
+  <section id="dziennik" data-screen-label="Dziennik Przemian" ref="{{ dziennikRef }}" style="position:relative; overflow:hidden; background:#080a0c; padding:clamp(110px,15vh,190px) clamp(24px,6vw,80px);">
+    <div aria-hidden="true" style="position:absolute; inset:-20%; z-index:0; pointer-events:none; background:radial-gradient(42% 48% at 68% 30%, rgba(30,35,42,0.8) 0%, rgba(8,10,12,0) 72%); animation:blDrift2 29s ease-in-out infinite; will-change:transform;"></div>
+
+    <div style="position:relative; z-index:1; display:flex; flex-direction:column; gap:clamp(30px,5vh,52px); max-width:1180px; margin:0 auto;">
+      <div data-reveal="" style="display:flex; flex-direction:column; gap:16px; align-items:center; text-align:center;">
+        <span style="font-family:'Jost'; font-weight:300; font-size:11px; letter-spacing:0.42em; text-transform:uppercase; color:#cbb878;">Dziennik Przemian — D0 → D7</span>
+        <h2 style="margin:0; font-family:'Cormorant', serif; font-weight:300; line-height:1.06; letter-spacing:-0.01em; font-size:clamp(2.2rem,4.6vw,4rem); color:#f4f4f1;">Siedem dni, które widać.</h2>
+      </div>
+
+      <!-- STAGE: stacked day frames -->
+      <div data-reveal="" style="position:relative; width:100%; aspect-ratio:16/9; min-height:280px; overflow:hidden; border:1px solid rgba(180,188,196,0.16); background:#0e1012;">
+        <image-slot id="dz-0" data-day="0" fit="cover" placeholder="Dzień 0 — zdjęcie" style="position:absolute; inset:0; width:100%; height:100%; display:block; opacity:1; transition:opacity .6s ease;"></image-slot>
+        <image-slot id="dz-1" data-day="1" fit="cover" placeholder="Dzień 1 — zdjęcie" style="position:absolute; inset:0; width:100%; height:100%; display:block; opacity:0; transition:opacity .6s ease;"></image-slot>
+        <image-slot id="dz-2" data-day="2" fit="cover" placeholder="Dzień 2 — zdjęcie" style="position:absolute; inset:0; width:100%; height:100%; display:block; opacity:0; transition:opacity .6s ease;"></image-slot>
+        <image-slot id="dz-3" data-day="3" fit="cover" placeholder="Dzień 3 — zdjęcie" style="position:absolute; inset:0; width:100%; height:100%; display:block; opacity:0; transition:opacity .6s ease;"></image-slot>
+        <image-slot id="dz-4" data-day="4" fit="cover" placeholder="Dzień 4 — zdjęcie" style="position:absolute; inset:0; width:100%; height:100%; display:block; opacity:0; transition:opacity .6s ease;"></image-slot>
+        <image-slot id="dz-5" data-day="5" fit="cover" placeholder="Dzień 5 — zdjęcie" style="position:absolute; inset:0; width:100%; height:100%; display:block; opacity:0; transition:opacity .6s ease;"></image-slot>
+        <image-slot id="dz-6" data-day="6" fit="cover" placeholder="Dzień 6 — zdjęcie" style="position:absolute; inset:0; width:100%; height:100%; display:block; opacity:0; transition:opacity .6s ease;"></image-slot>
+        <image-slot id="dz-7" data-day="7" fit="cover" placeholder="Dzień 7 — zdjęcie" style="position:absolute; inset:0; width:100%; height:100%; display:block; opacity:0; transition:opacity .6s ease;"></image-slot>
+        <div aria-hidden="true" style="position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg, rgba(8,9,11,0) 55%, rgba(8,9,11,0.8) 100%);"></div>
+        <div style="position:absolute; left:26px; bottom:22px; z-index:2; display:flex; align-items:baseline; gap:14px;">
+          <span data-bigday="" style="font-family:'Cormorant', serif; font-weight:300; font-size:clamp(2.4rem,4vw,3.4rem); line-height:1; color:#cbb878;">D0</span>
+          <span data-caption="" style="font-family:'Jost'; font-weight:300; font-size:13px; letter-spacing:0.02em; color:#e4e2da; max-width:44ch;">Dzień 0 — diagnoza i punkt wyjścia.</span>
+        </div>
+      </div>
+
+      <!-- SCRUBBER -->
+      <div data-reveal="" style="display:flex; flex-direction:column; gap:20px;">
+        <div data-track="" style="position:relative; height:34px; cursor:pointer; touch-action:none; display:flex; align-items:center;">
+          <div style="position:absolute; left:0; right:0; top:50%; height:2px; transform:translateY(-50%); background:rgba(180,188,196,0.2);"></div>
+          <div data-fill="" style="position:absolute; left:0; top:50%; width:0%; height:2px; transform:translateY(-50%); background:linear-gradient(110deg,#867848,#b3a067 38%,#cabb83 52%,#9b8b58 72%,#b0a164);"></div>
+          <span data-dot="0" style="position:absolute; left:0%; top:50%; width:8px; height:8px; margin-left:-4px; transform:translateY(-50%) scale(1.5); border-radius:50%; background:#cbb878; transition:transform .3s ease, background .3s ease;"></span>
+          <span data-dot="1" style="position:absolute; left:14.28%; top:50%; width:8px; height:8px; margin-left:-4px; transform:translateY(-50%); border-radius:50%; background:rgba(180,188,196,0.25); transition:transform .3s ease, background .3s ease;"></span>
+          <span data-dot="2" style="position:absolute; left:28.57%; top:50%; width:8px; height:8px; margin-left:-4px; transform:translateY(-50%); border-radius:50%; background:rgba(180,188,196,0.25); transition:transform .3s ease, background .3s ease;"></span>
+          <span data-dot="3" style="position:absolute; left:42.85%; top:50%; width:8px; height:8px; margin-left:-4px; transform:translateY(-50%); border-radius:50%; background:rgba(180,188,196,0.25); transition:transform .3s ease, background .3s ease;"></span>
+          <span data-dot="4" style="position:absolute; left:57.14%; top:50%; width:8px; height:8px; margin-left:-4px; transform:translateY(-50%); border-radius:50%; background:rgba(180,188,196,0.25); transition:transform .3s ease, background .3s ease;"></span>
+          <span data-dot="5" style="position:absolute; left:71.42%; top:50%; width:8px; height:8px; margin-left:-4px; transform:translateY(-50%); border-radius:50%; background:rgba(180,188,196,0.25); transition:transform .3s ease, background .3s ease;"></span>
+          <span data-dot="6" style="position:absolute; left:85.71%; top:50%; width:8px; height:8px; margin-left:-4px; transform:translateY(-50%); border-radius:50%; background:rgba(180,188,196,0.25); transition:transform .3s ease, background .3s ease;"></span>
+          <span data-dot="7" style="position:absolute; left:100%; top:50%; width:8px; height:8px; margin-left:-4px; transform:translateY(-50%); border-radius:50%; background:rgba(180,188,196,0.25); transition:transform .3s ease, background .3s ease;"></span>
+          <span data-thumb="" style="position:absolute; left:0%; top:50%; width:18px; height:18px; margin-left:-9px; transform:translateY(-50%); border-radius:50%; background:#f4f4f1; box-shadow:0 4px 14px rgba(0,0,0,0.6); pointer-events:none;"></span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-family:'Jost'; font-weight:300; font-size:11px; letter-spacing:0.2em; color:#8a8d88;">
+          <span>D0</span><span>D1</span><span>D2</span><span>D3</span><span>D4</span><span>D5</span><span>D6</span><span>D7</span>
+        </div>
+        <p style="margin:0; font-family:'Jost'; font-weight:300; font-size:12.5px; color:#8a8d88; text-align:center;">Przeciągnij suwak lub kliknij dzień, aby prześledzić przemianę.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF -->
+  <section data-screen-label="Social Proof" ref="{{ statsRef }}" style="position:relative; background:#0b0d0f; border-top:1px solid rgba(233,232,228,0.06); border-bottom:1px solid rgba(233,232,228,0.06); padding:clamp(70px,10vh,120px) clamp(24px,6vw,80px);">
+    <div data-reveal="" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:clamp(30px,5vw,72px); max-width:1080px; margin:0 auto; text-align:center;">
+      <div style="display:flex; flex-direction:column; gap:12px; align-items:center;">
+        <span style="display:flex; align-items:baseline; font-family:'Cormorant', serif; font-weight:300; line-height:1; font-size:clamp(3.2rem,7vw,5.6rem); color:#f4f4f1;"><span data-count="15">15</span><span style="color:#cbb878; font-size:0.5em; margin-left:2px;">+</span></span>
+        <span style="width:34px; height:1px; background:linear-gradient(110deg,#867848,#b3a067 38%,#cabb83 52%,#9b8b58 72%,#b0a164);"></span>
+        <span style="font-family:'Jost'; font-weight:300; font-size:12px; letter-spacing:0.28em; text-transform:uppercase; color:#a7aaa4;">Lat doświadczenia</span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; align-items:center;">
+        <span style="display:flex; align-items:baseline; font-family:'Cormorant', serif; font-weight:300; line-height:1; font-size:clamp(3.2rem,7vw,5.6rem); color:#f4f4f1;"><span data-count="12000">12 000</span><span style="color:#cbb878; font-size:0.5em; margin-left:2px;">+</span></span>
+        <span style="width:34px; height:1px; background:linear-gradient(110deg,#867848,#b3a067 38%,#cabb83 52%,#9b8b58 72%,#b0a164);"></span>
+        <span style="font-family:'Jost'; font-weight:300; font-size:12px; letter-spacing:0.28em; text-transform:uppercase; color:#a7aaa4;">Przeprowadzonych procedur</span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; align-items:center;">
+        <span style="display:flex; align-items:baseline; font-family:'Cormorant', serif; font-weight:300; line-height:1; font-size:clamp(3.2rem,7vw,5.6rem); color:#f4f4f1;"><span data-count="5">5</span></span>
+        <span style="width:34px; height:1px; background:linear-gradient(110deg,#867848,#b3a067 38%,#cabb83 52%,#9b8b58 72%,#b0a164);"></span>
+        <span style="font-family:'Jost'; font-weight:300; font-size:12px; letter-spacing:0.28em; text-transform:uppercase; color:#a7aaa4;">Obszarów specjalizacji</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#060606; border-top:1px solid rgba(233,232,228,0.08); padding:clamp(56px,8vh,84px) clamp(24px,5vw,64px) 44px;">
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:clamp(32px,5vw,64px); max-width:1180px; margin:0 auto;">
+      <div style="display:flex; flex-direction:column; gap:16px; min-width:200px;">
+        <span style="font-family:'Jost'; font-weight:300; font-size:13px; letter-spacing:0.42em; text-transform:uppercase; color:#f4f4f1;">BMclinics<span style="opacity:0.45; color:#F3F3D9;">.ai</span></span>
+        <p style="margin:0; max-width:30ch; font-family:'Cormorant', serif; font-style:italic; font-weight:300; font-size:1.15rem; line-height:1.4; color:#9d9b94;">Piękno nie potrzebuje hałasu. Potrzebuje zrozumienia.</p>
+        <span style="font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:#8B7448; font-weight:300;">Część ekosystemu MySkinCode</span>
+      </div>
+
+      <nav style="display:flex; flex-direction:column; gap:12px;">
+        <span style="font-family:'Jost'; font-weight:300; font-size:10.5px; letter-spacing:0.3em; text-transform:uppercase; color:#8a8d88; margin-bottom:4px;">Nawigacja</span>
+        <a href="#potrzeby" style="text-decoration:none; font-family:'Jost'; font-weight:300; font-size:13px; color:#cfccc3; transition:color .5s ease;" style-hover="color:#cbb878;">Potrzeby</a>
+        <a href="#dziennik" style="text-decoration:none; font-family:'Jost'; font-weight:300; font-size:13px; color:#cfccc3; transition:color .5s ease;" style-hover="color:#cbb878;">Dziennik Przemian</a>
+        <a href="BLClinics%20He-Tech.dc.html" style="text-decoration:none; font-family:'Jost'; font-weight:300; font-size:13px; color:#cfccc3; transition:color .5s ease;" style-hover="color:#cbb878;">He-Tech</a>
+        <a href="BLClinics%20FAQ.dc.html" style="text-decoration:none; font-family:'Jost'; font-weight:300; font-size:13px; color:#cfccc3; transition:color .5s ease;" style-hover="color:#cbb878;">FAQ</a>
+      </nav>
+
+      <nav style="display:flex; flex-direction:column; gap:12px;">
+        <span style="font-family:'Jost'; font-weight:300; font-size:10.5px; letter-spacing:0.3em; text-transform:uppercase; color:#8a8d88; margin-bottom:4px;">Dokumentacja prawna</span>
+        <a href="#regulamin" style="text-decoration:none; font-family:'Jost'; font-weight:300; font-size:13px; color:#cfccc3; transition:color .5s ease;" style-hover="color:#cbb878;">Regulamin</a>
+        <a href="#rodo" style="text-decoration:none; font-family:'Jost'; font-weight:300; font-size:13px; color:#cfccc3; transition:color .5s ease;" style-hover="color:#cbb878;">RODO</a>
+        <a href="#polityka-prywatnosci" style="text-decoration:none; font-family:'Jost'; font-weight:300; font-size:13px; color:#cfccc3; transition:color .5s ease;" style-hover="color:#cbb878;">Polityka Prywatności</a>
+      </nav>
+
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <span style="font-family:'Jost'; font-weight:300; font-size:10.5px; letter-spacing:0.3em; text-transform:uppercase; color:#8a8d88; margin-bottom:4px;">Kontakt</span>
+        <span style="font-family:'Jost'; font-weight:300; font-size:13px; color:#cfccc3;">Rejestracja online</span>
+        <span style="font-family:'Jost'; font-weight:300; font-size:13px; color:#cfccc3;">Strefa Pacjenta — VIP</span>
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; max-width:1180px; margin:clamp(40px,6vh,64px) auto 0; padding-top:26px; border-top:1px solid rgba(233,232,228,0.07);">
+      <span style="font-size:11px; letter-spacing:0.24em; color:#8B7448; font-weight:300;">© 2026 BMclinics.ai — Wszelkie prawa zastrzeżone</span>
+      <span style="font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:#8B7448; font-weight:300;">Medycyna Estetyczna — Klinika Autorska</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;dressFlow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Animacja sylwetki&quot;},&quot;flowIntensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0,&quot;max&quot;:28,&quot;step&quot;:1,&quot;unit&quot;:&quot;px&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Animacja sylwetki&quot;},&quot;flowSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:9,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Animacja sylwetki&quot;},&quot;swayAmount&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:100,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Animacja sylwetki&quot;},&quot;meshOpacity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:100,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:1,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Siatka skanera&quot;},&quot;netSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:92,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Ruch sieci&quot;},&quot;netAmplitude&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:99,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Ruch sieci&quot;},&quot;netCharacter&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:91,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Ruch sieci&quot;},&quot;netSwirl&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:53,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Ruch sieci&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.rootRef = React.createRef();
+    this.meshRef = React.createRef();
+    this.swayRef = React.createRef();
+    this.imgRef = React.createRef();
+    this.turbRef = React.createRef();
+    this.dispRef = React.createRef();
+    this.netRef = React.createRef();
+    this.web2Ref = React.createRef();
+    this.sec4Ref = React.createRef();
+    this.webVidRef = React.createRef();
+    this.rip4Ref = React.createRef();
+    this.web5Ref = React.createRef();
+    this.vidRef = React.createRef();
+    this.vid4Ref = React.createRef();
+    this.rippleRef = React.createRef();
+    this.sec3Ref = React.createRef();
+    this.dziennikRef = React.createRef();
+    this.statsRef = React.createRef();
+  }
+
+  renderVals() {
+    return {
+      rootRef: this.rootRef,
+      meshRef: this.meshRef,
+      swayRef: this.swayRef,
+      imgRef: this.imgRef,
+      turbRef: this.turbRef,
+      dispRef: this.dispRef,
+      netRef: this.netRef,
+      web2Ref: this.web2Ref,
+      sec4Ref: this.sec4Ref,
+      webVidRef: this.webVidRef,
+      rip4Ref: this.rip4Ref,
+      web5Ref: this.web5Ref,
+      vidRef: this.vidRef,
+      vid4Ref: this.vid4Ref,
+      rippleRef: this.rippleRef,
+      sec3Ref: this.sec3Ref,
+      dziennikRef: this.dziennikRef,
+      statsRef: this.statsRef,
+      navItems: [
+        { num: "01", title: "Potrzeby", label: "Patient Needs", href: "#potrzeby", dur: "7.5s", iris: "13s", sheen: "8s", delay: "0s" },
+        { num: "02", title: "Rozwiązania", label: "Medical Solutions", href: "#rozwiazania", dur: "8.4s", iris: "15s", sheen: "9.2s", delay: "0.7s" },
+        { num: "03", title: "He-Tech", label: "Hegemony Technology", href: "#he-tech", dur: "6.8s", iris: "12s", sheen: "8.6s", delay: "1.5s" },
+        { num: "04", title: "Protokoły", label: "Najczęściej stosowane", href: "#protokoly", dur: "8.0s", iris: "14s", sheen: "9.6s", delay: "2.1s" },
+        { num: "05", title: "Sklep Przestrzenny 3D", label: "Spatial 3D Shop", href: "#sklep-3d", dur: "7.2s", iris: "13.5s", sheen: "8.2s", delay: "1.1s" },
+        { num: "06", title: "VIP", label: "Portal Pacjenta", href: "#vip", dur: "8.8s", iris: "15.5s", sheen: "9.0s", delay: "2.7s" },
+      ],
+    };
+  }
+
+  componentDidMount() {
+    const root = this.rootRef.current;
+    if (!root) return;
+
+    // Lazy background video for Section 3 — only fetch + play when in view,
+    // pause when off-screen, so the 13MB clip never blocks initial load.
+    // Driven by a bounding-rect check (IntersectionObserver does not fire in
+    // every host), wired into the same scroll/resize handler as the reveals.
+    const vid = this.vidRef.current;
+    if (vid) {
+      vid.muted = true; vid.defaultMuted = true; vid.volume = 0;
+      const loadAndPlay = () => {
+        if (!vid.src) {
+          const lp = vid.getAttribute("data-lazy-poster");
+          if (lp && !vid.poster) vid.poster = lp;
+          vid.src = vid.getAttribute("data-lazy-video");
+          vid.load();
+        }
+        vid.muted = true;
+        const p = vid.play();
+        if (p && p.catch) p.catch(() => {});
+        this.startRipple(this.rippleRef.current, this.vidRef.current, this.sec3Ref.current, (this._rip3 = this._rip3 || {}));
+      };
+      this._checkVideo = () => {
+        const r = vid.getBoundingClientRect();
+        const inView = r.bottom > -200 && r.top < window.innerHeight + 200;
+        if (inView) { loadAndPlay(); }
+        else if (vid.src) { vid.pause(); }
+      };
+    } else {
+      this._checkVideo = () => {};
+    }
+
+    // Section 4 video — same lazy strategy, but clamped to the 9s–15s clip:
+    // start at 9s, and whenever it passes 15s (or ends) loop back to 9s.
+    const vid4 = this.vid4Ref.current;
+    if (vid4) {
+      const CS = 9.0, CE = 15.0;
+      vid4.muted = true; vid4.defaultMuted = true; vid4.volume = 0;
+      const toStart = () => { try { vid4.currentTime = CS; } catch (e) {} };
+      const start4 = () => {
+        if (!vid4.src) {
+          const lp4 = vid4.getAttribute("data-lazy-poster");
+          if (lp4 && !vid4.poster) vid4.poster = lp4;
+          vid4.src = vid4.getAttribute("data-lazy-video");
+          vid4.load();
+          vid4.addEventListener("loadeddata", toStart, { once: true });
+        }
+        vid4.muted = true;
+        const p = vid4.play();
+        if (p && p.catch) p.catch(() => {});
+      };
+      vid4.addEventListener("timeupdate", () => {
+        if (vid4.currentTime >= CE) { toStart(); }
+      });
+      vid4.addEventListener("ended", () => { toStart(); const p = vid4.play(); if (p && p.catch) p.catch(() => {}); });
+      this._checkVideo4 = () => {
+        const r = vid4.getBoundingClientRect();
+        const inView = r.bottom > -200 && r.top < window.innerHeight + 200;
+        if (inView) { start4(); }
+        else if (vid4.src) { vid4.pause(); }
+      };
+    } else {
+      this._checkVideo4 = () => {};
+    }
+
+    // Section 4 spiderweb background video — lazy load + interactive ripple
+    // (strike with cursor/stylus to send water ripples through the web).
+    const webVid = this.webVidRef.current;
+    if (webVid) {
+      webVid.muted = true; webVid.defaultMuted = true; webVid.volume = 0;
+      const WS = 0.6, WE = 9.5;                 // skip the black opening/closing frames
+      const toWStart = () => { try { webVid.currentTime = WS; } catch (e) {} };
+      const loadPlayWeb = () => {
+        if (!webVid.src) {
+          webVid.src = webVid.getAttribute("data-lazy-video");
+          webVid.load();
+          webVid.addEventListener("loadeddata", toWStart, { once: true });
+        }
+        webVid.muted = true;
+        const p = webVid.play(); if (p && p.catch) p.catch(() => {});
+        this.startRipple(this.rip4Ref.current, webVid, this.sec4Ref.current, (this._rip4 = this._rip4 || {}));
+      };
+      webVid.addEventListener("timeupdate", () => { if (webVid.currentTime >= WE) toWStart(); });
+      this._checkWebVid = () => {
+        const r = webVid.getBoundingClientRect();
+        const inView = r.bottom > -200 && r.top < window.innerHeight + 200;
+        if (inView) { loadPlayWeb(); } else if (webVid.src) { webVid.pause(); }
+      };
+    } else {
+      this._checkWebVid = () => {};
+    }
+
+    // Settle-safety: if an element's fade hasn't progressed (frozen clock /
+    // reduced-motion / unsupported transitions), force it visible so content
+    // can never be stranded hidden. Harmless in real browsers — by the time
+    // this runs the transition has already reached opacity 1.
+    const settle = (el, after) => {
+      setTimeout(() => {
+        if (!el.isConnected) return;
+        const cs = getComputedStyle(el);
+        const o = parseFloat(cs.opacity || "1");
+        const tr = cs.transform;
+        const transformStuck = tr && tr !== "none" && tr !== "matrix(1, 0, 0, 1, 0, 0)";
+        if (o < 0.99 || transformStuck) el.classList.add("bl-settled");
+      }, after);
+    };
+    // Hero reveal on load (slow, breathing entrance)
+    setTimeout(() => {
+      root.querySelectorAll("[data-hero], [data-hero-line]").forEach((el) => {
+        el.classList.add("bl-shown");
+        settle(el, 2400);
+      });
+    }, 220);
+
+    // Scroll reveals — bounding-rect check (works without IntersectionObserver)
+    const reveals = Array.from(root.querySelectorAll("[data-reveal]"));
+    const reveal = (el) => {
+      if (el.dataset.revealed) return;
+      el.dataset.revealed = "1";
+      el.classList.add("bl-shown");
+      settle(el, 2400);
+    };
+    const checkReveals = () => {
+      const trigger = window.innerHeight * 0.9;
+      for (const el of reveals) {
+        if (el.dataset.revealed) continue;
+        if (el.getBoundingClientRect().top < trigger) reveal(el);
+      }
+    };
+
+    // IntersectionObserver as primary (if functional)
+    let io = null;
+    if (typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) { reveal(entry.target); io.unobserve(entry.target); }
+        });
+      }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
+      reveals.forEach((el) => io.observe(el));
+    }
+
+    // Fallback: scroll/resize bounding-rect check
+    this._onScroll = () => { checkReveals(); this._checkVideo(); this._checkVideo4(); this._checkWebVid(); };
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    window.addEventListener("resize", this._onScroll, { passive: true });
+    checkReveals();
+    this._checkVideo();
+    this._checkVideo4();
+    this._checkWebVid();
+    setTimeout(checkReveals, 400);
+    setTimeout(() => { this._checkVideo(); this._checkVideo4(); this._checkWebVid(); }, 400);
+
+    // Hard safety net: no matter what (no scroll, misbehaving observer, frozen
+    // transition clock), force EVERY reveal visible after a few seconds so the
+    // page can never be stranded blank. Harmless in real browsers — content is
+    // already revealed by then.
+    setTimeout(() => {
+      reveals.forEach((el) => {
+        el.dataset.revealed = "1";
+        el.classList.add("bl-shown", "bl-settled");
+      });
+    }, 2600);
+
+    // Flowing-dress animation loop (live-driven by tweak props)
+    let t = 0;
+    let last = performance.now();
+    const tick = (now) => {
+      const dt = Math.min(64, now - last) / 1000;
+      last = now;
+      const p = this.props || {};
+      const on = p.dressFlow ?? true;
+      const speed = (p.flowSpeed ?? 42) / 100;          // 0..1
+      const inten = on ? (p.flowIntensity ?? 13) : 0;   // px displacement
+      const sway = on ? (p.swayAmount ?? 38) / 100 : 0; // 0..1
+
+      t += dt * (0.35 + speed * 1.9);
+
+      const turb = this.turbRef.current;
+      if (turb) {
+        const by = 0.013 + 0.006 * Math.sin(t * 1.25);
+        turb.setAttribute("baseFrequency", "0.009 " + by.toFixed(4));
+      }
+      const disp = this.dispRef.current;
+      if (disp) disp.setAttribute("scale", inten.toFixed(1));
+
+      const swayEl = this.swayRef.current;
+      if (swayEl) {
+        // JS is driving — disable the CSS keyframe fallback so tweaks control sway
+        if (swayEl.style.animation !== "none") swayEl.style.animation = "none";
+        const tx = Math.sin(t) * 7 * sway;
+        const rot = Math.sin(t * 0.72) * 0.7 * sway;
+        swayEl.style.transform = "translateX(" + tx.toFixed(2) + "px) rotate(" + rot.toFixed(3) + "deg)";
+      }
+      const mesh = this.meshRef.current;
+      if (mesh) mesh.style.opacity = String((p.meshOpacity ?? 100) / 100);
+
+      this._raf = requestAnimationFrame(tick);
+    };
+    this._raf = requestAnimationFrame(tick);
+
+    // Web + acoustic-ripple background (section 2)
+    this.initWeb(this.web2Ref.current);
+    this.initWeb(this.web5Ref.current);
+    [140, 500, 1100, 2000].forEach((d) => setTimeout(() => {
+      if (this.web2Ref.current && !this.web2Ref.current._webOn) this.initWeb(this.web2Ref.current);
+      if (this.web5Ref.current && !this.web5Ref.current._webOn) this.initWeb(this.web5Ref.current);
+    }, d));
+
+    // New sections
+    this.initDziennik();
+    this.initStats();
+  }
+
+  // ---- DZIENNIK PRZEMIAN — scrubbable D0→D7 timeline --------------------
+  initDziennik() {
+    const root = this.dziennikRef.current;
+    if (!root) return;
+    const slots = Array.from(root.querySelectorAll("[data-day]"));
+    const dots = Array.from(root.querySelectorAll("[data-dot]"));
+    const fill = root.querySelector("[data-fill]");
+    const thumb = root.querySelector("[data-thumb]");
+    const track = root.querySelector("[data-track]");
+    const cap = root.querySelector("[data-caption]");
+    const bigday = root.querySelector("[data-bigday]");
+    if (!track) return;
+    const N = 8;
+    const captions = [
+      "Dzień 0 — diagnoza i punkt wyjścia.",
+      "Dzień 1 — kontrolowana odpowiedź skóry.",
+      "Dzień 2 — uszczelnianie i regeneracja.",
+      "Dzień 3 — wyciszenie, pierwsze rozświetlenie.",
+      "Dzień 4 — odbudowa bariery ochronnej.",
+      "Dzień 5 — wyrównanie kolorytu.",
+      "Dzień 6 — napięcie i gładkość.",
+      "Dzień 7 — skóra wypoczęta i spójna.",
+    ];
+    let day = 0;
+    const apply = () => {
+      slots.forEach((s) => {
+        const d = +s.getAttribute("data-day");
+        s.style.opacity = d === day ? "1" : "0";
+        s.style.pointerEvents = d === day ? "auto" : "none";
+      });
+      dots.forEach((dt) => {
+        const d = +dt.getAttribute("data-dot");
+        const on = d === day;
+        dt.style.background = on ? "#cbb878" : "rgba(180,188,196,0.25)";
+        dt.style.transform = on ? "translateY(-50%) scale(1.5)" : "translateY(-50%) scale(1)";
+      });
+      const pct = (day / (N - 1)) * 100;
+      if (fill) fill.style.width = pct + "%";
+      if (thumb) thumb.style.left = pct + "%";
+      if (cap) cap.textContent = captions[day];
+      if (bigday) bigday.textContent = "D" + day;
+    };
+    const setDay = (d) => { day = Math.max(0, Math.min(N - 1, d)); apply(); };
+    dots.forEach((dt) => dt.addEventListener("click", () => setDay(+dt.getAttribute("data-dot"))));
+    const fromEvent = (e) => {
+      const r = track.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      setDay(Math.round(x * (N - 1)));
+    };
+    let dragging = false;
+    track.addEventListener("pointerdown", (e) => { dragging = true; try { track.setPointerCapture(e.pointerId); } catch (err) {} fromEvent(e); });
+    track.addEventListener("pointermove", (e) => { if (dragging) fromEvent(e); });
+    window.addEventListener("pointerup", () => { dragging = false; });
+    apply();
+  }
+
+  // ---- SOCIAL PROOF — count-up on reveal (frozen-clock safe) -----------
+  initStats() {
+    const root = this.statsRef.current;
+    if (!root) return;
+    const nums = Array.from(root.querySelectorAll("[data-count]"));
+    const fmt = (n) => n.toLocaleString("pl-PL");
+    let done = false;
+    const run = () => {
+      if (done) return;
+      done = true;
+      nums.forEach((el) => {
+        const target = parseInt(el.getAttribute("data-count"), 10) || 0;
+        const dur = 1600, t0 = performance.now();
+        const step = (now) => {
+          const p = Math.min(1, (now - t0) / dur);
+          const e = 1 - Math.pow(1 - p, 3);
+          el.textContent = fmt(Math.round(target * e));
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        // frozen-clock safety: force the final value regardless of rAF
+        setTimeout(() => { el.textContent = fmt(target); }, dur + 200);
+      });
+    };
+    const check = () => {
+      const r = root.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.85 && r.bottom > 0) run();
+    };
+    window.addEventListener("scroll", check, { passive: true });
+    check();
+    setTimeout(run, 2600);
+  }
+
+  // ---- RIPPLE SHADER (cursor-driven water ripples over Section 3 video) --
+  startRipple(canvas, video, sec, st) {
+    if (!st || st.started) return;
+    if (!canvas || !video) return;
+
+    const gl = canvas.getContext("webgl", { alpha: true, premultipliedAlpha: false })
+            || canvas.getContext("experimental-webgl", { alpha: true });
+    if (!gl) { return; } // no WebGL → plain video stays visible underneath
+    st.started = true;
+
+    const VS = "attribute vec2 p; varying vec2 uv;\n" +
+      "void main(){ uv = vec2(p.x*0.5+0.5, 0.5-p.y*0.5); gl_Position = vec4(p,0.0,1.0); }";
+
+    const MAXR = 14;
+    const FS =
+      "precision highp float;\n" +
+      "varying vec2 uv;\n" +
+      "uniform sampler2D tex;\n" +
+      "uniform vec2 uTexScale;\n" +     // cover-fit scale
+      "uniform vec2 uTexOff;\n" +
+      "uniform float uHasTex;\n" +
+      "uniform vec3 uR[" + MAXR + "];\n" + // x,y (uv), age (sec)
+      "uniform float uAspect;\n" +
+      "uniform int uN;\n" +
+      "void main(){\n" +
+      "  vec2 disp = vec2(0.0);\n" +
+      "  float hsum = 0.0;\n" +
+      "  for(int i=0;i<" + MAXR + ";i++){\n" +
+      "    if(i>=uN) break;\n" +
+      "    vec3 r = uR[i];\n" +
+      "    vec2 d = (uv - r.xy) * vec2(uAspect,1.0);\n" +
+      "    float dist = length(d);\n" +
+      "    float age = r.z;\n" +
+      "    float speed = 0.42;\n" +
+      "    float front = age*speed;\n" +
+      "    float ring = dist - front;\n" +
+      "    float width = 0.045;\n" +
+      "    float env = exp(-(ring*ring)/(2.0*width*width));\n" + // gaussian band at the front
+      "    float decay = exp(-age*1.7);\n" +
+      "    float wave = sin(ring*70.0) * env * decay;\n" +
+      "    hsum += wave;\n" +
+      "    if(dist>0.0001){ disp += normalize(d) * wave; }\n" +
+      "  }\n" +
+      "  vec2 off = disp * 0.022;\n" +
+      "  vec2 tuv = (uv + off) * uTexScale + uTexOff;\n" +
+      "  vec3 col;\n" +
+      "  if(uHasTex>0.5){ col = texture2D(tex, tuv).rgb; } else { col = vec3(0.03,0.04,0.05); }\n" +
+      "  // specular glint along wave crests (water sheen)\n" +
+      "  float sheen = clamp(hsum*1.4, 0.0, 1.0);\n" +
+      "  col += vec3(0.80,0.74,0.55) * sheen * 0.35;\n" +
+      "  float shade = clamp(-hsum*0.6, 0.0, 1.0);\n" +
+      "  col -= vec3(0.05,0.06,0.07) * shade;\n" +
+      "  gl_FragColor = vec4(col, 1.0);\n" +
+      "}";
+
+    const compile = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+    const prog = gl.createProgram();
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, VS));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FS));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { st.started = false; return; }
+    gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+    const pLoc = gl.getAttribLocation(prog, "p");
+    gl.enableVertexAttribArray(pLoc);
+    gl.vertexAttribPointer(pLoc, 2, gl.FLOAT, false, 0, 0);
+
+    const tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+    // 1px placeholder so first frames don't error
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([10,12,14,255]));
+
+    const uTex = gl.getUniformLocation(prog, "tex");
+    const uTexScale = gl.getUniformLocation(prog, "uTexScale");
+    const uTexOff = gl.getUniformLocation(prog, "uTexOff");
+    const uHasTex = gl.getUniformLocation(prog, "uHasTex");
+    const uR = gl.getUniformLocation(prog, "uR");
+    const uAspect = gl.getUniformLocation(prog, "uAspect");
+    const uN = gl.getUniformLocation(prog, "uN");
+    gl.uniform1i(uTex, 0);
+
+    let cw = 0, ch = 0;
+    const resize = () => {
+      const r = canvas.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      cw = Math.round(r.width * dpr); ch = Math.round(r.height * dpr);
+      canvas.width = cw; canvas.height = ch;
+      gl.viewport(0, 0, cw, ch);
+    };
+    resize();
+    st.resize = resize;
+    window.addEventListener("resize", resize);
+
+    // cursor ripple sources (uv, birth time)
+    const ripples = [];
+    let lastInjUv = null, lastInjT = 0;
+    const target = sec || canvas.parentElement;
+    const onMove = (e) => {
+      const r = (sec || canvas).getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
+      if (x < 0 || x > 1 || y < 0 || y > 1) return;
+      const now = performance.now();
+      // throttle: spawn when moved enough or enough time passed
+      if (lastInjUv) {
+        const dx = x - lastInjUv[0], dy = y - lastInjUv[1];
+        if (Math.hypot(dx, dy) < 0.012 && now - lastInjT < 90) return;
+      }
+      lastInjUv = [x, y]; lastInjT = now;
+      ripples.push({ x, y, t: now });
+      if (ripples.length > MAXR) ripples.shift();
+    };
+    st.move = onMove;
+    st.target = target;
+    target.addEventListener("pointermove", onMove, { passive: true });
+
+    const draw = () => {
+      if (!st.started) return;
+      const rc = canvas.getBoundingClientRect();
+      // Skip GPU work while the section is off-screen (frees the main thread).
+      if (rc.bottom < -150 || rc.top > (window.innerHeight || 800) + 150) { st.raf = requestAnimationFrame(draw); return; }
+      if (rc.width >= 2 && (Math.abs(rc.width * Math.min(window.devicePixelRatio||1,1.5) - cw) > 2)) resize();
+
+      // upload current video frame (cover-fit math computed below)
+      let hasTex = 0;
+      if (video.readyState >= 2 && video.videoWidth) {
+        try { gl.bindTexture(gl.TEXTURE_2D, tex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video); hasTex = 1; } catch (err) { hasTex = 0; }
+      }
+      gl.uniform1f(uHasTex, hasTex);
+
+      // object-fit: cover mapping of the video into the canvas rect
+      let sx = 1, sy = 1, ox = 0, oy = 0;
+      if (hasTex) {
+        const vAR = video.videoWidth / video.videoHeight;
+        const cAR = (cw / ch) || 1;
+        if (vAR > cAR) { sx = cAR / vAR; ox = (1 - sx) / 2; } // crop sides
+        else { sy = vAR / cAR; oy = (1 - sy) / 2; }          // crop top/bottom
+      }
+      gl.uniform2f(uTexScale, sx, sy);
+      gl.uniform2f(uTexOff, ox, oy);
+      gl.uniform1f(uAspect, (cw / ch) || 1);
+
+      // pack active ripples
+      const now = performance.now();
+      const data = new Float32Array(MAXR * 3);
+      let n = 0;
+      for (let i = 0; i < ripples.length && n < MAXR; i++) {
+        const age = (now - ripples[i].t) / 1000;
+        if (age > 2.6) continue;
+        data[n*3] = ripples[i].x; data[n*3+1] = ripples[i].y; data[n*3+2] = age;
+        n++;
+      }
+      // prune dead
+      for (let i = ripples.length - 1; i >= 0; i--) { if ((now - ripples[i].t) / 1000 > 2.6) ripples.splice(i, 1); }
+      gl.uniform3fv(uR, data);
+      gl.uniform1i(uN, n);
+
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      st.raf = requestAnimationFrame(draw);
+    };
+    st.raf = requestAnimationFrame(draw);
+  }
+
+  stopRipple(st) {
+    if (!st) return;
+    if (st.raf) cancelAnimationFrame(st.raf);
+    if (st.resize) { window.removeEventListener("resize", st.resize); st.resize = null; }
+    if (st.target && st.move) st.target.removeEventListener("pointermove", st.move);
+    st.started = false;
+  }
+
+  // ---- SPIDERWEB + ACOUSTIC RIPPLE ------------------------------------
+  // A web of fine strands (pajęczyna) through which concentric acoustic
+  // waves travel and fade, like ripples spreading on water. Ambient auto
+  // pulses keep it perpetually, gently in motion; the cursor injects more.
+  initWeb(canvas) {
+    if (!canvas || canvas._webOn) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    canvas._webOn = true;
+    const section = canvas.parentElement || canvas;
+
+    let W = 0, H = 0, dpr = 1, spacing = 0, cols = 0, rows = 0;
+    let bx = [], by = [], ph = [];
+    const build = () => {
+      const rect = canvas.getBoundingClientRect();
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = Math.max(1, Math.round(rect.width));
+      H = Math.max(1, Math.round(rect.height));
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      spacing = Math.max(60, Math.min(96, W / 18));
+      cols = Math.ceil(W / spacing) + 4;
+      rows = Math.ceil(H / spacing) + 4;
+      bx = []; by = []; ph = [];
+      const ox = (W - (cols - 1) * spacing) / 2;
+      const oy = (H - (rows - 1) * spacing) / 2;
+      for (let j = 0; j < rows; j++) {
+        for (let i = 0; i < cols; i++) {
+          const jit = spacing * 0.22;
+          bx.push(ox + i * spacing + (Math.random() * 2 - 1) * jit);
+          by.push(oy + j * spacing + (Math.random() * 2 - 1) * jit);
+          ph.push(Math.random() * Math.PI * 2);
+        }
+      }
+    };
+    build();
+    window.addEventListener("resize", build, { passive: true });
+    let ro = null;
+    if (typeof ResizeObserver !== "undefined") { ro = new ResizeObserver(() => build()); ro.observe(canvas); }
+
+    const idx = (i, j) => j * cols + i;
+
+    // ripple sources
+    const ripples = [];
+    const LIFE = 3.0;      // s — how long a wave lives
+    const SPEED = 0.42;    // fraction of min(W,H) travelled per second
+    const WAVELEN = 60;    // px — width of the crest band
+    const AMP = 17;        // px — displacement at crest
+    const MAXR = 7;
+    const emit = (x, y) => { ripples.push({ x, y, t0: performance.now() }); if (ripples.length > MAXR) ripples.shift(); };
+
+    let nextAuto = 0, lastMove = 0;
+    const onMove = (e) => {
+      const now = performance.now();
+      if (now - lastMove < 80) return; lastMove = now;
+      const rect = canvas.getBoundingClientRect();
+      emit(e.clientX - rect.left, e.clientY - rect.top);
+    };
+    section.addEventListener("pointermove", onMove, { passive: true });
+
+    const draw = (now) => {
+      // Pause heavy work when the section is off-screen (keeps the main thread free).
+      const vr = canvas.getBoundingClientRect();
+      if (vr.bottom < -150 || vr.top > (window.innerHeight || 800) + 150) return;
+      const trav = Math.min(W, H);
+      if (now > nextAuto) { nextAuto = now + 1500 + Math.random() * 1500; emit(Math.random() * W, Math.random() * H); }
+      for (let i = ripples.length - 1; i >= 0; i--) { if ((now - ripples[i].t0) / 1000 > LIFE) ripples.splice(i, 1); }
+
+      ctx.clearRect(0, 0, W, H);
+      const N = cols * rows;
+      const dx = new Float32Array(N), dy = new Float32Array(N), glow = new Float32Array(N);
+      const bt = now / 1000;
+      for (let k = 0; k < N; k++) {
+        let ax = Math.sin(bt * 0.6 + ph[k]) * 1.1;
+        let ay = Math.cos(bt * 0.5 + ph[k] * 1.3) * 1.1;
+        let g = 0;
+        const nx = bx[k], ny = by[k];
+        for (let r = 0; r < ripples.length; r++) {
+          const age = (now - ripples[r].t0) / 1000;
+          const radius = age * SPEED * trav;
+          const ddx = nx - ripples[r].x, ddy = ny - ripples[r].y;
+          const d = Math.sqrt(ddx * ddx + ddy * ddy) + 0.0001;
+          const off = d - radius;
+          if (Math.abs(off) < WAVELEN) {
+            const env = 1 - age / LIFE;
+            const crest = Math.cos(off / WAVELEN * Math.PI * 0.5);
+            const w = crest * crest * env;
+            const disp = w * AMP;
+            ax += (ddx / d) * disp;
+            ay += (ddy / d) * disp;
+            g += w;
+          }
+        }
+        dx[k] = ax; dy[k] = ay; glow[k] = g > 1 ? 1 : g;
+      }
+
+      // strands (pajęczyna)
+      for (let j = 0; j < rows; j++) {
+        for (let i = 0; i < cols; i++) {
+          const k = idx(i, j);
+          const x1 = bx[k] + dx[k], y1 = by[k] + dy[k];
+          const neigh = [];
+          if (i < cols - 1) neigh.push(idx(i + 1, j));
+          if (j < rows - 1) neigh.push(idx(i, j + 1));
+          if (i < cols - 1 && j < rows - 1) neigh.push(idx(i + 1, j + 1));
+          for (let n = 0; n < neigh.length; n++) {
+            const m = neigh[n];
+            const x2 = bx[m] + dx[m], y2 = by[m] + dy[m];
+            const gg = (glow[k] + glow[m]) * 0.5;
+            const a = 0.055 + gg * 0.46;
+            const R = Math.round(150 + gg * 66);   // silver → warm silver/gold
+            const G = Math.round(158 + gg * 44);
+            const B = Math.round(170 - gg * 26);
+            ctx.strokeStyle = "rgba(" + R + "," + G + "," + B + "," + a.toFixed(3) + ")";
+            ctx.lineWidth = 0.5 + gg * 1.5;
+            ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+          }
+        }
+      }
+
+      // nodes — subtle, brightening at the crest
+      for (let k = 0; k < N; k++) {
+        const g = glow[k];
+        const x = bx[k] + dx[k], y = by[k] + dy[k];
+        if (g > 0.02) {
+          const rr = 0.9 + g * 2.6;
+          const grd = ctx.createRadialGradient(x, y, 0, x, y, rr * 4);
+          grd.addColorStop(0, "rgba(228,226,210," + (0.5 * g + 0.05).toFixed(3) + ")");
+          grd.addColorStop(1, "rgba(228,226,210,0)");
+          ctx.fillStyle = grd;
+          ctx.beginPath(); ctx.arc(x, y, rr * 4, 0, Math.PI * 2); ctx.fill();
+        }
+        ctx.fillStyle = "rgba(198,204,198," + (0.08 + g * 0.75).toFixed(3) + ")";
+        ctx.beginPath(); ctx.arc(x, y, 0.8 + g * 2.2, 0, Math.PI * 2); ctx.fill();
+      }
+    };
+
+    const state = { raf: 0, interval: 0 };
+    let lastRaf = 0;
+    const rafLoop = (now) => { lastRaf = now; draw(now); state.raf = requestAnimationFrame(rafLoop); };
+    state.raf = requestAnimationFrame(rafLoop);
+    state.interval = setInterval(() => { const now = performance.now(); if (now - lastRaf > 200) draw(now); }, 1000 / 30);
+    [120, 400, 900, 1800].forEach((d) => setTimeout(() => { if (canvas.isConnected) { build(); draw(performance.now()); } }, d));
+    draw(performance.now());
+
+    this._webCleanups = this._webCleanups || [];
+    this._webCleanups.push(() => {
+      cancelAnimationFrame(state.raf); clearInterval(state.interval);
+      window.removeEventListener("resize", build);
+      if (ro) ro.disconnect();
+      section.removeEventListener("pointermove", onMove);
+    });
+  }
+
+  // ---- COLLAGEN NETWORK -------------------------------------------------
+  initCanvas() {
+    const canvas = this.netRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let W = 0, H = 0, dpr = 1;
+    // grid of nodes with base positions (bx/by) + depth (z) + per-node phase
+    let cols = 0, rows = 0;
+    let bx = [], by = [], bz = [], ph = [];
+
+    const build = () => {
+      const rect = canvas.getBoundingClientRect();
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = Math.max(1, Math.round(rect.width));
+      H = Math.max(1, Math.round(rect.height));
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // node spacing scales with size; aim for a regular collagen lattice
+      const spacing = Math.max(56, Math.min(96, W / 16));
+      cols = Math.ceil(W / spacing) + 4;
+      rows = Math.ceil(H / spacing) + 4;
+      bx = []; by = []; bz = []; ph = [];
+      const ox = (W - (cols - 1) * spacing) / 2;
+      const oy = (H - (rows - 1) * spacing) / 2;
+      for (let j = 0; j < rows; j++) {
+        for (let i = 0; i < cols; i++) {
+          // slight irregularity so it reads organic, not graph-paper
+          const jit = spacing * 0.16;
+          bx.push(ox + i * spacing + (Math.random() * 2 - 1) * jit);
+          by.push(oy + j * spacing + (Math.random() * 2 - 1) * jit);
+          bz.push(Math.random() * 2 - 1);                 // -1..1 depth
+          ph.push(Math.random() * Math.PI * 2);            // breath phase
+        }
+      }
+      this._netSpacing = spacing;
+    };
+
+    build();
+    this._netBuild = build;
+    window.addEventListener("resize", build, { passive: true });
+
+    // Self-heal: section often hasn't laid out at mount (below the fold),
+    // so the first build() captured a 0-size rect. A ResizeObserver rebuilds
+    // the moment the canvas gets real dimensions, and on any responsive reflow.
+    if (typeof ResizeObserver !== "undefined") {
+      this._netRO = new ResizeObserver(() => build());
+      this._netRO.observe(canvas);
+    }
+
+    const idx = (i, j) => j * cols + i;
+    if (this._netT == null) this._netT = 0;
+
+    // Render one frame at the current time (this._netT). Pure draw — no time
+    // advance, no rAF — so it can be called from build()/setTimeout even if the
+    // animation clock is frozen, guaranteeing the network is visible on load.
+    const renderFrame = () => {
+      // backup guard: if the live layout size no longer matches the buffer
+      // (e.g. mounted at 0-size then laid out), rebuild before drawing.
+      const lr = canvas.getBoundingClientRect();
+      if (lr.width > 1 && Math.abs(Math.round(lr.width) - W) > 2) build();
+      const t = this._netT;
+      const p = this.props || {};
+      const amp = (p.netAmplitude ?? 40) / 100;     // 0..1
+      const character = (p.netCharacter ?? 50) / 100; // turbulence richness
+      const swirl = (p.netSwirl ?? 30) / 100;       // rotation strength
+
+      ctx.clearRect(0, 0, W, H);
+
+      const cx = W / 2, cy = H / 2;
+      const focal = 620;                 // perspective focal length
+      const ampPx = this._netSpacing * 0.6 * amp;
+      const rot = t * 0.12 * swirl;      // slow global swirl
+      const cosR = Math.cos(rot), sinR = Math.sin(rot);
+
+      // projected positions + screen-space scale (depth)
+      const px = new Float32Array(cols * rows);
+      const py = new Float32Array(cols * rows);
+      const ps = new Float32Array(cols * rows);  // scale (closeness 0..~1.4)
+
+      for (let j = 0; j < rows; j++) {
+        for (let i = 0; i < cols; i++) {
+          const k = idx(i, j);
+          let x = bx[k], y = by[k];
+
+          // breathing + multi-octave turbulence on z and xy
+          const zz = bz[k]
+            + 0.55 * Math.sin(t * 1.1 + ph[k])
+            + character * 0.5 * Math.sin(t * 0.7 + bx[k] * 0.012 + by[k] * 0.01);
+          const wob =
+            Math.sin(t * 0.9 + bx[k] * 0.02 + ph[k]) +
+            character * 0.6 * Math.sin(t * 1.7 + by[k] * 0.025);
+          const wob2 =
+            Math.cos(t * 0.8 + by[k] * 0.018 + ph[k]) +
+            character * 0.6 * Math.cos(t * 1.5 + bx[k] * 0.022);
+
+          x += wob * ampPx;
+          y += wob2 * ampPx;
+
+          // swirl around centre
+          let rx = x - cx, ry = y - cy;
+          const sx = rx * cosR - ry * sinR;
+          const sy = rx * sinR + ry * cosR;
+          x = cx + sx; y = cy + sy;
+
+          // perspective from z
+          const z = zz * 140;            // world depth in px
+          const scale = focal / (focal + z);
+          px[k] = cx + (x - cx) * scale;
+          py[k] = cy + (y - cy) * scale;
+          ps[k] = scale;
+        }
+      }
+
+      // ---- links ----
+      for (let j = 0; j < rows; j++) {
+        for (let i = 0; i < cols; i++) {
+          const k = idx(i, j);
+          const s = ps[k];
+          // connect right and down (and one diagonal) for a triangular weave
+          const neigh = [];
+          if (i < cols - 1) neigh.push(idx(i + 1, j));
+          if (j < rows - 1) neigh.push(idx(i, j + 1));
+          if (i < cols - 1 && j < rows - 1) neigh.push(idx(i + 1, j + 1));
+          for (let n = 0; n < neigh.length; n++) {
+            const m = neigh[n];
+            const sm = ps[m];
+            const depth = (s + sm) * 0.5;            // ~0.7..1.3
+            const a = Math.max(0, Math.min(1, (depth - 0.72) / 0.6));
+            ctx.strokeStyle = "rgba(176,208,234," + (0.05 + a * 0.16).toFixed(3) + ")";
+            ctx.lineWidth = Math.max(0.4, depth * 0.8);
+            ctx.beginPath();
+            ctx.moveTo(px[k], py[k]);
+            ctx.lineTo(px[m], py[m]);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // ---- nodes (glowing) ----
+      for (let k = 0; k < cols * rows; k++) {
+        const s = ps[k];
+        const a = Math.max(0, Math.min(1, (s - 0.72) / 0.6));
+        const r = Math.max(0.6, s * 1.9);
+        // glow
+        const g = ctx.createRadialGradient(px[k], py[k], 0, px[k], py[k], r * 4.5);
+        g.addColorStop(0, "rgba(214,234,250," + (0.5 * a + 0.12).toFixed(3) + ")");
+        g.addColorStop(1, "rgba(214,234,250,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(px[k], py[k], r * 4.5, 0, Math.PI * 2);
+        ctx.fill();
+        // core
+        ctx.fillStyle = "rgba(238,246,255," + (0.45 + a * 0.5).toFixed(3) + ")";
+        ctx.beginPath();
+        ctx.arc(px[k], py[k], r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    };
+
+    // Time-advancing loop. Prefer rAF; if it's frozen/throttled, a setInterval
+    // fallback keeps advancing time and rendering (setTimeout/Interval run in
+    // this preview environment even when rAF and ResizeObserver are suspended).
+    let last = performance.now();
+    let lastRaf = 0;
+    const advance = (now) => {
+      const dt = Math.min(64, now - last) / 1000;
+      last = now;
+      const speed = ((this.props || {}).netSpeed ?? 32) / 100;
+      this._netT += dt * (0.12 + speed * 0.9);
+      renderFrame();
+    };
+    const rafLoop = (now) => { lastRaf = now; advance(now); this._netRaf = requestAnimationFrame(rafLoop); };
+    this._netRaf = requestAnimationFrame(rafLoop);
+    // Fallback only kicks in when rAF is frozen/throttled (no recent rAF tick),
+    // so real browsers don't double-advance time.
+    this._netInterval = setInterval(() => {
+      const now = performance.now();
+      if (now - lastRaf > 200) advance(now);
+    }, 1000 / 30);
+
+    // Deferred rebuilds: the section is often below the fold and unlaid-out at
+    // mount, so the first build() saw a 0-size rect. These setTimeout retries
+    // (which DO run here) re-measure once layout settles and paint a frame.
+    [120, 400, 900, 1800].forEach((d) => setTimeout(() => {
+      if (this.netRef.current) { build(); renderFrame(); }
+    }, d));
+
+    // Initial static frame so the network shows even if no clock ever ticks.
+    renderFrame();
+  }
+
+  componentWillUnmount() {
+    if (this._raf) cancelAnimationFrame(this._raf);
+    if (this._netRaf) cancelAnimationFrame(this._netRaf);
+    if (this._netInterval) clearInterval(this._netInterval);
+    if (this._netRO) this._netRO.disconnect();
+    if (this._netBuild) window.removeEventListener("resize", this._netBuild);
+    if (this._webCleanups) this._webCleanups.forEach((fn) => { try { fn(); } catch (e) {} });
+    this.stopRipple(this._rip3);
+    this.stopRipple(this._rip4);
+    if (this._onScroll) {
+      window.removeEventListener("scroll", this._onScroll);
+      window.removeEventListener("resize", this._onScroll);
+    }
+  }
+}
+</script>
+</body>
+</html>
