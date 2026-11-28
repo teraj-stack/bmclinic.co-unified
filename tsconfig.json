@@ -26,6 +26,7 @@
   "exclude": [
     "node_modules",
     "chronos-vault-module",
+    "server-master.ts",
     "taskkill-assets",
     "public",
     "superagent-sdk",
