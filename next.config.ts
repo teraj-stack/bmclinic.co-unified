@@ -44,6 +44,10 @@ const nextConfig: NextConfig = {
           source: '/vault',
           destination: '/vault/index.html',
         },
+        ...['/ai-studio-app', '/cml-wilanow', '/myskincode-ai'].map((source) => ({
+          source,
+          destination: `${source}/index.html`,
+        })),
         {
           source: '/holding',
           destination: '/holding/index.html',
