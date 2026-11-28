@@ -5,6 +5,17 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   output: 'standalone',
+  outputFileTracingIncludes: {
+    '/taskkill/**': [
+      './taskkill-assets/index.html',
+      './taskkill-assets/styles.css',
+      './taskkill-assets/data.js',
+      './taskkill-assets/app.js',
+      './taskkill-assets/00.png',
+      './taskkill-assets/mindmap-bg.jpg',
+    ],
+    '/api/mindmaps': ['./taskkill-assets/mindmaps/scalenie-3016.notes.md'],
+  },
 
   // No floating Next.js "N" badge when there are zero issues (was mistaken for an error)
   devIndicators: false,
@@ -28,6 +39,10 @@ const nextConfig: NextConfig = {
         {
           source: '/',
           destination: '/bmclinic-home.html',
+        },
+        {
+          source: '/vault',
+          destination: '/vault/index.html',
         },
         {
           source: '/holding',

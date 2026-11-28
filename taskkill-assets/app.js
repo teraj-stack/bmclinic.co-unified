@@ -3,6 +3,7 @@
   const ACTIVE_MAP_ID = (_urlParams.get("map") || "bmclinic").trim() || "bmclinic";
   const ACTIVE_MAP_TITLE = (_urlParams.get("title") || "").trim();
   const MAP_SUFFIX = ACTIVE_MAP_ID === "bmclinic" ? "" : `_${ACTIVE_MAP_ID}`;
+  const SNAPSHOT_MODE = document.documentElement.dataset.taskkillSnapshot === "true";
   const API_TASKS_URL = `/api/tasks?map=${encodeURIComponent(ACTIVE_MAP_ID)}`;
   const API_LAYOUT_URL = `/api/layout?map=${encodeURIComponent(ACTIVE_MAP_ID)}`;
 
@@ -13,6 +14,8 @@
   const MINDMAP_MEDIA_KEY = `managing_work_mindmap_media_v1${MAP_SUFFIX}`;
   const MINDMAP_BG_KEY = "managing_work_mindmap_bg_v1";
   const MINDMAP_CUSTOM_BG_KEY = "managing_work_mindmap_custom_bg_v1";
+  const LOCAL_TASK_EDIT_KEY = `taskkill_snapshot_task_edits${MAP_SUFFIX}`;
+  const LOCAL_LAYOUT_EDIT_KEY = `taskkill_snapshot_layout_edits${MAP_SUFFIX}`;
 
   const MINDMAP_EMOJIS = [
     "💖", "🩷", "❤️", "🌈", "🦋", "🌸", "☀️",
@@ -1029,6 +1032,10 @@
 
   function saveTasks() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    if (SNAPSHOT_MODE) {
+      localStorage.setItem(LOCAL_TASK_EDIT_KEY, "1");
+      return;
+    }
     if (location.protocol.startsWith("http")) {
       _pendingLocalSave = true;
       fetch(API_TASKS_URL, {
@@ -1062,6 +1069,7 @@
 
   async function syncFromDiskIfAvailable(opts = {}) {
     if (!location.protocol.startsWith("http") || _pendingLocalSave) return;
+    if (SNAPSHOT_MODE && localStorage.getItem(LOCAL_TASK_EDIT_KEY)) return;
     try {
       const res = await fetch(API_TASKS_URL, { cache: "no-store" });
       if (res.status === 200) {
@@ -1082,7 +1090,7 @@
         }
       }
       // First run: persist initial tasks to tasks.json on local disk
-      if (!opts || !opts.silent) saveTasks();
+      if (!SNAPSHOT_MODE && (!opts || !opts.silent)) saveTasks();
     } catch (_) {}
   }
 
@@ -3697,6 +3705,10 @@
     };
   }
   async function syncLayoutToServer() {
+    if (SNAPSHOT_MODE) {
+      localStorage.setItem(LOCAL_LAYOUT_EDIT_KEY, "1");
+      return;
+    }
     if (!location.protocol.startsWith("http")) return;
     try {
       const payload = buildLayoutPayload();
@@ -3711,6 +3723,7 @@
   }
   async function syncLayoutFromServer() {
     if (!location.protocol.startsWith("http")) return;
+    if (SNAPSHOT_MODE && localStorage.getItem(LOCAL_LAYOUT_EDIT_KEY)) return;
     try {
       const res = await fetch(API_LAYOUT_URL, { cache: "no-store" });
       if (res.status === 204) {
