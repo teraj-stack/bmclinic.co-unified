@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { NextRequest, NextResponse } from 'next/server';
 import { snapshotHeaders, taskkillSnapshotAvailable } from '@/lib/taskkillSnapshot';
+import { taskkillSharedConfigured } from '@/lib/taskkillSharedStore';
 
 const assetTypes = new Map([
   ['index.html', 'text/html; charset=utf-8'],
@@ -27,10 +28,13 @@ export async function GET(req: NextRequest, context: { params: Promise<{ asset?:
 
   try {
     const bytes = await readFile(path.join(process.cwd(), 'taskkill-assets', filename));
+    const shared = taskkillSharedConfigured();
     const body = filename === 'index.html'
       ? bytes.toString('utf8')
-        .replace('<html ', '<html data-taskkill-snapshot="true" ')
-        .replace('teraj-stack · Live Sync + GitHub Mirror', 'Podgląd danych z repozytorium · zmiany tylko w tej przeglądarce')
+        .replace('<html ', shared ? '<html data-taskkill-shared="true" ' : '<html data-taskkill-snapshot="true" ')
+        .replace('teraj-stack · Live Sync + GitHub Mirror', shared
+          ? '<span id="taskkill-shared-tasks" role="status">Wczytywanie wspólnej mapy…</span><span id="taskkill-shared-layout" role="status"></span>'
+          : 'Podgląd danych z repozytorium · zmiany tylko w tej przeglądarce')
       : Uint8Array.from(bytes);
     return new NextResponse(body, {
       headers: { ...snapshotHeaders, 'Content-Type': type },

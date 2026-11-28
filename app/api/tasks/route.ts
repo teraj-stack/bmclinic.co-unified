@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getTaskkillSnapshot, snapshotHeaders, taskkillSnapshotAvailable } from '@/lib/taskkillSnapshot';
+import { NextRequest } from 'next/server';
+import { serveTaskkillSection } from '@/lib/taskkillSharedStore';
 
 export function GET(req: NextRequest) {
-  const snapshot = taskkillSnapshotAvailable() && getTaskkillSnapshot(req.nextUrl.searchParams.get('map'));
-  if (!snapshot) return new NextResponse(null, { status: 404 });
-  return NextResponse.json(snapshot.tasks, { headers: snapshotHeaders });
+  return serveTaskkillSection(req, 'tasks');
 }
+
+export const POST = GET;

@@ -2,8 +2,10 @@
   const _urlParams = new URLSearchParams(window.location.search);
   const ACTIVE_MAP_ID = (_urlParams.get("map") || "bmclinic").trim() || "bmclinic";
   const ACTIVE_MAP_TITLE = (_urlParams.get("title") || "").trim();
-  const MAP_SUFFIX = ACTIVE_MAP_ID === "bmclinic" ? "" : `_${ACTIVE_MAP_ID}`;
+  const SHARED_MODE = document.documentElement.dataset.taskkillShared === "true";
   const SNAPSHOT_MODE = document.documentElement.dataset.taskkillSnapshot === "true";
+  const ORIGINAL_MAP_SUFFIX = ACTIVE_MAP_ID === "bmclinic" ? "" : `_${ACTIVE_MAP_ID}`;
+  const MAP_SUFFIX = ORIGINAL_MAP_SUFFIX + (SHARED_MODE ? "_shared" : "");
   const API_TASKS_URL = `/api/tasks?map=${encodeURIComponent(ACTIVE_MAP_ID)}`;
   const API_LAYOUT_URL = `/api/layout?map=${encodeURIComponent(ACTIVE_MAP_ID)}`;
 
@@ -12,7 +14,7 @@
   const PROJECT_TITLE_KEY = `managing_work_project_title_v1${MAP_SUFFIX}`;
   const MINDMAP_POS_KEY = `managing_work_mindmap_pos_v1${MAP_SUFFIX}`;
   const MINDMAP_MEDIA_KEY = `managing_work_mindmap_media_v1${MAP_SUFFIX}`;
-  const MINDMAP_BG_KEY = "managing_work_mindmap_bg_v1";
+  const MINDMAP_BG_KEY = "managing_work_mindmap_bg_v1" + (SHARED_MODE ? MAP_SUFFIX : "");
   const MINDMAP_CUSTOM_BG_KEY = "managing_work_mindmap_custom_bg_v1";
   const LOCAL_TASK_EDIT_KEY = `taskkill_snapshot_task_edits${MAP_SUFFIX}`;
   const LOCAL_LAYOUT_EDIT_KEY = `taskkill_snapshot_layout_edits${MAP_SUFFIX}`;
@@ -936,6 +938,7 @@
   function saveMindMapMedia() {
     try {
       localStorage.setItem(MINDMAP_MEDIA_KEY, JSON.stringify(mindmapMedia));
+      if (SHARED_MODE) void syncLayoutToServer();
     } catch (_) {
       showToast("Uwaga: mało miejsca w pamięci przeglądarki na kolejne zdjęcia");
     }
@@ -1028,9 +1031,152 @@
     return structuredClone(window.INITIAL_TASKS || []);
   }
 
+  function downloadMapDraft(section, payload) {
+    const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json",
+    }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `mapa-${ACTIVE_MAP_ID}-${section}-szkic.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function sharedChannel(url, section) {
+    const key = `taskkill_shared_draft_${section}${MAP_SUFFIX}`;
+    const status = document.getElementById(`taskkill-shared-${section}`);
+    let draft = null;
+    let revision = null;
+    let saving = false;
+    let conflict = false;
+    try { draft = JSON.parse(localStorage.getItem(key) || "null"); } catch (_) {}
+
+    const report = (message) => {
+      if (status) status.textContent = section === "layout" ? ` · Układ: ${message}` : message;
+    };
+    const persistDraft = () => {
+      try {
+        if (draft) localStorage.setItem(key, JSON.stringify(draft));
+        else localStorage.removeItem(key);
+        return true;
+      } catch (_) {
+        return false;
+      }
+    };
+    const markConflict = () => {
+      conflict = true;
+      report("Wspólna mapa ma inną wersję · zachowano Twój szkic");
+      if (!status) return;
+      const action = document.createElement("button");
+      action.type = "button";
+      action.className = "btn btn-ghost";
+      action.textContent = "Pobierz szkic i wczytaj wersję zespołu";
+      action.addEventListener("click", () => {
+        if (!draft) return;
+        downloadMapDraft(section, draft.payload);
+        draft = null;
+        conflict = false;
+        persistDraft();
+        window.dispatchEvent(new Event("taskkill:soft-sync"));
+      });
+      status.append(" ", action);
+    };
+
+    async function flush() {
+      if (saving || conflict || !draft?.revision) return;
+      saving = true;
+      const sent = draft;
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "If-Match": sent.revision },
+          body: JSON.stringify(sent.payload),
+        });
+        if (response.status === 412) {
+          markConflict();
+          showToast("Ktoś zmienił mapę. Twój szkic jest dostępny w tym widoku.");
+          return;
+        }
+        if (!response.ok) {
+          report("Wspólny zapis nie powiódł się · zachowano szkic");
+          return;
+        }
+        revision = response.headers.get("ETag");
+        if (draft === sent) draft = null;
+        else draft.revision = revision;
+        persistDraft();
+        report("Zapis zespołowy · zsynchronizowano");
+      } catch (_) {
+        report("Brak połączenia · zachowano szkic");
+        return;
+      } finally {
+        saving = false;
+      }
+      if (draft) void flush();
+    }
+
+    return {
+      async pull() {
+        if (saving) return null;
+        try {
+          const response = await fetch(url, { cache: "no-store" });
+          if (!response.ok) throw new Error("Brak danych");
+          const responseRevision = response.headers.get("ETag");
+          if (!responseRevision) throw new Error("Brak wersji");
+          const payload = await response.json();
+          if (saving) return null;
+          if (draft) {
+            if (draft.revision !== responseRevision) {
+              markConflict();
+              return draft.payload;
+            }
+            revision = responseRevision;
+            void flush();
+            return draft.payload;
+          }
+          if (revision && Number(responseRevision.slice(1, -1)) < Number(revision.slice(1, -1))) return null;
+          revision = responseRevision;
+          if (section === "tasks") report("Zapis zespołowy · połączono");
+          return payload;
+        } catch (_) {
+          report(draft ? "Brak połączenia · zachowano szkic" : "Wspólna mapa jest chwilowo niedostępna");
+          return draft?.payload ?? null;
+        }
+      },
+      save(payload) {
+        draft = { revision, payload };
+        const persisted = persistDraft();
+        if (!persisted) report("Brak miejsca na kopię szkicu w przeglądarce");
+        else if (conflict) markConflict();
+        else if (!revision) report("Zmiany są w szkicu · oczekują na sprawdzenie wersji mapy");
+        void flush();
+      },
+    };
+  }
+
+  const taskChannel = SHARED_MODE ? sharedChannel(API_TASKS_URL, "tasks") : null;
+  const layoutChannel = SHARED_MODE ? sharedChannel(API_LAYOUT_URL, "layout") : null;
+  if (SHARED_MODE && localStorage.getItem(`taskkill_snapshot_task_edits${ORIGINAL_MAP_SUFFIX}`)) {
+    const legacy = localStorage.getItem(`managing_work_offline_tasks_v1${ORIGINAL_MAP_SUFFIX}`);
+    const title = document.getElementById("taskkill-shared-tasks")?.parentElement;
+    if (legacy && title) {
+      const action = document.createElement("button");
+      action.type = "button";
+      action.className = "btn btn-ghost";
+      action.textContent = "Pobierz poprzednią kopię lokalną";
+      action.addEventListener("click", () => downloadMapDraft("lokalny", JSON.parse(legacy)));
+      title.append(" ", action);
+    }
+  }
   let _pendingLocalSave = false;
 
   function saveTasks() {
+    if (taskChannel) {
+      taskChannel.save(structuredClone(tasks));
+      return;
+    }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
     if (SNAPSHOT_MODE) {
       localStorage.setItem(LOCAL_TASK_EDIT_KEY, "1");
@@ -1071,6 +1217,14 @@
     if (!location.protocol.startsWith("http") || _pendingLocalSave) return;
     if (SNAPSHOT_MODE && localStorage.getItem(LOCAL_TASK_EDIT_KEY)) return;
     try {
+      if (taskChannel) {
+        const payload = await taskChannel.pull();
+        if (Array.isArray(payload) && JSON.stringify(payload) !== JSON.stringify(tasks)) {
+          tasks = payload;
+          render({ preserveScroll: true, gentle: Boolean(opts.silent) });
+        }
+        return;
+      }
       const res = await fetch(API_TASKS_URL, { cache: "no-store" });
       if (res.status === 200) {
         const diskTasks = await res.json();
@@ -2255,6 +2409,7 @@
       const all = JSON.parse(localStorage.getItem(MINDMAP_POS_KEY) || "{}");
       delete all[getMindMapPosScope()];
       localStorage.setItem(MINDMAP_POS_KEY, JSON.stringify(all));
+      if (SHARED_MODE) void syncLayoutToServer();
     } catch (_) {}
   }
 
@@ -2572,6 +2727,7 @@
       }
       mindmapBg = val;
       localStorage.setItem(MINDMAP_BG_KEY, val);
+      if (SHARED_MODE) void syncLayoutToServer();
       render();
     });
     bgFileInput.addEventListener("change", (ev) => {
@@ -3671,7 +3827,10 @@
     e.target.value = "";
   });
 
-  document.getElementById("btn-reset").addEventListener("click", () => {
+  const resetButton = document.getElementById("btn-reset");
+  if (SHARED_MODE) resetButton.hidden = true;
+  resetButton.addEventListener("click", () => {
+    if (SHARED_MODE) return;
     if (!confirm("Przywrócić oryginalne 21 zadań z repozytorium GitHub?")) return;
     tasks = structuredClone(window.INITIAL_TASKS || []);
     saveTasks();
@@ -3705,6 +3864,10 @@
     };
   }
   async function syncLayoutToServer() {
+    if (layoutChannel) {
+      layoutChannel.save(buildLayoutPayload());
+      return;
+    }
     if (SNAPSHOT_MODE) {
       localStorage.setItem(LOCAL_LAYOUT_EDIT_KEY, "1");
       return;
@@ -3725,15 +3888,21 @@
     if (!location.protocol.startsWith("http")) return;
     if (SNAPSHOT_MODE && localStorage.getItem(LOCAL_LAYOUT_EDIT_KEY)) return;
     try {
-      const res = await fetch(API_LAYOUT_URL, { cache: "no-store" });
-      if (res.status === 204) {
-        // Server has no layout yet: if this device has saved positions/media, upload them!
-        const localPos = localStorage.getItem(MINDMAP_POS_KEY);
-        if (localPos && localPos !== "{}") syncLayoutToServer();
-        return;
+      let txt;
+      if (layoutChannel) {
+        const payload = await layoutChannel.pull();
+        if (!payload) return;
+        txt = JSON.stringify(payload);
+      } else {
+        const res = await fetch(API_LAYOUT_URL, { cache: "no-store" });
+        if (res.status === 204) {
+          const localPos = localStorage.getItem(MINDMAP_POS_KEY);
+          if (localPos && localPos !== "{}") syncLayoutToServer();
+          return;
+        }
+        if (res.status !== 200) return;
+        txt = await res.text();
       }
-      if (res.status !== 200) return;
-      const txt = await res.text();
       if (!txt || txt === lastLayoutHash) return;
       const parsed = JSON.parse(txt);
       if (parsed && typeof parsed === "object") {

@@ -15,8 +15,11 @@ Poniższy spis jest punktem wyjścia do testów poszczególnych aplikacji przed 
   Synchronizacja między kontami wymaga sprawdzenia Firebase, uprawnień i usług Chronos.
 - **TaskKill Studio** — aplikacja JavaScript i Python w `taskkill-assets`. Podgląd
   Vercel wyświetla dwie istniejące mapy zawierające odpowiednio 57 i 38 zadań,
-  ich układ i dostępną notatkę. Zmiany dokonywane w podglądzie są lokalne dla
-  przeglądarki. Współdzielona edycja wymaga trwałego zapisu i uprawnień zespołu.
+  ich układ i dostępną notatkę. W chronionym podglądzie zadania i układ edytuje
+  się w tablicy TaskKill. Zapis zespołowy korzysta z odrębnej bazy ustawionej
+  przez `TASKKILL_DATABASE_URL` lub `TASKKILL_POSTGRES_PRISMA_URL`.
+  Pierwsza edycja tworzy wpis na podstawie wersji z repozytorium, a konflikt
+  zachowuje lokalny szkic do pobrania. Wspólna notatka jest dostępna do odczytu.
 - **Design Studio, Voice Builder i Agent LLM** — widoki Next.js z własnymi trasami
   serwerowymi. Funkcje AI i głosowe trzeba sprawdzić z usługami działającymi pod
   adresami osiągalnymi z miejsca wdrożenia.
