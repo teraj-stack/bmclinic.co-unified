@@ -76,12 +76,13 @@ export default async function AdminDashboard() {
           >
             Pełny Chronos Vault (/vault/) ↗
           </a>
-          <a
-            href="/taskkill/?map=scalenie-3016"
+          <Link
+            href="/taskkill/index.html?map=scalenie-3016"
+            prefetch={false}
             className="metal-chrome-edge rounded-xl bg-white/5 px-4 py-2.5 text-sm font-medium"
           >
             Drzewo Raportu Wdrożenia ↗
-          </a>
+          </Link>
           <a
             href="/superagent"
             className="metal-chrome-edge rounded-xl bg-white/5 px-4 py-2.5 text-sm font-medium"
