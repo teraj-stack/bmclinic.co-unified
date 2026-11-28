@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Calendar as CalendarIcon,
   ChevronLeft,
@@ -167,16 +167,10 @@ export const CalendarSyncView: React.FC<CalendarSyncViewProps> = ({
 
   const selectedDayTasks = tasksForDay(selectedDayStr);
   const selectedDayTreatments = treatmentsForDay(selectedDayStr);
-  const feedUrl = `${window.location.origin}/api/calendar/feed.ics`;
-
-  // Real-time Pull from Google Calendar when connected and autoTwoWaySync is active
+  const [feedUrl, setFeedUrl] = useState('/api/calendar/feed.ics');
   useEffect(() => {
-    if (!googleAccessToken || !autoTwoWaySync) return;
-    const timer = window.setInterval(() => {
-      handlePullFromGoogleCalendar(googleAccessToken, true);
-    }, 45000);
-    return () => clearInterval(timer);
-  }, [googleAccessToken, autoTwoWaySync, tasks]);
+    setFeedUrl(new URL('/api/calendar/feed.ics', window.location.origin).href);
+  }, []);
 
   const copyFeedUrl = async () => {
     try {
@@ -189,13 +183,9 @@ export const CalendarSyncView: React.FC<CalendarSyncViewProps> = ({
   };
 
   // Pull changes from Google Calendar API (Read-only operation, reflects changes into app)
-  const handlePullFromGoogleCalendar = async (tokenOverride?: string, silent = false) => {
-    const token = tokenOverride || googleAccessToken;
-    if (!token) {
-      const freshToken = await onConnectGoogleCalendar();
-      if (!freshToken) return;
-      return handlePullFromGoogleCalendar(freshToken, silent);
-    }
+  const handlePullFromGoogleCalendar = useCallback(async (tokenOverride?: string, silent = false) => {
+    const token = tokenOverride || googleAccessToken || (await onConnectGoogleCalendar());
+    if (!token) return;
 
     if (!silent) {
       setIsSyncing(true);
@@ -282,7 +272,16 @@ export const CalendarSyncView: React.FC<CalendarSyncViewProps> = ({
         setIsSyncing(false);
       }
     }
-  };
+  }, [googleAccessToken, onConnectGoogleCalendar, tasks, onApplyExternalCalendarUpdates, onImportCalendarTasks]);
+
+  useEffect(() => {
+    if (!googleAccessToken || !autoTwoWaySync) return;
+    const timer = window.setInterval(() => {
+      void handlePullFromGoogleCalendar(googleAccessToken, true);
+    }, 45000);
+    return () => window.clearInterval(timer);
+  }, [googleAccessToken, autoTwoWaySync, handlePullFromGoogleCalendar]);
+
 
   // Request user confirmation before mutating Google Calendar (Workspace Integration Skill rule)
   const requestPushDeadlinesToGoogleCalendar = (targetTasks?: ExportableTask[]) => {

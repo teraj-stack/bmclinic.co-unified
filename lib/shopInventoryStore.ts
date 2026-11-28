@@ -185,12 +185,8 @@ function writeAtomic(products: ShopInventoryProduct[]): void {
 
 export function getShopInventory(): ShopInventoryProduct[] {
   try {
-    if (!fs.existsSync(DATA_FILE)) {
-      writeAtomic(INITIAL_SHOP_INVENTORY);
-      return INITIAL_SHOP_INVENTORY;
-    }
     const parsed = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-    if (Array.isArray(parsed) && parsed.length > 0) {
+    if (Array.isArray(parsed)) {
       return parsed as ShopInventoryProduct[];
     }
   } catch {

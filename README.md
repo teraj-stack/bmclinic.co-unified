@@ -51,3 +51,11 @@ npm install
 npm run dev
 ```
 Lokalny serwer deweloperski działa pod adresem `http://localhost:3000` (w tym `http://localhost:3000/logowanie` oraz `http://localhost:3000/admin`).
+
+Logowanie linkiem e-mail wymaga ustawień PostgreSQL i SMTP z `.env.example` oraz
+zastosowania migracji przez `npm exec prisma migrate deploy`. Role administratora
+i lekarza nadaje się w bazie. Nowe konta mają rolę pacjenta.
+
+CLI korzysta z `BMCLINICS_CMS_TOKEN` ustawionego w środowisku serwera i klienta.
+Podgląd Vercel bez bazy pokazuje symulację rezerwacji i płatności. Edycje CMS-u,
+magazynu i projektów wymagają zapisywalnego magazynu plików.

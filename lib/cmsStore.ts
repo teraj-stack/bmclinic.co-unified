@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import fs from 'fs';
 import path from 'path';
 import {
@@ -185,9 +186,6 @@ function createDefaultOrders(): CmsOrder[] {
 }
 
 const REPO_CMS_PATH = path.join(process.cwd(), 'content', 'cms-state.json');
-const TMP_CMS_PATH = '/tmp/bmclinics-cms-state.json';
-
-const globalForCms = globalThis as unknown as { cmsState?: CmsState };
 
 export function getDefaultCmsState(): CmsState {
   return {
@@ -202,27 +200,6 @@ export function getDefaultCmsState(): CmsState {
 }
 
 export function getCmsState(): CmsState {
-  // 1. Check /tmp runtime store first (works on Vercel Serverless & local)
-  try {
-    if (fs.existsSync(TMP_CMS_PATH)) {
-      const raw = fs.readFileSync(TMP_CMS_PATH, 'utf8');
-      const parsed = JSON.parse(raw) as Partial<CmsState>;
-      const def = getDefaultCmsState();
-      return {
-        updatedAt: parsed.updatedAt ?? def.updatedAt,
-        siteConfig: { ...def.siteConfig, ...(parsed.siteConfig ?? {}) },
-        services: parsed.services?.length ? parsed.services : def.services,
-        doctors: parsed.doctors?.length ? parsed.doctors : def.doctors,
-        visits: parsed.visits ?? def.visits,
-        orders: parsed.orders ?? def.orders,
-        inlineOverrides: parsed.inlineOverrides ?? {},
-      };
-    }
-  } catch {
-    // ignore read error
-  }
-
-  // 2. Check repo content/cms-state.json
   try {
     if (fs.existsSync(REPO_CMS_PATH)) {
       const raw = fs.readFileSync(REPO_CMS_PATH, 'utf8');
@@ -231,7 +208,7 @@ export function getCmsState(): CmsState {
       return {
         updatedAt: parsed.updatedAt ?? def.updatedAt,
         siteConfig: { ...def.siteConfig, ...(parsed.siteConfig ?? {}) },
-        services: parsed.services?.length ? parsed.services : def.services,
+        services: Array.isArray(parsed.services) ? parsed.services : def.services,
         doctors: parsed.doctors?.length ? parsed.doctors : def.doctors,
         visits: parsed.visits ?? def.visits,
         orders: parsed.orders ?? def.orders,
@@ -242,34 +219,19 @@ export function getCmsState(): CmsState {
     // ignore read error
   }
 
-  // 3. Fallback to in-memory or default
-  if (!globalForCms.cmsState) {
-    globalForCms.cmsState = getDefaultCmsState();
-  }
-  return globalForCms.cmsState;
+  return getDefaultCmsState();
 }
 
 export function saveCmsState(nextState: CmsState): CmsState {
-  const stamped: CmsState = {
-    ...nextState,
-    updatedAt: new Date().toISOString(),
-  };
-  globalForCms.cmsState = stamped;
-
+  const stamped: CmsState = { ...nextState, updatedAt: new Date().toISOString() };
+  const pendingPath = `${REPO_CMS_PATH}.${randomUUID()}.tmp`;
+  fs.mkdirSync(path.dirname(REPO_CMS_PATH), { recursive: true });
   try {
-    fs.writeFileSync(TMP_CMS_PATH, JSON.stringify(stamped, null, 2), 'utf8');
-  } catch {
-    // ignore if /tmp unavailable
+    fs.writeFileSync(pendingPath, JSON.stringify(stamped, null, 2), { encoding: 'utf8', mode: 0o600 });
+    fs.renameSync(pendingPath, REPO_CMS_PATH);
+  } finally {
+    fs.rmSync(pendingPath, { force: true });
   }
-
-  try {
-    const dir = path.dirname(REPO_CMS_PATH);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(REPO_CMS_PATH, JSON.stringify(stamped, null, 2), 'utf8');
-  } catch {
-    // On Vercel serverless, repo dir is read-only; /tmp + memory handles it
-  }
-
   return stamped;
 }
 

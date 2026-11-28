@@ -1,3 +1,4 @@
+import { checkApiRole } from '@/lib/authGuard';
 import { NextResponse } from 'next/server';
 import {
   getLastFileScan,
@@ -8,6 +9,9 @@ import {
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
+  const denied = await checkApiRole('ADMIN');
+  if (denied) return denied;
+
   const [telemetry, scan] = await Promise.all([
     sampleSystemTelemetry(120),
     getLastFileScan() ? Promise.resolve(getLastFileScan()) : runProjectAntivirusScan(),
@@ -21,6 +25,9 @@ export async function GET() {
 }
 
 export async function POST() {
+  const denied = await checkApiRole('ADMIN');
+  if (denied) return denied;
+
   const scan = await runProjectAntivirusScan();
   const telemetry = await sampleSystemTelemetry(100);
 

@@ -1,5 +1,7 @@
+import { timingSafeEqual } from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
+import { checkApiRole } from '@/lib/authGuard';
 import {
   getCmsState,
   saveCmsState,
@@ -17,9 +19,21 @@ import { assertSuperagentSafePayload } from '@/lib/superagentEngine';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+async function checkCmsAccess(req: NextRequest) {
+  const token = process.env.BMCLINICS_CMS_TOKEN;
+  if (token) {
+    const expected = Buffer.from(`Bearer ${token}`);
+    const provided = Buffer.from(req.headers.get('authorization') ?? '');
+    if (expected.length === provided.length && timingSafeEqual(expected, provided)) return null;
+  }
+  return checkApiRole('ADMIN');
+}
+
+export async function GET(req: NextRequest) {
+  const denied = await checkCmsAccess(req);
   const state = getCmsState();
-  return NextResponse.json(state, {
+  const { siteConfig, inlineOverrides, services, updatedAt } = state;
+  return NextResponse.json(denied ? { siteConfig, inlineOverrides, services, updatedAt } : state, {
     headers: {
       'Cache-Control': 'no-store, max-age=0',
     },
@@ -27,6 +41,12 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const denied = await checkCmsAccess(req);
+  if (denied) return denied;
+  if (process.env.VERCEL) {
+    return NextResponse.json({ error: 'Zapis CMS wymaga trwałego magazynu.' }, { status: 503 });
+  }
+
   try {
     const body = await req.json();
     const safety = assertSuperagentSafePayload(body);

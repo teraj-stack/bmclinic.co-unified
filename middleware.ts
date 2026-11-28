@@ -2,9 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { inspectSuperagentRules } from '@/lib/superagentEdgeGuard';
 
-const AUTH_SECRET =
-  process.env.NEXTAUTH_SECRET || 'bmclinics-live-cms-secret-2026-mlasers0110';
-
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
 
@@ -33,23 +30,16 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  if (
-    pathname.startsWith('/admin') ||
-    pathname.startsWith('/lekarz') ||
-    pathname.startsWith('/pacjent')
-  ) {
-    const token = await getToken({ req, secret: AUTH_SECRET });
-
-    if (pathname.startsWith('/admin') && token?.role !== 'ADMIN') {
-      return NextResponse.redirect(new URL('/logowanie', req.url));
-    }
-    if (
-      pathname.startsWith('/lekarz') &&
-      !['DOCTOR', 'ADMIN'].includes(token?.role as string)
-    ) {
-      return NextResponse.redirect(new URL('/logowanie', req.url));
-    }
-    if (pathname.startsWith('/pacjent') && !token) {
+  const panelRoles: Record<string, string[]> = {
+    admin: ['ADMIN'],
+    lekarz: ['DOCTOR', 'ADMIN'],
+    pacjent: ['PATIENT'],
+  };
+  const allowedRoles = panelRoles[pathname.split('/')[1]];
+  if (Array.isArray(allowedRoles)) {
+    const secret = process.env.NEXTAUTH_SECRET;
+    const token = secret ? await getToken({ req, secret }) : null;
+    if (!token?.userId || !token.role || !allowedRoles.includes(token.role)) {
       return NextResponse.redirect(new URL('/logowanie', req.url));
     }
   }

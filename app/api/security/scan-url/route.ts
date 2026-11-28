@@ -1,3 +1,4 @@
+import { checkApiRole } from '@/lib/authGuard';
 import crypto from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { recordUrlScan, runProjectAntivirusScan } from '@/lib/holdingSecurity';
@@ -17,6 +18,9 @@ function isPrivateHostname(host: string): boolean {
 }
 
 export async function POST(req: NextRequest) {
+  const denied = await checkApiRole('ADMIN');
+  if (denied) return denied;
+
   const start = Date.now();
   const body = (await req.json().catch(() => ({}))) as Record<string, unknown>;
   const rawUrl = String(body.url || '').trim();

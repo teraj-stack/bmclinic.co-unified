@@ -18,7 +18,6 @@ export default async function AdminDashboard() {
   let paidGrosze = cms.orders
     .filter((o) => o.status === 'PAID')
     .reduce((acc, o) => acc + o.amountGrosze, 0);
-  let patientsCount = 3;
   let pendingOrders = cms.orders.filter((o) => o.status === 'PENDING').length;
 
   if (process.env.DATABASE_URL) {
@@ -34,7 +33,6 @@ export default async function AdminDashboard() {
       if (dbVisits > 0 || dbPatients > 0) {
         visitsThisWeek = dbVisits;
         paidGrosze = dbRevenue._sum.amountGrosze ?? 0;
-        patientsCount = dbPatients;
         pendingOrders = dbPending;
       }
     } catch {

@@ -1,56 +1,36 @@
 'use server';
 
-import { prisma } from '@/lib/prisma';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/authOptions';
-import { getPatientByUserId } from '@/lib/patients';
-import { getCmsState, saveCmsState } from '@/lib/cmsStore';
 import { revalidatePath } from 'next/cache';
+import { requireRole } from '@/lib/authGuard';
+import { prisma } from '@/lib/prisma';
 
 export async function cancelVisit(visitId: string) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) throw new Error('Brak uprawnień');
-
-  const cms = getCmsState();
-  saveCmsState({
-    ...cms,
-    visits: cms.visits.map((v) => (v.id === visitId ? { ...v, status: 'CANCELLED' } : v)),
+  const session = await requireRole('PATIENT');
+  const result = await prisma.visit.updateMany({
+    where: {
+      id: visitId,
+      patient: { userId: session.user.id },
+      status: { in: ['PROPOSED', 'CONFIRMED', 'CANCELLED'] },
+      startTime: { gt: new Date() },
+    },
+    data: { status: 'CANCELLED' },
   });
-
-  if (process.env.DATABASE_URL) {
-    try {
-      const patient = await getPatientByUserId(session.user.id);
-      const visit = await prisma.visit.findUniqueOrThrow({ where: { id: visitId } });
-      if (visit.patientId === patient.id) {
-        await prisma.visit.update({ where: { id: visitId }, data: { status: 'CANCELLED' } });
-      }
-    } catch {
-      // CMS store already updated
-    }
-  }
-
+  if (!result.count) throw new Error('Nie znaleziono wizyty do odwołania.');
   revalidatePath('/pacjent');
 }
 
 export async function updateProfile(formData: FormData) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) throw new Error('Brak uprawnień');
+  const session = await requireRole('PATIENT');
+  const phone = String(formData.get('phone') ?? '').trim();
+  const name = String(formData.get('name') ?? '').trim();
+  if (name.length > 120 || phone.length > 40) throw new Error('Nieprawidłowe dane profilu.');
 
-  if (process.env.DATABASE_URL) {
-    try {
-      const patient = await getPatientByUserId(session.user.id);
-      await prisma.patient.update({
-        where: { id: patient.id },
-        data: { phone: String(formData.get('phone') ?? '') },
-      });
-      await prisma.user.update({
-        where: { id: session.user.id },
-        data: { name: String(formData.get('name') ?? '') },
-      });
-    } catch {
-      // Stateless fallback
-    }
-  }
-
+  await prisma.user.update({
+    where: { id: session.user.id },
+    data: {
+      name,
+      patient: { upsert: { update: { phone }, create: { phone } } },
+    },
+  });
   revalidatePath('/pacjent/profil');
 }

@@ -13,13 +13,13 @@ export function createOAuthClient() {
   );
 }
 
-export function getAuthUrl(doctorId: string) {
+export function getAuthUrl(state: string) {
   const client = createOAuthClient();
   return client.generateAuthUrl({
     access_type: 'offline',
     prompt: 'consent',
     scope: OAUTH_SCOPES,
-    state: doctorId,
+    state,
   });
 }
 

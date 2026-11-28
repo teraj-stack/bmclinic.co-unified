@@ -17,7 +17,6 @@ import {
   LayoutGrid,
   MousePointerClick,
   Sparkles,
-  Calendar,
   Phone,
   Clock,
   ShieldCheck,

@@ -1,72 +1,64 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getClinicHour } from '@/lib/clinicTime';
 import { checkAvailability } from '@/lib/googleCalendar';
 import { getDoctorCalendarCreds } from '@/lib/doctors';
-import { getServiceById } from '@/lib/servicesCatalog';
+import { getDoctorsCatalog, getServiceById } from '@/lib/servicesCatalog';
+import { prisma } from '@/lib/prisma';
 
 export async function GET(req: NextRequest) {
   const doctorId = req.nextUrl.searchParams.get('doctorId');
   const serviceId = req.nextUrl.searchParams.get('serviceId');
   const date = req.nextUrl.searchParams.get('date');
-
-  if (!doctorId || !serviceId || !date) {
-    return NextResponse.json({ error: 'Brak wymaganych parametrów' }, { status: 400 });
+  const candidate = new Date(`${date}T00:00:00Z`);
+  if (!doctorId || !serviceId || !date || !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
+      !Number.isFinite(candidate.getTime()) || candidate.toISOString().slice(0, 10) !== date) {
+    return NextResponse.json({ error: 'Nieprawidłowe parametry terminu.' }, { status: 400 });
   }
 
-  const service = await getServiceById(serviceId);
-  const durationMin = service?.durationMin ?? 30;
-
-  let workStartHour = 9;
-  let workEndHour = 19;
-  let busy: { start?: string | null; end?: string | null }[] = [];
-
-  if (process.env.DATABASE_URL && process.env.GOOGLE_CLIENT_ID) {
-    try {
-      const creds = await getDoctorCalendarCreds(doctorId);
-      workStartHour = creds.workStartHour;
-      workEndHour = creds.workEndHour;
-
-      const dayStart = new Date(`${date}T00:00:00`);
-      const workStart = new Date(dayStart);
-      workStart.setHours(workStartHour, 0, 0, 0);
-      const workEnd = new Date(dayStart);
-      workEnd.setHours(workEndHour, 0, 0, 0);
-
-      busy = await checkAvailability(
-        creds.refreshToken,
-        creds.calendarId,
-        workStart.toISOString(),
-        workEnd.toISOString()
-      );
-    } catch {
-      busy = [];
+  try {
+    const [service, doctors] = await Promise.all([getServiceById(serviceId), getDoctorsCatalog()]);
+    const doctor = doctors.find((item) => item.id === doctorId);
+    if (!doctor || !service || !Number.isSafeInteger(service.durationMin) || service.durationMin <= 0) {
+      return NextResponse.json({ error: 'Nie znaleziono lekarza lub usługi.' }, { status: 404 });
     }
-  }
 
-  const dayStart = new Date(`${date}T00:00:00`);
-  const workStart = new Date(dayStart);
-  workStart.setHours(workStartHour, 0, 0, 0);
-  const workEnd = new Date(dayStart);
-  workEnd.setHours(workEndHour, 0, 0, 0);
-
-  const slots: { start: string; end: string }[] = [];
-  const slotMs = durationMin * 60 * 1000;
-  const now = new Date();
-
-  for (let t = workStart.getTime(); t + slotMs <= workEnd.getTime(); t += slotMs) {
-    const slotStart = new Date(t);
-    const slotEnd = new Date(t + slotMs);
-
-    const overlaps = busy.some((b) => {
-      if (!b.start || !b.end) return false;
-      const busyStart = new Date(b.start).getTime();
-      const busyEnd = new Date(b.end).getTime();
-      return slotStart.getTime() < busyEnd && slotEnd.getTime() > busyStart;
-    });
-
-    if (!overlaps && slotStart > now) {
-      slots.push({ start: slotStart.toISOString(), end: slotEnd.toISOString() });
+    const workStart = getClinicHour(date, doctor.workStartHour);
+    const workEnd = getClinicHour(date, doctor.workEndHour);
+    const busy: Array<{ start: number; end: number }> = [];
+    if (process.env.DATABASE_URL) {
+      const visits = await prisma.visit.findMany({
+        where: {
+          doctorId, status: { not: 'CANCELLED' }, startTime: { lt: workEnd }, endTime: { gt: workStart },
+        },
+        select: { startTime: true, endTime: true },
+      });
+      busy.push(...visits.map((visit) => ({ start: visit.startTime.getTime(), end: visit.endTime.getTime() })));
+      if (process.env.GOOGLE_CLIENT_ID) {
+        const calendar = await getDoctorCalendarCreds(doctorId).catch(() => null);
+        if (calendar) {
+          const events = await checkAvailability(
+            calendar.refreshToken, calendar.calendarId, workStart.toISOString(), workEnd.toISOString()
+          );
+          for (const event of events) {
+            if (event.start && event.end) {
+              busy.push({ start: Date.parse(event.start), end: Date.parse(event.end) });
+            }
+          }
+        }
+      }
     }
-  }
 
-  return NextResponse.json({ slots });
+    const now = Date.now();
+    const slotMs = service.durationMin * 60_000;
+    const slots: Array<{ start: string; end: string }> = [];
+    for (let start = workStart.getTime(); start + slotMs <= workEnd.getTime(); start += slotMs) {
+      const end = start + slotMs;
+      if (start > now && !busy.some((interval) => start < interval.end && end > interval.start)) {
+        slots.push({ start: new Date(start).toISOString(), end: new Date(end).toISOString() });
+      }
+    }
+    return NextResponse.json({ slots });
+  } catch {
+    return NextResponse.json({ error: 'Nie udało się sprawdzić dostępności.' }, { status: 503 });
+  }
 }

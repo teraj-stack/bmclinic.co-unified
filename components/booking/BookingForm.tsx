@@ -47,7 +47,7 @@ export default function BookingForm({
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'confirmed' | 'pending' | 'demo' | 'error'>('idle');
 
   // Load available slots whenever serviceId, doctorId, or date changes
   useEffect(() => {
@@ -98,7 +98,8 @@ export default function BookingForm({
           end: selectedSlot.end,
         }),
       });
-      setStatus(res.ok ? 'done' : 'error');
+      const { status: bookingStatus } = await res.json();
+      setStatus(res.ok && ['confirmed', 'pending', 'demo'].includes(bookingStatus) ? bookingStatus : 'error');
     } catch {
       setStatus('error');
     }
@@ -107,18 +108,19 @@ export default function BookingForm({
   const selectedServiceObj = services.find((s) => s.id === serviceId);
   const selectedDoctorObj = doctors.find((d) => d.id === doctorId);
 
-  if (status === 'done') {
+  if (status === 'confirmed' || status === 'pending' || status === 'demo') {
     return (
       <div className="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 p-8 text-center space-y-4">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500 text-slate-950 font-bold">
           <CheckCircle2 className="h-10 w-10 text-white" />
         </div>
         <h2 className="font-[family-name:var(--font-fraunces)] text-3xl font-bold text-slate-900 dark:text-white">
-          Wizyta Zarezerwowana!
+          {status === 'demo' ? 'Zakończono symulację' :
+            status === 'confirmed' ? 'Wizyta zarezerwowana' : 'Zgłoszenie przyjęte'}
         </h2>
         <p className="text-slate-600 dark:text-slate-300 text-sm max-w-md mx-auto leading-relaxed">
-          Potwierdzenie rezerwacji oraz szczegóły dojazdu wysłaliśmy na adres e-mail:{' '}
-          <strong className="text-slate-900 dark:text-white">{email}</strong>.
+          {status === 'demo' ? 'To był podgląd procesu rezerwacji.' :
+            status === 'confirmed' ? 'Termin został potwierdzony.' : 'Termin oczekuje na potwierdzenie przez klinikę.'}
         </p>
 
         <div className="mx-auto max-w-sm rounded-2xl bg-white p-5 text-left text-xs space-y-2 shadow-sm dark:bg-slate-900 dark:border dark:border-slate-800">

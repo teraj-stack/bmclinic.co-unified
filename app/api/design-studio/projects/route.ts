@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { checkApiRole } from '@/lib/authGuard';
 import {
   buildCompleteFrontendBundle,
   readProjects,
@@ -34,6 +35,12 @@ interface CreateProjectPayload {
 }
 
 export async function POST(req: NextRequest) {
+  const denied = await checkApiRole('ADMIN');
+  if (denied) return denied;
+  if (process.env.VERCEL) {
+    return NextResponse.json({ error: 'Zapis wymaga trwałego magazynu.' }, { status: 503 });
+  }
+
   try {
     const body = (await req.json()) as CreateProjectPayload;
     const safety = assertSuperagentSafePayload({
@@ -143,6 +150,12 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const denied = await checkApiRole('ADMIN');
+  if (denied) return denied;
+  if (process.env.VERCEL) {
+    return NextResponse.json({ error: 'Zapis wymaga trwałego magazynu.' }, { status: 503 });
+  }
+
   const id = req.nextUrl.searchParams.get('id');
   if (!id) {
     return NextResponse.json({ ok: false, error: 'Brak parametru id.' }, { status: 400 });

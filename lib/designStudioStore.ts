@@ -577,24 +577,13 @@ function createInitialDrivers(): DriverPackageEntry[] {
 }
 
 export function readProjects(): DesignGalleryItem[] {
-  ensureDataDir();
-  if (!fs.existsSync(PROJECTS_FILE)) {
-    const initial = createInitialProjects();
-    fs.writeFileSync(PROJECTS_FILE, JSON.stringify(initial, null, 2), 'utf8');
-    return initial;
-  }
   try {
-    const raw = fs.readFileSync(PROJECTS_FILE, 'utf8');
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed) && parsed.length > 0) {
-      return parsed as DesignGalleryItem[];
-    }
+    const parsed = JSON.parse(fs.readFileSync(PROJECTS_FILE, 'utf8'));
+    if (Array.isArray(parsed)) return parsed as DesignGalleryItem[];
   } catch {
-    // Re-seed if corrupted
+    // The default catalog also works on read-only deployments.
   }
-  const initial = createInitialProjects();
-  fs.writeFileSync(PROJECTS_FILE, JSON.stringify(initial, null, 2), 'utf8');
-  return initial;
+  return createInitialProjects();
 }
 
 export function writeProjects(items: DesignGalleryItem[]): void {
@@ -603,24 +592,13 @@ export function writeProjects(items: DesignGalleryItem[]): void {
 }
 
 export function readDrivers(): DriverPackageEntry[] {
-  ensureDataDir();
-  if (!fs.existsSync(DRIVERS_FILE)) {
-    const initial = createInitialDrivers();
-    fs.writeFileSync(DRIVERS_FILE, JSON.stringify(initial, null, 2), 'utf8');
-    return initial;
-  }
   try {
-    const raw = fs.readFileSync(DRIVERS_FILE, 'utf8');
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed) && parsed.length > 0) {
-      return parsed as DriverPackageEntry[];
-    }
+    const parsed = JSON.parse(fs.readFileSync(DRIVERS_FILE, 'utf8'));
+    if (Array.isArray(parsed)) return parsed as DriverPackageEntry[];
   } catch {
-    // Re-seed if corrupted
+    // The default catalog also works on read-only deployments.
   }
-  const initial = createInitialDrivers();
-  fs.writeFileSync(DRIVERS_FILE, JSON.stringify(initial, null, 2), 'utf8');
-  return initial;
+  return createInitialDrivers();
 }
 
 export function writeDrivers(items: DriverPackageEntry[]): void {

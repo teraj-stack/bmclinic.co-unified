@@ -290,26 +290,27 @@ export const FALLBACK_SERVICES: CatalogService[] = [
 ];
 
 export async function getServicesCatalog(): Promise<CatalogService[]> {
+  if (process.env.DATABASE_URL) {
+    try {
+      const dbServices = await prisma.service.findMany({
+        orderBy: [{ categorySlug: 'asc' }, { name: 'asc' }],
+      });
+      return dbServices;
+    } catch {
+      // Fallback to local catalog when DB is unreachable
+    }
+  }
+
   try {
     const { getCmsState } = await import('./cmsStore');
     const cms = getCmsState();
-    if (cms.services && cms.services.length > 0) {
+    if (Array.isArray(cms.services)) {
       return cms.services;
     }
   } catch {
     // ignore
   }
 
-  if (process.env.DATABASE_URL) {
-    try {
-      const dbServices = await prisma.service.findMany({
-        orderBy: [{ categorySlug: 'asc' }, { name: 'asc' }],
-      });
-      if (dbServices.length > 0) return dbServices;
-    } catch {
-      // Fallback to local catalog when DB is unreachable
-    }
-  }
   return FALLBACK_SERVICES;
 }
 
@@ -329,6 +330,23 @@ export async function getServiceById(id: string): Promise<CatalogService | null>
 }
 
 export async function getDoctorsCatalog(): Promise<CatalogDoctor[]> {
+  if (process.env.DATABASE_URL) {
+    try {
+      const dbDoctors = await prisma.doctor.findMany({
+        include: { user: true },
+      });
+      return dbDoctors.map((d) => ({
+        id: d.id,
+        name: d.user.name ?? 'Jan Bujok',
+        specialization: d.specialization || 'chirurg, specjalista chirurgii ogólnej, flebolog, proktolog',
+        workStartHour: d.workStartHour,
+        workEndHour: d.workEndHour,
+      }));
+    } catch {
+      // Fallback to local doctor catalog
+    }
+  }
+
   try {
     const { getCmsState } = await import('./cmsStore');
     const cms = getCmsState();
@@ -339,23 +357,5 @@ export async function getDoctorsCatalog(): Promise<CatalogDoctor[]> {
     // ignore
   }
 
-  if (process.env.DATABASE_URL) {
-    try {
-      const dbDoctors = await prisma.doctor.findMany({
-        include: { user: true },
-      });
-      if (dbDoctors.length > 0) {
-        return dbDoctors.map((d) => ({
-          id: d.id,
-          name: d.user.name ?? 'Jan Bujok',
-          specialization: d.specialization || 'chirurg, specjalista chirurgii ogólnej, flebolog, proktolog',
-          workStartHour: d.workStartHour,
-          workEndHour: d.workEndHour,
-        }));
-      }
-    } catch {
-      // Fallback to local doctor catalog
-    }
-  }
   return FALLBACK_DOCTORS;
 }

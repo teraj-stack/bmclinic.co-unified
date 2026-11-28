@@ -33,9 +33,19 @@ const [command = 'help', ...rest] = filteredArgs;
 const apiEndpoint = `${baseUrl}/api/cms`;
 
 async function requestCms(method = 'GET', body = undefined) {
+  const url = new URL(apiEndpoint);
+  const token = process.env.BMCLINICS_CMS_TOKEN;
+  if (!token) throw new Error('Ustaw BMCLINICS_CMS_TOKEN dla dostępu do CMS.');
+  if (url.protocol !== 'https:' &&
+      !(url.protocol === 'http:' && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname))) {
+    throw new Error('Połączenie z CMS poza tym komputerem wymaga HTTPS.');
+  }
+  const headers = { Authorization: `Bearer ${token}` };
+  if (body) headers['Content-Type'] = 'application/json';
   const res = await fetch(apiEndpoint, {
     method,
-    headers: body ? { 'Content-Type': 'application/json' } : undefined,
+    headers,
+    redirect: 'error',
     body: body ? JSON.stringify(body) : undefined,
   });
   if (!res.ok) {

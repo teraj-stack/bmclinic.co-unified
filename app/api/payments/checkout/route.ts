@@ -5,7 +5,7 @@ import { createPendingOrder } from '@/lib/orders';
 import { assertSuperagentSafePayload } from '@/lib/superagentEngine';
 
 export async function POST(req: NextRequest) {
-  const { items, email } = await req.json();
+  const { items, email } = (await req.json().catch(() => null)) ?? {};
 
   const safety = assertSuperagentSafePayload({ items, email });
   if (!safety.allowed) {
@@ -15,21 +15,27 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (!Array.isArray(items) || items.length === 0 || !email) {
+  if (!Array.isArray(items) || items.length === 0 || items.length > 50 ||
+      !items.every((item) => item && typeof item.serviceId === 'string' && item.serviceId.trim() &&
+        Number.isSafeInteger(item.quantity) && item.quantity > 0 && item.quantity <= 99) ||
+      typeof email !== 'string' || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
     return NextResponse.json({ error: 'Nieprawidłowe dane zamówienia' }, { status: 400 });
   }
 
   const sessionId = randomUUID();
 
-  if (process.env.DATABASE_URL && process.env.P24_MERCHANT_ID && process.env.P24_API_KEY) {
+  const isPreview = process.env.NODE_ENV === 'development' || process.env.VERCEL_ENV === 'preview';
+  if (process.env.DATABASE_URL && process.env.P24_MERCHANT_ID && process.env.P24_POS_ID &&
+      process.env.P24_API_KEY && process.env.P24_CRC && process.env.NEXT_PUBLIC_BASE_URL &&
+      (!isPreview || process.env.P24_SANDBOX === 'true')) {
     try {
-      const order = await createPendingOrder({ sessionId, items, email });
+      const order = await createPendingOrder({ sessionId, items, email: email.trim().toLowerCase() });
 
       const { paymentUrl } = await registerTransaction({
         sessionId,
         amountGrosze: order.amountGrosze,
         description: `Zamówienie ${order.items.length} usług — BM Clinics`,
-        email,
+        email: order.customerEmail,
       });
 
       return NextResponse.json({ paymentUrl });
@@ -38,7 +44,10 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Local / preview fallback when Przelewy24 credentials are not configured
+  if (!isPreview) {
+    return NextResponse.json({ error: 'Płatności są niedostępne.' }, { status: 503 });
+  }
+
   return NextResponse.json({
     paymentUrl: `/sklep/podsumowanie?sessionId=${sessionId}&demo=1`,
     demo: true,

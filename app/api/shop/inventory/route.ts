@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { checkApiRole } from '@/lib/authGuard';
 import {
   addInventoryProduct,
   deleteInventoryProduct,
@@ -20,6 +21,12 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const denied = await checkApiRole('ADMIN');
+  if (denied) return denied;
+  if (process.env.VERCEL) {
+    return NextResponse.json({ error: 'Zapis wymaga trwałego magazynu.' }, { status: 503 });
+  }
+
   try {
     const body = (await req.json()) as {
       action?: string;
@@ -74,6 +81,12 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
+  const denied = await checkApiRole('ADMIN');
+  if (denied) return denied;
+  if (process.env.VERCEL) {
+    return NextResponse.json({ error: 'Zapis wymaga trwałego magazynu.' }, { status: 503 });
+  }
+
   try {
     const body = (await req.json()) as Partial<ShopInventoryProduct>;
     if (!body?.id) {
@@ -90,6 +103,12 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const denied = await checkApiRole('ADMIN');
+  if (denied) return denied;
+  if (process.env.VERCEL) {
+    return NextResponse.json({ error: 'Zapis wymaga trwałego magazynu.' }, { status: 503 });
+  }
+
   try {
     const id = req.nextUrl.searchParams.get('id') || '';
     if (!id.trim()) {

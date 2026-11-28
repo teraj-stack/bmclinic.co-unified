@@ -42,12 +42,14 @@ export default async function LekarzKalendarzPage() {
             <p className="opacity-70">
               Połącz swoje konto Google Calendar, aby system sprawdzał Twoją dostępność.
             </p>
-            <a
-              href={`/api/auth/google?doctorId=${doctor.id}`}
-              className="mt-3 inline-block rounded bg-[var(--text-primary)] px-4 py-2 text-[var(--bg-primary)]"
-            >
-              Połącz konto Google
-            </a>
+            <form action="/api/auth/google" method="get">
+              <button
+                type="submit"
+                className="mt-3 inline-block rounded bg-[var(--text-primary)] px-4 py-2 text-[var(--bg-primary)]"
+              >
+                Połącz konto Google
+              </button>
+            </form>
           </>
         )}
       </div>

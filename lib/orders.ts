@@ -21,6 +21,9 @@ export async function createPendingOrder(input: CreatePendingOrderInput) {
     if (!service) throw new Error(`Nieznana usługa: ${item.serviceId}`);
     return sum + service.priceGrosze * item.quantity;
   }, 0);
+  if (!Number.isSafeInteger(amountGrosze) || amountGrosze <= 0 || amountGrosze > 2_147_483_647) {
+    throw new Error('Nieprawidłowa kwota zamówienia.');
+  }
 
   return prisma.order.create({
     data: {
@@ -40,9 +43,9 @@ export async function createPendingOrder(input: CreatePendingOrderInput) {
   });
 }
 
-export async function markOrderAsPaid(sessionId: string) {
-  return prisma.order.update({
-    where: { sessionId },
-    data: { status: 'PAID', paidAt: new Date() },
+export async function markOrderAsPaid(sessionId: string, amountGrosze: number, orderId: number) {
+  return prisma.order.updateMany({
+    where: { sessionId, amountGrosze, status: 'PENDING' },
+    data: { status: 'PAID', paidAt: new Date(), p24OrderId: orderId },
   });
 }

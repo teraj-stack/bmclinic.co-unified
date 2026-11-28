@@ -1,54 +1,23 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/authOptions';
+import { requireRole } from '@/lib/authGuard';
 import { prisma } from '@/lib/prisma';
-import { getDoctorByUserId } from '@/lib/doctors';
-import { getCmsState } from '@/lib/cmsStore';
+import { getClinicDate, getClinicHour } from '@/lib/clinicTime';
 import { updateVisitStatus } from './actions';
 
 export const dynamic = 'force-dynamic';
 
 function todayRange() {
-  const start = new Date();
-  start.setHours(0, 0, 0, 0);
-  const end = new Date(start);
-  end.setDate(end.getDate() + 1);
-  return { start, end };
+  const today = getClinicDate(new Date());
+  return { start: getClinicHour(today, 0), end: getClinicHour(today, 24) };
 }
 
 export default async function LekarzDzisPage() {
-  const session = await getServerSession(authOptions);
-  const cms = getCmsState();
-
-  let visits: {
-    id: string;
-    startTime: Date;
-    status: string;
-    patient: { user: { name?: string | null; email: string } };
-    service: { name: string };
-  }[] = cms.visits.map((v) => ({
-    id: v.id,
-    startTime: new Date(v.startTime),
-    status: v.status,
-    patient: { user: { name: v.patientName, email: v.patientEmail } },
-    service: { name: v.serviceName },
-  }));
-
-  if (session?.user?.id && process.env.DATABASE_URL) {
-    try {
-      const doctor = await getDoctorByUserId(session.user.id);
-      const { start, end } = todayRange();
-      const dbVisits = await prisma.visit.findMany({
-        where: { doctorId: doctor.id, startTime: { gte: start, lt: end } },
-        include: { patient: { include: { user: true } }, service: true },
-        orderBy: { startTime: 'asc' },
-      });
-      if (dbVisits.length > 0) {
-        visits = dbVisits;
-      }
-    } catch {
-      // Fallback to CMS visits
-    }
-  }
+  const session = await requireRole(['DOCTOR', 'ADMIN']);
+  const { start, end } = todayRange();
+  const visits = await prisma.visit.findMany({
+    where: { doctor: { userId: session.user.id }, startTime: { gte: start, lt: end } },
+    include: { patient: { include: { user: true } }, service: true },
+    orderBy: { startTime: 'asc' },
+  });
 
   return (
     <div className="space-y-4">

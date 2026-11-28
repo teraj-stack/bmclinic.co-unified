@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { checkApiRole } from '@/lib/authGuard';
 import { readDrivers, writeDrivers, type DriverPackageEntry } from '@/lib/designStudioStore';
 import { assertSuperagentSafePayload } from '@/lib/superagentEngine';
 
@@ -53,6 +54,12 @@ interface DriversPostPayload {
 }
 
 export async function POST(req: NextRequest) {
+  const denied = await checkApiRole('ADMIN');
+  if (denied) return denied;
+  if (process.env.VERCEL) {
+    return NextResponse.json({ error: 'Zapis wymaga trwałego magazynu.' }, { status: 503 });
+  }
+
   try {
     const body = (await req.json()) as DriversPostPayload;
     const safety = assertSuperagentSafePayload(body);

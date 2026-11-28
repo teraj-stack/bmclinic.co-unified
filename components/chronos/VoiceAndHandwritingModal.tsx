@@ -90,7 +90,7 @@ export const VoiceAndHandwritingModal: React.FC<VoiceAndHandwritingModalProps> =
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [strokeColor, setStrokeColor] = useState('#0F172A');
-  const [strokeWidth, setStrokeWidth] = useState(3);
+  const strokeWidth = 3;
 
   // AI Processing & Results state
   const [isProcessing, setIsProcessing] = useState(false);
