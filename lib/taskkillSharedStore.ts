@@ -49,6 +49,16 @@ function revisionHeaders(revision: number) {
   return { ...snapshotHeaders, ETag: `"${revision}"` };
 }
 
+function isTaskLink(value: unknown) {
+  if (value === undefined || value === '' || value === null) return true;
+  if (typeof value !== 'string') return false;
+  try {
+    return ['http:', 'https:'].includes(new URL(value, 'https://example.invalid').protocol);
+  } catch {
+    return false;
+  }
+}
+
 export async function readSharedTaskkillSection(mapId: string, section: MapSection) {
   const db = await database();
   const [record] = await db.$queryRaw<StoredSection[]>`
@@ -104,9 +114,11 @@ export async function serveTaskkillSection(req: NextRequest, section: MapSection
   }
   if (section === 'tasks') {
     if (!Array.isArray(input) || input.length > 2500 ||
-        !input.every((task) => task && (typeof task.id === 'number' || typeof task.id === 'string') &&
-          typeof task.title === 'string') ||
-        new Set(input.map((task) => String(task.id))).size !== input.length) {
+        !input.every((task) => task && Number.isSafeInteger(task.id) && task.id > 0 &&
+          typeof task.title === 'string' && isTaskLink(task.url) &&
+          (task.labels === undefined ||
+            (Array.isArray(task.labels) && task.labels.every((label: unknown) => typeof label === 'string')))) ||
+        new Set(input.map((task) => task.id)).size !== input.length) {
       return replyError('Nieprawidłowa lista zadań.', 400);
     }
   } else if (!input || typeof input !== 'object' || Array.isArray(input) || !('positions' in input)) {
